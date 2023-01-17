@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Generator: Adobe Illustrator 13.0.2, SVG Export Plug-In  -->
+
+<svg
+   version="1.1"
+   x="0px"
+   y="0px"
+   width="130px"
+   height="56px"
+   viewBox="0 0 130 56"
+   enable-background="new 0 0 130 56"
+   xml:space="preserve"
+   id="svg38"
+   sodipodi:docname="ToggleSwitchSelected.svg"
+   inkscape:version="1.2.1 (9c6d41e410, 2022-07-14)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"><sodipodi:namedview
+   id="namedview40"
+   pagecolor="#ffffff"
+   bordercolor="#111111"
+   borderopacity="1"
+   inkscape:showpageshadow="0"
+   inkscape:pageopacity="0"
+   inkscape:pagecheckerboard="1"
+   inkscape:deskcolor="#d1d1d1"
+   showgrid="false"
+   inkscape:zoom="9.6"
+   inkscape:cx="65"
+   inkscape:cy="28.020833"
+   inkscape:window-width="1920"
+   inkscape:window-height="1017"
+   inkscape:window-x="1912"
+   inkscape:window-y="58"
+   inkscape:window-maximized="1"
+   inkscape:current-layer="svg38" />
+<defs
+   id="defs22">
+</defs>
+<linearGradient
+   id="SVGID_1_"
+   gradientUnits="userSpaceOnUse"
+   x1="-37.5005"
+   y1="-66"
+   x2="-37.5005"
+   y2="-121.9985"
+   gradientTransform="matrix(1 0 0 -1 102.5 -66)">
+	<stop
+   offset="0.0056"
+   style="stop-color:#000000"
+   id="stop24" />
+	<stop
+   offset="1"
+   style="stop-color:#EAECEF"
+   id="stop26" />
+</linearGradient>
+<path
+   fill="url(#SVGID_1_)"
+   d="M 101.998,55.998 H 28 C 12.561,55.998 0,43.436 0,27.998 0,12.56 12.561,0 28,0 h 73.998 c 15.439,0 28,12.559 28,27.998 0,15.44 -12.56,28 -28,28 z"
+   id="path29"
+   style="display:inline" />
+<linearGradient
+   id="SVGID_2_"
+   gradientUnits="userSpaceOnUse"
+   x1="-5.5"
+   y1="-132.1338"
+   x2="-69.5002"
+   y2="-55.8613"
+   gradientTransform="matrix(1 0 0 -1 102.5 -66)">
+	<stop
+   offset="0.0056"
+   style="stop-color:#000000"
+   id="stop31" />
+	<stop
+   offset="1"
+   style="stop-color:#00ffff;stop-opacity:1"
+   id="stop33" />
+</linearGradient>
+<path
+   fill="url(#SVGID_2_)"
+   d="m 127.999,27.998 c 0,14.359 -11.642,26 -26,26 h -74 c -14.359,0 -26,-11.641 -26,-26 v 0 c 0,-14.359 11.641,-26 26,-26 h 74 c 14.358,0 26,11.641 26,26 z"
+   id="path36"
+   style="display:inline" />
+</svg>
