@@ -1,0 +1,15 @@
+debug/main.o
+debug/potentiometer.o
+debug/protocol.o
+debug/serialPort.o
+debug/serialPortController.o
+debug/tabButton.o
+debug/toggleSwitch.o
+debug/qrc_qml.o
+debug/qrc_qmake_qmake_immediate.o
+debug/moc_potentiometer.o
+debug/moc_protocol.o
+debug/moc_serialPort.o
+debug/moc_serialPortController.o
+debug/moc_tabButton.o
+debug/moc_toggleSwitch.o
