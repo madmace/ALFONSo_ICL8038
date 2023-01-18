@@ -9,7 +9,7 @@ ALFONSo stands for :
 **N**olinear 
 **S**equencer 
 
-In this implementation MK8038. MK-ICL8038
+In this implementation MK-ICL8038.
 
 - [Meta](#meta)
 - [Basics](#basics)
