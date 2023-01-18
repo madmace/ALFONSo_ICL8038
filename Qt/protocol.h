@@ -70,16 +70,16 @@ public:
     static const quint16 REQUEST_SIZE = 3;
 
     // Resquest all ALFONSo State
-    static const quint16 SYNC_ALL = 0xFFFF;
+    static const quint16 SYNC_REQ_ALL = 0xFFFF;
 
     // Resquest VCO 1 State
-    static const quint16 SYNC_VCO_1 = 0xFFE0;
+    static const quint16 SYNC_REQ_VCO_1 = 0xFFE0;
     // Resquest VCO 2 State
-    static const quint16 SYNC_VCO_2 = 0xFFE1;
+    static const quint16 SYNC_REQ_VCO_2 = 0xFFE1;
     // Resquest VCO 3 State
-    static const quint16 SYNC_VCO_3 = 0xFFE2;
+    static const quint16 SYNC_REQ_VCO_3 = 0xFFE2;
     // Resquest VCO 4 State
-    static const quint16 SYNC_VCO_4 = 0xFFE3;
+    static const quint16 SYNC_REQ_VCO_4 = 0xFFE3;
 
     /*****************************
      *
@@ -88,58 +88,73 @@ public:
      ******************************/
 
     // Resquest for enable/disable VCO 1
-    static const quint16 VCO_1_ENABLE = 0x0001;
+    static const quint16 VCO_1_REQ_ENABLE = 0x0001;
     // Resquest for enable/disable VCO 2
-    static const quint16 VCO_2_ENABLE = 0x0002;
+    static const quint16 VCO_2_REQ_ENABLE = 0x0002;
     // Resquest for enable/disable VCO 3
-    static const quint16 VCO_3_ENABLE = 0x0003;
+    static const quint16 VCO_3_REQ_ENABLE = 0x0003;
     // Resquest for enable/disable VCO 4
-    static const quint16 VCO_4_ENABLE = 0x0004;
+    static const quint16 VCO_4_REQ_ENABLE = 0x0004;
 
     // Resquest for set VCO 1 frequency
-    static const quint16 VCO_1_FREQUENCY = 0x0010;
+    static const quint16 VCO_1_REQ_FREQUENCY = 0x0010;
     // Resquest for set VCO 2 frequency
-    static const quint16 VCO_2_FREQUENCY = 0x0011;
+    static const quint16 VCO_2_REQ_FREQUENCY = 0x0011;
     // Resquest for set VCO 3 frequency
-    static const quint16 VCO_3_FREQUENCY = 0x0012;
+    static const quint16 VCO_3_REQ_FREQUENCY = 0x0012;
     // Resquest for set VCO 4 frequency
-    static const quint16 VCO_4_FREQUENCY = 0x0013;
+    static const quint16 VCO_4_REQ_FREQUENCY = 0x0013;
 
     // Resquest for set VCO 1 Duty cycle
-    static const quint16 VCO_1_DUTY_CYCLE = 0x0020;
+    static const quint16 VCO_1_REQ_DUTY_CYCLE = 0x0020;
     // Resquest for set VCO 2 Duty cycle
-    static const quint16 VCO_2_DUTY_CYCLE = 0x0021;
+    static const quint16 VCO_2_REQ_DUTY_CYCLE = 0x0021;
     // Resquest for set VCO 3 Duty cycle
-    static const quint16 VCO_3_DUTY_CYCLE = 0x0022;
+    static const quint16 VCO_3_REQ_DUTY_CYCLE = 0x0022;
     // Resquest for set VCO 4 Duty cycle
-    static const quint16 VCO_4_DUTY_CYCLE = 0x0023;
+    static const quint16 VCO_4_REQ_DUTY_CYCLE = 0x0023;
 
     // Resquest for enable VCO 1 Sine line
-    static const quint16 VCO_1_ENABLE_SINE = 0x0030;
+    static const quint16 VCO_1_REQ_ENABLE_SINE = 0x0030;
     // Resquest for enable VCO 2 Sine line
-    static const quint16 VCO_2_ENABLE_SINE = 0x0031;
+    static const quint16 VCO_2_REQ_ENABLE_SINE = 0x0031;
     // Resquest for enable VCO 3 Sine line
-    static const quint16 VCO_3_ENABLE_SINE = 0x0032;
+    static const quint16 VCO_3_REQ_ENABLE_SINE = 0x0032;
     // Resquest for enable VCO 4 Sine line
-    static const quint16 VCO_4_ENABLE_SINE = 0x0033;
+    static const quint16 VCO_4_REQ_ENABLE_SINE = 0x0033;
 
     // Resquest for enable VCO 1 Square line
-    static const quint16 VCO_1_ENABLE_SQUARE = 0x0040;
+    static const quint16 VCO_1_REQ_ENABLE_SQUARE = 0x0040;
     // Resquest for enable VCO 2 Square line
-    static const quint16 VCO_2_ENABLE_SQUARE = 0x0041;
+    static const quint16 VCO_2_REQ_ENABLE_SQUARE = 0x0041;
     // Resquest for enable VCO 3 Square line
-    static const quint16 VCO_3_ENABLE_SQUARE = 0x0042;
+    static const quint16 VCO_3_REQ_ENABLE_SQUARE = 0x0042;
     // Resquest for enable VCO 4 Square line
-    static const quint16 VCO_4_ENABLE_SQUARE = 0x0043;
+    static const quint16 VCO_4_REQ_ENABLE_SQUARE = 0x0043;
 
     // Resquest for enable VCO 1 Triangle line
-    static const quint16 VCO_1_ENABLE_TRIANGLE = 0x0050;
+    static const quint16 VCO_1_REQ_ENABLE_TRIANGLE = 0x0050;
     // Resquest for enable VCO 2 Triangle line
-    static const quint16 VCO_2_ENABLE_TRIANGLE = 0x0051;
+    static const quint16 VCO_2_REQ_ENABLE_TRIANGLE = 0x0051;
     // Resquest for enable VCO 3 Triangle line
-    static const quint16 VCO_3_ENABLE_TRIANGLE = 0x0052;
+    static const quint16 VCO_3_REQ_ENABLE_TRIANGLE = 0x0052;
     // Resquest for enable VCO 4 Triangle line
-    static const quint16 VCO_4_ENABLE_TRIANGLE = 0x0053;
+    static const quint16 VCO_4_REQ_ENABLE_TRIANGLE = 0x0053;
+
+    /*****************************
+     *
+     * States Response to client.
+     *
+     ******************************/
+
+    // Response for VCO 1 frequency
+    static const quint16 VCO_1_RSP_FREQUENCY = 0x1001;
+    // Response for VCO 2 frequency
+    static const quint16 VCO_2_RSP_FREQUENCY = 0x1002;
+    // Response for VCO 3 frequency
+    static const quint16 VCO_3_RSP_FREQUENCY = 0x1003;
+    // Response for VCO 4 frequency
+    static const quint16 VCO_4_RSP_FREQUENCY = 0x1004;
 
 
 };

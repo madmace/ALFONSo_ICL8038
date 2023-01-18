@@ -97,16 +97,16 @@ void SerialPortController::requestSendBytes(quint8 byID, quint8 byType, quint8 b
 
             switch (byID) {
                 case 1:
-                    append2Bytes(byBuffer, Protocol::VCO_1_ENABLE);
+                    append2Bytes(byBuffer, Protocol::VCO_1_REQ_ENABLE);
                     break;
                 case 2:
-                    append2Bytes(byBuffer, Protocol::VCO_2_ENABLE);
+                    append2Bytes(byBuffer, Protocol::VCO_2_REQ_ENABLE);
                     break;
                 case 3:
-                    append2Bytes(byBuffer, Protocol::VCO_3_ENABLE);
+                    append2Bytes(byBuffer, Protocol::VCO_3_REQ_ENABLE);
                     break;
                 case 4:
-                    append2Bytes(byBuffer, Protocol::VCO_4_ENABLE);
+                    append2Bytes(byBuffer, Protocol::VCO_4_REQ_ENABLE);
                     break;
             }
 
@@ -119,16 +119,16 @@ void SerialPortController::requestSendBytes(quint8 byID, quint8 byType, quint8 b
 
             switch (byID) {
                 case 1:
-                    append2Bytes(byBuffer, Protocol::VCO_1_FREQUENCY);
+                    append2Bytes(byBuffer, Protocol::VCO_1_REQ_FREQUENCY);
                     break;
                 case 2:
-                    append2Bytes(byBuffer, Protocol::VCO_2_FREQUENCY);
+                    append2Bytes(byBuffer, Protocol::VCO_2_REQ_FREQUENCY);
                     break;
                 case 3:
-                    append2Bytes(byBuffer, Protocol::VCO_3_FREQUENCY);
+                    append2Bytes(byBuffer, Protocol::VCO_3_REQ_FREQUENCY);
                     break;
                 case 4:
-                    append2Bytes(byBuffer, Protocol::VCO_4_FREQUENCY);
+                    append2Bytes(byBuffer, Protocol::VCO_4_REQ_FREQUENCY);
                     break;
             }
 
@@ -141,16 +141,16 @@ void SerialPortController::requestSendBytes(quint8 byID, quint8 byType, quint8 b
 
             switch (byID) {
                 case 1:
-                    append2Bytes(byBuffer, Protocol::VCO_1_DUTY_CYCLE);
+                    append2Bytes(byBuffer, Protocol::VCO_1_REQ_DUTY_CYCLE);
                     break;
                 case 2:
-                    append2Bytes(byBuffer, Protocol::VCO_2_DUTY_CYCLE);
+                    append2Bytes(byBuffer, Protocol::VCO_2_REQ_DUTY_CYCLE);
                     break;
                 case 3:
-                    append2Bytes(byBuffer, Protocol::VCO_3_DUTY_CYCLE);
+                    append2Bytes(byBuffer, Protocol::VCO_3_REQ_DUTY_CYCLE);
                     break;
                 case 4:
-                    append2Bytes(byBuffer, Protocol::VCO_4_DUTY_CYCLE);
+                    append2Bytes(byBuffer, Protocol::VCO_4_REQ_DUTY_CYCLE);
                     break;
             }
 
@@ -163,16 +163,16 @@ void SerialPortController::requestSendBytes(quint8 byID, quint8 byType, quint8 b
 
             switch (byID) {
                 case 1:
-                    append2Bytes(byBuffer, Protocol::VCO_1_ENABLE_SINE);
+                    append2Bytes(byBuffer, Protocol::VCO_1_REQ_ENABLE_SINE);
                     break;
                 case 2:
-                    append2Bytes(byBuffer, Protocol::VCO_2_ENABLE_SINE);
+                    append2Bytes(byBuffer, Protocol::VCO_2_REQ_ENABLE_SINE);
                     break;
                 case 3:
-                    append2Bytes(byBuffer, Protocol::VCO_3_ENABLE_SINE);
+                    append2Bytes(byBuffer, Protocol::VCO_3_REQ_ENABLE_SINE);
                     break;
                 case 4:
-                    append2Bytes(byBuffer, Protocol::VCO_4_ENABLE_SINE);
+                    append2Bytes(byBuffer, Protocol::VCO_4_REQ_ENABLE_SINE);
                     break;
             }
 
@@ -185,16 +185,16 @@ void SerialPortController::requestSendBytes(quint8 byID, quint8 byType, quint8 b
 
             switch (byID) {
                 case 1:
-                    append2Bytes(byBuffer, Protocol::VCO_1_ENABLE_SQUARE);
+                    append2Bytes(byBuffer, Protocol::VCO_1_REQ_ENABLE_SQUARE);
                     break;
                 case 2:
-                    append2Bytes(byBuffer, Protocol::VCO_2_ENABLE_SQUARE);
+                    append2Bytes(byBuffer, Protocol::VCO_2_REQ_ENABLE_SQUARE);
                     break;
                 case 3:
-                    append2Bytes(byBuffer, Protocol::VCO_3_ENABLE_SQUARE);
+                    append2Bytes(byBuffer, Protocol::VCO_3_REQ_ENABLE_SQUARE);
                     break;
                 case 4:
-                    append2Bytes(byBuffer, Protocol::VCO_4_ENABLE_SQUARE);
+                    append2Bytes(byBuffer, Protocol::VCO_4_REQ_ENABLE_SQUARE);
                     break;
             }
 
@@ -207,16 +207,16 @@ void SerialPortController::requestSendBytes(quint8 byID, quint8 byType, quint8 b
 
             switch (byID) {
                 case 1:
-                    append2Bytes(byBuffer, Protocol::VCO_1_ENABLE_TRIANGLE);
+                    append2Bytes(byBuffer, Protocol::VCO_1_REQ_ENABLE_TRIANGLE);
                     break;
                 case 2:
-                    append2Bytes(byBuffer, Protocol::VCO_2_ENABLE_TRIANGLE);
+                    append2Bytes(byBuffer, Protocol::VCO_2_REQ_ENABLE_TRIANGLE);
                     break;
                 case 3:
-                    append2Bytes(byBuffer, Protocol::VCO_3_ENABLE_TRIANGLE);
+                    append2Bytes(byBuffer, Protocol::VCO_3_REQ_ENABLE_TRIANGLE);
                     break;
                 case 4:
-                    append2Bytes(byBuffer, Protocol::VCO_4_ENABLE_TRIANGLE);
+                    append2Bytes(byBuffer, Protocol::VCO_4_REQ_ENABLE_TRIANGLE);
                     break;
             }
 
