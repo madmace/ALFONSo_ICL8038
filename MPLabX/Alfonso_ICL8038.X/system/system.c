@@ -326,9 +326,10 @@ void MainSystemTasks(void) {
      */
     if(USBUSARTIsTxTrfReady() == true)
     {
-        uint16_t id_comp = 0x00;
-        uint8_t byvalue = 0;
-        uint8_t iNumBytesRead;
+        uint16_t uiIDCommand = 0x00;
+        uint8_t byValue = 0;
+        uint8_t iNumBytesRead = 0;
+        uint8_t iNumBytesToWrite = 0;
         
         int16_t iCaptureDelta = 0;
         
@@ -341,16 +342,16 @@ void MainSystemTasks(void) {
             
             //for (i = 0; i < iNumBytesRead; i++) {
                 
-                id_comp = (uint16_t)(readBuffer[0] + (readBuffer[1] << 8));
-                byvalue = readBuffer[2];
+                uiIDCommand = (uint16_t)(readBuffer[0] + (readBuffer[1] << 8));
+                byValue = readBuffer[2];
 
                 LCD44780_MCP23S08_lcd_clear_SPI1();
                 LCD44780_MCP23S08_goto_line_SPI1(LCD44780_MCP23S08_FIRST_LINE);
                 LCD44780_MCP23S08_send_message_SPI1("ID : ");
-                LCD44780_MCP23S08_write_integer_SPI1((int16_t)id_comp, 1, LCD44780_MCP23S08_ZERO_CLEANING_OFF);
+                LCD44780_MCP23S08_write_integer_SPI1((int16_t)uiIDCommand, 1, LCD44780_MCP23S08_ZERO_CLEANING_OFF);
                 LCD44780_MCP23S08_goto_line_SPI1(LCD44780_MCP23S08_SECOND_LINE);
                 LCD44780_MCP23S08_send_message_SPI1("Value : ");
-                LCD44780_MCP23S08_write_integer_SPI1((int16_t)byvalue, 1, LCD44780_MCP23S08_ZERO_CLEANING_OFF);
+                LCD44780_MCP23S08_write_integer_SPI1((int16_t)byValue, 1, LCD44780_MCP23S08_ZERO_CLEANING_OFF);
             //}
         
         }
@@ -376,8 +377,20 @@ void MainSystemTasks(void) {
                 LCD44780_MCP23S08_write_integer_SPI1((int16_t)uiCaptureCCP2, 1, LCD44780_MCP23S08_ZERO_CLEANING_OFF);
             
             
-            
-                //writeBuffer
+                // Clear write buffer
+                ClearCDCUSBDataWriteBuffer();
+                
+                uiIDCommand = VCO_1_RSP_FREQUENCY;
+                
+                writeBuffer[0] = (uint8_t)(uiIDCommand & 0x00FF);
+                writeBuffer[1] = (uint8_t)(uiIDCommand >> 8);
+                
+                writeBuffer[2] = (uint8_t)(uiCaptureCCP2 & 0x00FF);
+                writeBuffer[3] = (uint8_t)(uiCaptureCCP2 >> 8);
+                
+                iNumBytesToWrite = 4;
+                
+                putUSBUSART(writeBuffer, iNumBytesToWrite);
             }
         }
     }
