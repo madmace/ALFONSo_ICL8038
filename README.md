@@ -1,5 +1,15 @@
-# ALFONSo based on ICL8038
-Analog Low Frequency Oscillator Nolinear Sequencer MK-ICL8038
+# A.L.F.O.N.S.o based on ICL8038
+
+ALFONSo stands for :
+
+**A**nalog
+**L**ow 
+**F**requency 
+**O**scillator 
+**N**olinear 
+**S**equencer 
+
+In this implementation MK8038. MK-ICL8038
 
 - [Meta](#meta)
 - [Basics](#basics)
@@ -18,7 +28,7 @@ Scope:
 
 ## Upcoming implementations
 
-- It is my intention, once the project based on the **Intersil ICL8038** is completed and stabilized, to re-adapt it for use with the **EXAR XR-2206 Monolithic Function Generator**.
+- It is my intention, once the project based on the **Intersil ICL8038** is completed and stabilized, to re-adapt it for use with the **EXAR XR-2206** Monolithic Function Generator.
   IC is more modern and seems to compensate for certain problems of the *ICL8038*. It is also still supported and in production.
 - The impact on the Firmware of the transition of the current mC **PIC18F4450** towards the new version, currently supported by the *MCC of MPLABX*, mC **PIC18F45K50** is minimal.
   So as soon as the current version stabilizes, I'll switch to this mC.
