@@ -342,7 +342,8 @@ void SimpleMessageSPI16x2LCD(const char *message) {
     }
 #endif
 
-
+// Takes a current value of capture of CCP2 updated by the ISR
+// and controls if variance are in tollerance gap.
 bool updateCCPCapture(uint16_t *uiCapture) {
     
     int16_t iCaptureDelta = 0;
@@ -364,32 +365,37 @@ bool updateCCPCapture(uint16_t *uiCapture) {
     
     return bIsChanged;
 }
-    /*
-
-                    LCD44780_MCP23S08_lcd_clear_SPI1();
-                    LCD44780_MCP23S08_goto_line_SPI1(LCD44780_MCP23S08_FIRST_LINE);
-                    LCD44780_MCP23S08_send_message_SPI1("Freq : ");
-                    LCD44780_MCP23S08_write_integer_SPI1((int16_t)uiCaptureCCP2, 1, LCD44780_MCP23S08_ZERO_CLEANING_OFF);
 
 
-                    // Clear write buffer
-                    ClearCDCUSBDataWriteBuffer();
-
-                    uiIDCommand = VCO_1_RSP_FREQUENCY;
-
-                    writeBuffer[0] = (uint8_t)(uiIDCommand & 0x00FF);
-                    writeBuffer[1] = (uint8_t)(uiIDCommand >> 8);
-
-                    writeBuffer[2] = (uint8_t)(uiCaptureCCP2 & 0x00FF);
-                    writeBuffer[3] = (uint8_t)(uiCaptureCCP2 >> 8);
-
-                    iNumBytesToWrite = 4;
-
-                    putUSBUSART(writeBuffer, iNumBytesToWrite);
-                }
-            }
-          */
+uint8_t packResponseFrequency(uint8_t *buffer, uint16_t uiValue) {
     
+    // Clear write buffer
+    ClearCDCUSBDataWriteBuffer();
+    
+    uint16_t uiIDCommand = 0x00;
+    
+    // Set Response Frequency
+    uiIDCommand = VCO_1_RSP_FREQUENCY;
+    // First Low byte
+    buffer[0] = (uint8_t)(uiIDCommand & 0x00FF);
+    // High Low byte
+    buffer[1] = (uint8_t)(uiIDCommand >> 8);
+    // First Low byte value
+    buffer[2] = (uint8_t)(uiValue & 0x00FF);
+    // High Low byte value
+    buffer[3] = (uint8_t)(uiValue >> 8);
+    
+    // Debug block
+    #if defined(CMD_DEBUG_MODE)
+        LCD44780_MCP23S08_lcd_clear_SPI1();
+        LCD44780_MCP23S08_goto_line_SPI1(LCD44780_MCP23S08_FIRST_LINE);
+        LCD44780_MCP23S08_send_message_SPI1("Freq : ");
+        LCD44780_MCP23S08_write_integer_SPI1((int16_t)uiCaptureCCP2, 1, LCD44780_MCP23S08_ZERO_CLEANING_OFF);
+    #endif
+    
+    // Four bytes copied.
+    return 4;
+}
 
 // Runs system level tasks that keep the system running
 void MainSystemTasks(void) {
@@ -451,9 +457,15 @@ void MainSystemTasks(void) {
                     
                     // To do ....
                     
-                    if (updateCCPCapture(&aVCOInfo[0].uiAnalogFreqCCP)) {
+                    // Takes the current Frequency captured for VCO1
+                    if (updateCCPCapture(&aVCOInfo[VCO1].uiAnalogFreqCCP)) {
                         
+                        // Blink LED
                         BlinkLEDGP2();
+                        // Packs the value
+                        iNumBytesToWrite = packResponseFrequency(writeBuffer, aVCOInfo[VCO1].uiAnalogFreqCCP);
+                        // Swnd bytes to USB
+                        putUSBUSART(writeBuffer, iNumBytesToWrite);
                     }
                     
                     break;

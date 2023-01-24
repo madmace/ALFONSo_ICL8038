@@ -103,6 +103,12 @@ typedef struct {
 // Number of all VCO present
 #define NUM_VCO_PRESENT 4
 
+// VCO ID
+#define VCO1 0
+#define VCO2 1
+#define VCO3 2
+#define VCO4 3
+
 /***************************************
  * Local Utility functions
  ***************************************/
@@ -253,11 +259,20 @@ void SimpleMessageSPI16x2LCD(const char *message);
     void DebugCommandSPI16x2LCD(const char *cmd, bool bIsValue, uint8_t byValue);
 #endif
 
-    
-
-    
+/**
+ * Takes a current value of capture of CCP2 updated by the ISR
+ * and controls if variance are in tollerance gap.
+ *
+ * @param uiCapture       Pointer by Reference to 16bits output variable
+ *
+ * @return bool           Return True if the capture is taken and wrote
+ *                        to input variable
+ * 
+ */
 bool updateCCPCapture(uint16_t *uiCapture);
 
+
+uint8_t packResponseFrequency(uint8_t *buffer, uint16_t uiValue);
 
 /**
  * Runs system level tasks that keep the system running
