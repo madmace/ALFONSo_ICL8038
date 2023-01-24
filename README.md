@@ -34,6 +34,10 @@ For this, a first mixer with the basic functions was developed.
 
 ![MixPanel1](https://user-images.githubusercontent.com/122873753/214284695-f959e45d-0ba2-4988-ba2b-588b65fec1ae.png)
 
+Both the control logic section and the analog section with the VCO and the mixers are still being prototyped via breadboard.
+Once the functionality is stabilized, I will create a welded version for better signal quality. Obviously the air links are not optimal.
+
+![AlfonsoPrev1](https://user-images.githubusercontent.com/122873753/214313627-f87d06cf-55e3-4104-a56d-350e2fd5c412.jpg)![AlfonsoPrev2](https://user-images.githubusercontent.com/122873753/214313670-8de575b0-895b-4a02-b9fe-d2fca62c175e.jpg)
 
 ## Upcoming implementations
 
