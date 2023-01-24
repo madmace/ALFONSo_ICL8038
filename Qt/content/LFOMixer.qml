@@ -5,7 +5,7 @@ import QtQuick.Controls 2.12
 import com.alfonso.qml.controls 1.0
 
 Item {
-    id: lFOMix
+    id: lFOMixer
     rotation: 0
 
     ViewPanelLFO {

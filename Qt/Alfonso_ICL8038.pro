@@ -6,6 +6,7 @@ QT += quick serialport
 
 SOURCES += \
         main.cpp \
+        mixer.cpp \
         potentiometer.cpp \
         protocol.cpp \
         serialPort.cpp \
@@ -28,6 +29,7 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
 HEADERS += \
+    mixer.h \
     potentiometer.h \
     protocol.h \
     serialPort.h \
@@ -38,7 +40,7 @@ HEADERS += \
 DISTFILES += \
     content/Constants.qml \
     content/HarmonicsSwitchesLFO.qml \
-    content/LFOMix.qml \
+    content/LFOMixer.qml \
     content/PotDutyCycleLFO.qml \
     content/PotFrequencyLFO.qml \
     content/SingleUnitLFO.qml \

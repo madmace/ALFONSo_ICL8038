@@ -1,4 +1,5 @@
 release/main.o
+release/mixer.o
 release/potentiometer.o
 release/protocol.o
 release/serialPort.o
@@ -7,6 +8,7 @@ release/tabButton.o
 release/toggleSwitch.o
 release/qrc_qml.o
 release/qrc_qmake_qmake_immediate.o
+release/moc_mixer.o
 release/moc_potentiometer.o
 release/moc_protocol.o
 release/moc_serialPort.o

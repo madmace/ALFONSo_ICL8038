@@ -96,8 +96,12 @@ public slots:
     // When requestd all ALFONSo application is under shutdown
     void requestALFONSoUnderClosing();
 
-    // Request for send bytes to serial port
-    void requestSendBytes(quint8 byID, quint8 byType, quint8 byValue);
+    // Request for send absolute command to serial port
+    void requestSendCommand(quint16 uiCommand);
+
+    // Request for send widget command to serial port
+    void requestSendWidgetCommand(quint8 byID, quint8 byType, quint8 byValue);
+
 
     /*******************************
      *

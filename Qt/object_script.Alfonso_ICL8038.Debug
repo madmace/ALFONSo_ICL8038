@@ -1,4 +1,5 @@
 debug/main.o
+debug/mixer.o
 debug/potentiometer.o
 debug/protocol.o
 debug/serialPort.o
@@ -7,6 +8,7 @@ debug/tabButton.o
 debug/toggleSwitch.o
 debug/qrc_qml.o
 debug/qrc_qmake_qmake_immediate.o
+debug/moc_mixer.o
 debug/moc_potentiometer.o
 debug/moc_protocol.o
 debug/moc_serialPort.o

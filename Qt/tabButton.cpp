@@ -47,7 +47,7 @@ void TabButton::setTabButtonSelected(bool newValue)
     m_tabButtonSelected = newValue;
 
     // Send to Serial Port
-    SerialPortController::getInstance()->requestSendBytes((quint8)tabButtonID(), (quint8)tabButtonType(), (quint8)tabButtonSelected());
+    SerialPortController::getInstance()->requestSendWidgetCommand((quint8)tabButtonID(), (quint8)tabButtonType(), (quint8)tabButtonSelected());
 
     qDebug("ID -> %d Type -> %d tabButtonSelected() -> %d", tabButtonID(), tabButtonType(), tabButtonSelected());
 }

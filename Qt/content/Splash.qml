@@ -2,6 +2,8 @@ import QtQuick 2.12
 import QtQuick.Layouts 2.12
 import QtQuick.Controls 2.12
 
+import com.alfonso.protocol 1.0
+import com.alfonso.qml.controls 1.0
 import com.alfonso.serialportcontroller 1.0
 
 Rectangle {
@@ -15,6 +17,10 @@ Rectangle {
 
     Timer {
         id: timer
+    }
+
+    Mixer {
+        id: mixerObj
     }
 
     function delay(delayTime, cb) {
@@ -31,7 +37,8 @@ Rectangle {
 
             // Set LFOMixer visible
             setALFONSoUSBMixerVisible(bResult);
-
+            // Send request about state of all VCO
+            mixerObj.sendRequestSyncVCO(Protocol.syncAllVCO);
         }
     }
 

@@ -47,7 +47,7 @@ void ToggleSwitch::setToggleSwitchSelected(bool newValue)
     m_toggleSwitchSelected = newValue;
 
     // Send to Serial Port
-    SerialPortController::getInstance()->requestSendBytes((quint8)toggleSwitchID(), (quint8)toggleSwitchType(), (quint8)toggleSwitchSelected());
+    SerialPortController::getInstance()->requestSendWidgetCommand((quint8)toggleSwitchID(), (quint8)toggleSwitchType(), (quint8)toggleSwitchSelected());
 
     qDebug("ID -> %d Type -> %d toggleSwitchSelected() -> %d", toggleSwitchID(), toggleSwitchType(), toggleSwitchSelected());
 }

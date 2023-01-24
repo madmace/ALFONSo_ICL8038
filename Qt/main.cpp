@@ -6,6 +6,7 @@
 
 #include "protocol.h"
 #include "serialPortController.h"
+#include "mixer.h"
 #include "potentiometer.h"
 #include "toggleSwitch.h"
 #include "tabButton.h"
@@ -28,6 +29,7 @@ int main(int argc, char *argv[])
     qmlRegisterSingletonType<SerialPortController>("com.alfonso.serialportcontroller", 1, 0, "SerialPortController", &SerialPortController::qmlInstance);
 
     // Register QML Controls
+    qmlRegisterType<Mixer> ("com.alfonso.qml.controls", 1, 0, "Mixer");
     qmlRegisterType<TabButton> ("com.alfonso.qml.controls", 1, 0, "TabButton");
     qmlRegisterType<Potentiometer> ("com.alfonso.qml.controls", 1, 0, "Potentiometer");
     qmlRegisterType<ToggleSwitch> ("com.alfonso.qml.controls", 1, 0, "ToggleSwitch");

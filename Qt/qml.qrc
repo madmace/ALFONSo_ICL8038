@@ -1,7 +1,7 @@
 <RCC>
     <qresource prefix="/">
         <file>main.qml</file>
-        <file>content/LFOMix.qml</file>
+        <file>content/LFOMixer.qml</file>
         <file>content/ViewPanelLFO.qml</file>
         <file>content/TabButtonLFO.qml</file>
         <file>content/PotFrequencyLFO.qml</file>

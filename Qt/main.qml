@@ -7,16 +7,16 @@ import com.alfonso.qml.constants 1.0
 import "./content"
 
 ApplicationWindow {
-    id: lFOMix
+    id: mainPanel
     objectName: "MainWindowObject"
     width: Constants.mainWidth
     height: Constants.mainHeight
     visible: true
     title: qsTr("A.L.F.O.N.So Project")
-    maximumWidth: lFOMix.width
-    maximumHeight: lFOMix.height
-    minimumWidth: lFOMix.width
-    minimumHeight: lFOMix.height
+    maximumWidth: mainPanel.width
+    maximumHeight: mainPanel.height
+    minimumWidth: mainPanel.width
+    minimumHeight: mainPanel.height
 
     signal underClosingALFONSo()
 
@@ -28,10 +28,10 @@ ApplicationWindow {
     onClosing: {
 
         console.log("ALFONSo Closing...")
-        lFOMix.underClosingALFONSo();
+        mainPanel.underClosingALFONSo();
     }
 
-    LFOMix {
+    LFOMixer {
         id: panelLFOMixer
         enabled: false
         visible: false
@@ -44,8 +44,8 @@ ApplicationWindow {
         id : splashWindow
         enabled: true
         visible: true
-        width: lFOMix.width
-        height: lFOMix.height
+        width: parent.width
+        height: parent.height
     }
 
 //    Loader {

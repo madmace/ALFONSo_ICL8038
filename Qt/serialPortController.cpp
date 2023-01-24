@@ -86,9 +86,24 @@ void SerialPortController::requestIsALFONSoUSBPresent() {
 
 }
 
-// Request for send bytes to serial port
-void SerialPortController::requestSendBytes(quint8 byID, quint8 byType, quint8 byValue) {
+// Request for send absolute command to serial port
+void SerialPortController::requestSendCommand(quint16 uiCommand) {
 
+    QByteArray byBuffer;
+
+    // Adds 2 byte command
+    append2Bytes(byBuffer, uiCommand);
+    // Adds byte value
+    byBuffer.append((quint8)0x00);
+
+    if (byBuffer.length() == Protocol::REQUEST_SIZE) {
+        emit sendBytes(byBuffer);
+    }
+
+}
+
+// Request for send Widget command to serial port
+void SerialPortController::requestSendWidgetCommand(quint8 byID, quint8 byType, quint8 byValue) {
 
     QByteArray byBuffer;
 

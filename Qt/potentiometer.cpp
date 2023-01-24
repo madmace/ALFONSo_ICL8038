@@ -209,7 +209,7 @@ void Potentiometer::toAngle(qreal x, qreal y)
                 emit potClockWise(m_degreesSingleStep);
 
             // Send to Serial Port
-            SerialPortController::getInstance()->requestSendBytes((quint8)potID(), (quint8)potType(), (quint8)potValue());
+            SerialPortController::getInstance()->requestSendWidgetCommand((quint8)potID(), (quint8)potType(), (quint8)potValue());
 
             qDebug("ID -> %d Type -> %d potValue() -> %d", potID(), potType(), potValue());
         }

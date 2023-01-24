@@ -31,6 +31,14 @@ class Protocol : public QObject
     Q_PROPERTY(int toggleSwitchSquareType READ toggleSwitchSquareType CONSTANT)
     Q_PROPERTY(int toggleSwitchTriangleType READ toggleSwitchTriangleType CONSTANT)
 
+    /*****************************
+     *
+     * Microcode Absolute Command Properties
+     *
+     ******************************/
+
+    Q_PROPERTY(int syncAllVCO READ syncAllVCO CONSTANT)
+
 public:
 
     explicit Protocol(QObject *parent = nullptr);
@@ -46,6 +54,8 @@ public:
     int toggleSwitchSineType();
     int toggleSwitchSquareType();
     int toggleSwitchTriangleType();
+
+    int syncAllVCO();
 
     /*****************************
      *

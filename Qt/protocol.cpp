@@ -34,6 +34,11 @@ int Protocol::toggleSwitchTriangleType()
     return Protocol::toggleSwitchTriangleTypeValue;
 }
 
+int Protocol::syncAllVCO()
+{
+    return Protocol::SYNC_REQ_ALL;
+}
+
 QObject* Protocol::qmlInstance(QQmlEngine *engine, QJSEngine *scriptEngine) {
 
     Q_UNUSED(engine);
