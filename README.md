@@ -13,6 +13,7 @@ In this implementation MK-ICL8038.
 
 - [Meta](#meta)
 - [Basics](#basics)
+- [Early implementation](#early-implementation)
 - [Upcoming implementations](#upcoming-implementations)
 
 ## Meta
@@ -25,6 +26,10 @@ Scope:
   However, I personally always suggest having its datasheet handy and dedicating the time to understand its correct functioning.
   
 ## Basics
+
+##Early implementation
+
+![alt text](https://github.com/madmace/ALFONSo_ICL8038/blob/main/MixPanel1.png?raw=true)
 
 ## Upcoming implementations
 
