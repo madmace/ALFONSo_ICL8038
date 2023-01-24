@@ -40,6 +40,9 @@ of main application.
     #define INTERRUPT_LOW __interrupt(low_priority)
 #endif
 
+// If uncomment define under the debug commands mode
+#define CMD_DEBUG_MODE
+
 // LEDs definition for USB operations
 
 // LED USB Connection activity
@@ -86,6 +89,20 @@ typedef enum
 // this tollerance, no data will send to client
 #define CCP2_CAPTURE_THRESHOLD_GAP 500
 
+// Structure for state of all VCO
+typedef struct {
+        bool    bVCOEnable;                 // VCO Enabled
+        uint8_t byFrequency;                // VCO Steps frequency
+        uint8_t byDutyCycle;                // VCO Steps Duty Cycle
+        bool    bSineWaveEnable;            // VCO Sine wave Enable
+        bool    bSquareWaveEnable;          // VCO Square wave Enable
+        bool    bTriangleWaveEnable;        // VCO Triangle wave Enable
+        uint16_t uiAnalogFreqCCP;           // VCO Real frequency from CCP
+} VCOState_t;
+
+// Number of all VCO present
+#define NUM_VCO_PRESENT 4
+
 /***************************************
  * Local Utility functions
  ***************************************/
@@ -109,6 +126,16 @@ void ClearCDCUSBDataWriteBuffer (void);
  * 
  */
 void ClearCDCUSBDataReadBuffer (void);
+
+/**
+ * Clear all the VCO States
+ *
+ * @param void
+ *
+ * @return void
+ * 
+ */
+void ClearAllVCOStates (void);
 
 /***************************************
  * System functions
@@ -203,12 +230,34 @@ void UpdateUSBStatus(void);
  * Put a simple message on first line of LCD 44780 Hitachi
  * by SPI MCP23S08
  *
- * @param message Mesage to put on display
+ * @param message Message to put on display
  *
  * @return void
  * 
  */
 void SimpleMessageSPI16x2LCD(const char *message);
+
+/**
+ * Put a command and relative value on first line of LCD 44780 Hitachi
+ * by SPI MCP23S08
+ *
+ * @param cmd       Command name to put on display
+ * @param bIsValue  If true the next value will be displayed
+ * @param byValue   Relative value if present
+ *
+ * @return void
+ * 
+ * This function is only for debugging of recevied commads.
+ */
+#if defined(CMD_DEBUG_MODE)
+    void DebugCommandSPI16x2LCD(const char *cmd, bool bIsValue, uint8_t byValue);
+#endif
+
+    
+
+    
+bool updateCCPCapture(uint16_t *uiCapture);
+
 
 /**
  * Runs system level tasks that keep the system running
@@ -224,5 +273,10 @@ void SimpleMessageSPI16x2LCD(const char *message);
  *
  */
 void MainSystemTasks(void);
+
+
+#if defined(CMD_DEBUG_MODE)
+    
+#endif
 
 #endif	/* SYSTEM_H */

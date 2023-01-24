@@ -51,8 +51,11 @@ static uint8_t writeBuffer[CDC_DATA_IN_EP_SIZE];
 
 // Current capture value from CCP2.
 // Needs for calculate frequency
-static uint16_t uiCaptureCCP2 = 0x00;
-static uint16_t uiLastCaptureCCP2 = 0x00;
+static uint16_t uiCaptureCCP2 = 0x0000;
+static volatile uint16_t uiLastCaptureCCP2 = 0x0000;
+
+// States Table about VCO present
+static VCOState_t aVCOInfo[NUM_VCO_PRESENT];
 
 // Interrupt function implementation for USB in High priority
 void INTERRUPT_HI SYS_InterruptHigh(void)
@@ -81,6 +84,22 @@ void ClearCDCUSBDataReadBuffer(void) {
     memset(readBuffer, 0, CDC_DATA_OUT_EP_SIZE);
 }
 
+// Clear all the VCO States
+void ClearAllVCOStates(void) {
+    
+    uint8_t idx;
+    
+    for (idx = 0; idx < NUM_VCO_PRESENT; idx++) {
+        aVCOInfo[idx].bVCOEnable = false;
+        aVCOInfo[idx].byFrequency = 0x00;
+        aVCOInfo[idx].byDutyCycle = 0x00;
+        aVCOInfo[idx].bSineWaveEnable = false;
+        aVCOInfo[idx].bSquareWaveEnable = false;
+        aVCOInfo[idx].bTriangleWaveEnable = false;
+        aVCOInfo[idx].uiAnalogFreqCCP = 0x0000;
+    }
+}
+
 // Main system state machine function
 void ConfigSystemState(SYSTEM_STATE state)
 {
@@ -104,6 +123,9 @@ void ConfigSystemState(SYSTEM_STATE state)
                 StartUpSPIGPIOExtender();
                 // Setup of CCP configuration of CCP2
                 StartUpCCP2Config();
+                
+                // Clear all the VCO States
+                ClearAllVCOStates();
 
                 break;
 
@@ -298,6 +320,77 @@ void SimpleMessageSPI16x2LCD(const char *message) {
     LCD44780_MCP23S08_send_message_SPI1(message);
 }
 
+// Put a command and relative value on first line of LCD 44780 Hitachi
+// by SPI MCP23S08
+#if defined(CMD_DEBUG_MODE)
+    void DebugCommandSPI16x2LCD(const char *cmd, bool bIsValue, uint8_t byValue) {
+        // Clear LCD
+        LCD44780_MCP23S08_lcd_clear_SPI1();
+        // Set cursor at first line
+        LCD44780_MCP23S08_goto_line_SPI1(LCD44780_MCP23S08_FIRST_LINE);
+        // Disply command
+        LCD44780_MCP23S08_send_message_SPI1("-> ");
+        LCD44780_MCP23S08_send_message_SPI1(cmd);
+        
+        // Controls if value present
+        if (bIsValue) {
+            // Set cursor at second line
+            LCD44780_MCP23S08_goto_line_SPI1(LCD44780_MCP23S08_SECOND_LINE);
+            LCD44780_MCP23S08_send_message_SPI1("-> ");
+            LCD44780_MCP23S08_write_integer_SPI1((int16_t)byValue, 1, LCD44780_MCP23S08_ZERO_CLEANING_OFF);
+        }
+    }
+#endif
+
+
+bool updateCCPCapture(uint16_t *uiCapture) {
+    
+    int16_t iCaptureDelta = 0;
+    bool bIsChanged = false;
+    
+    // Controls if last CCP capture has changed from previous
+    if ((*uiCapture) != uiLastCaptureCCP2) {
+        // Calcs difference
+        iCaptureDelta = (int16_t)(*uiCapture) - (int16_t)uiLastCaptureCCP2;
+        // Controls if is threshold gap
+        if (abs(iCaptureDelta) > CCP2_CAPTURE_THRESHOLD_GAP) {
+
+            // Save new value
+            (*uiCapture) = uiLastCaptureCCP2;
+            // Mark changed
+            bIsChanged = true;
+        }
+    }
+    
+    return bIsChanged;
+}
+    /*
+
+                    LCD44780_MCP23S08_lcd_clear_SPI1();
+                    LCD44780_MCP23S08_goto_line_SPI1(LCD44780_MCP23S08_FIRST_LINE);
+                    LCD44780_MCP23S08_send_message_SPI1("Freq : ");
+                    LCD44780_MCP23S08_write_integer_SPI1((int16_t)uiCaptureCCP2, 1, LCD44780_MCP23S08_ZERO_CLEANING_OFF);
+
+
+                    // Clear write buffer
+                    ClearCDCUSBDataWriteBuffer();
+
+                    uiIDCommand = VCO_1_RSP_FREQUENCY;
+
+                    writeBuffer[0] = (uint8_t)(uiIDCommand & 0x00FF);
+                    writeBuffer[1] = (uint8_t)(uiIDCommand >> 8);
+
+                    writeBuffer[2] = (uint8_t)(uiCaptureCCP2 & 0x00FF);
+                    writeBuffer[3] = (uint8_t)(uiCaptureCCP2 >> 8);
+
+                    iNumBytesToWrite = 4;
+
+                    putUSBUSART(writeBuffer, iNumBytesToWrite);
+                }
+            }
+          */
+    
+
 // Runs system level tasks that keep the system running
 void MainSystemTasks(void) {
     
@@ -331,196 +424,155 @@ void MainSystemTasks(void) {
         uint8_t iNumBytesRead = 0;
         uint8_t iNumBytesToWrite = 0;
         
-        int16_t iCaptureDelta = 0;
-        
+        // Reads bytes available from USB
         iNumBytesRead = getsUSBUSART(readBuffer, sizeof(readBuffer));
-        
         // Controls if we receive at least one or more bytes.
         if (iNumBytesRead > 0) {
             
+            // Blink LED
             BlinkLEDGP1();
             
-            //for (i = 0; i < iNumBytesRead; i++) {
-                
-                uiIDCommand = (uint16_t)(readBuffer[0] + (readBuffer[1] << 8));
-                byValue = readBuffer[2];
+            // Reading 2 byte command               
+            uiIDCommand = (uint16_t)(readBuffer[0] + (readBuffer[1] << 8));
+            // Reading 1 byte value
+            byValue = readBuffer[2];
+            
+            // Decode command
+            switch(uiIDCommand) {
 
-                LCD44780_MCP23S08_lcd_clear_SPI1();
-                LCD44780_MCP23S08_goto_line_SPI1(LCD44780_MCP23S08_FIRST_LINE);
-                LCD44780_MCP23S08_send_message_SPI1("ID : ");
-                LCD44780_MCP23S08_write_integer_SPI1((int16_t)uiIDCommand, 1, LCD44780_MCP23S08_ZERO_CLEANING_OFF);
-                LCD44780_MCP23S08_goto_line_SPI1(LCD44780_MCP23S08_SECOND_LINE);
-                LCD44780_MCP23S08_send_message_SPI1("Value : ");
-                LCD44780_MCP23S08_write_integer_SPI1((int16_t)byValue, 1, LCD44780_MCP23S08_ZERO_CLEANING_OFF);
-            //}
-        
-        }
-        
-        // Controls if last CCP capture has changed from previous
-        if (uiCaptureCCP2 != uiLastCaptureCCP2) {
-            
-            iCaptureDelta = (int16_t)uiCaptureCCP2 - (int16_t)uiLastCaptureCCP2;
-            
-            // Controls if is threshold gap
-            if (abs(iCaptureDelta) > CCP2_CAPTURE_THRESHOLD_GAP) {
+                // ************************************************
+                // Synchronization command
+                
+                // Resquest all ALFONSo State
+                case SYNC_REQ_ALL:
+                    #if defined(CMD_DEBUG_MODE)
+                        DebugCommandSPI16x2LCD("SYNC_REQ_ALL", false, 0);
+                    #endif
                     
-                // Save new value
-                uiCaptureCCP2 = uiLastCaptureCCP2;
-            
-                BlinkLEDGP2();
-            
-            
-            
-                LCD44780_MCP23S08_lcd_clear_SPI1();
-                LCD44780_MCP23S08_goto_line_SPI1(LCD44780_MCP23S08_FIRST_LINE);
-                LCD44780_MCP23S08_send_message_SPI1("Freq : ");
-                LCD44780_MCP23S08_write_integer_SPI1((int16_t)uiCaptureCCP2, 1, LCD44780_MCP23S08_ZERO_CLEANING_OFF);
-            
-            
-                // Clear write buffer
-                ClearCDCUSBDataWriteBuffer();
+                    // To do ....
+                    
+                    if (updateCCPCapture(&aVCOInfo[0].uiAnalogFreqCCP)) {
+                        
+                        BlinkLEDGP2();
+                    }
+                    
+                    break;
+
+                case SYNC_REQ_VCO_1:
+                    #if defined(CMD_DEBUG_MODE)
+                        DebugCommandSPI16x2LCD("SYNCREQ_VCO1", false, 0);
+                    #endif
+
+                    // To do ....
+                    
+                    break;
+                    
+                case SYNC_REQ_VCO_2:
+                    #if defined(CMD_DEBUG_MODE)
+                        DebugCommandSPI16x2LCD("SYNCREQ_VCO2", false, 0);
+                    #endif
+
+                    // To do ....
+                    
+                    break;
+                    
+                case SYNC_REQ_VCO_3:
+                    #if defined(CMD_DEBUG_MODE)
+                        DebugCommandSPI16x2LCD("SYNCREQ_VCO3", false, 0);
+                    #endif
+
+                    // To do ....
+                    
+                    break;
+                    
+                case SYNC_REQ_VCO_4:
+                    #if defined(CMD_DEBUG_MODE)
+                        DebugCommandSPI16x2LCD("SYNCREQ_VCO4", false, 0);
+                    #endif
+
+                    // To do ....
+                    
+                    break;
+                    
+                // ************************************************
+                // VCO Enable command
+                    
+                case VCO_1_REQ_ENABLE:
+                    #if defined(CMD_DEBUG_MODE)
+                        DebugCommandSPI16x2LCD("VCO1REQ_ENA", true, byValue);
+                    #endif
+
+                    // To do ....
+                    
+                    break;
+                    
+                // ************************************************
+                // VCO Frequency command
                 
-                uiIDCommand = VCO_1_RSP_FREQUENCY;
+                case VCO_1_REQ_FREQUENCY:
+                    #if defined(CMD_DEBUG_MODE)
+                        DebugCommandSPI16x2LCD("VCO1REQ_FREQ", true, byValue);
+                    #endif
+
+                    // To do ....
+                    
+                    break;
+                    
+                // ************************************************
+                // VCO Duty cycle command
                 
-                writeBuffer[0] = (uint8_t)(uiIDCommand & 0x00FF);
-                writeBuffer[1] = (uint8_t)(uiIDCommand >> 8);
+                case VCO_1_REQ_DUTY_CYCLE:
+                    #if defined(CMD_DEBUG_MODE)
+                        DebugCommandSPI16x2LCD("VCO1REQ_DTY_CY", true, byValue);
+                    #endif
+
+                    // To do ....
+                    
+                    break;
+                    
+                // ************************************************
+                // VCO Enable Sine harmonica command    
                 
-                writeBuffer[2] = (uint8_t)(uiCaptureCCP2 & 0x00FF);
-                writeBuffer[3] = (uint8_t)(uiCaptureCCP2 >> 8);
+                case VCO_1_REQ_ENABLE_SINE:
+                    #if defined(CMD_DEBUG_MODE)
+                        DebugCommandSPI16x2LCD("VCO1ENA_SINE", true, byValue);
+                    #endif
+
+                    // To do ....
+                    
+                    break;
+                    
+                // ************************************************
+                // VCO Enable Square harmonica command    
                 
-                iNumBytesToWrite = 4;
+                case VCO_1_REQ_ENABLE_SQUARE:
+                    #if defined(CMD_DEBUG_MODE)
+                        DebugCommandSPI16x2LCD("VCO1ENA_SQUAR", true, byValue);
+                    #endif
+
+                    // To do ....
+                    
+                    break;
+                    
+                // ************************************************
+                // VCO Enable Triangle harmonica command    
                 
-                putUSBUSART(writeBuffer, iNumBytesToWrite);
+                case VCO_1_REQ_ENABLE_TRIANGLE:
+                    #if defined(CMD_DEBUG_MODE)
+                        DebugCommandSPI16x2LCD("VCO1ENA_TRIAN", true, byValue);
+                    #endif
+
+                    // To do ....
+                    
+                    break;
+                            
             }
         }
     }
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    /******************************************************
-    // ONLY FOR TEST !!!
-    
-    volatile uint8_t uiIndex1SPI = 0;
-    volatile uint8_t uiIndex2SPI = 0;
-    volatile uint8_t uiIndex3SPI = 0;
-    
-    volatile uint8_t iuValuePot1 = 0;
-    volatile uint16_t iuValuePot2 = 0;
-    
-    volatile uint8_t uiBitsMask;
-    
-    
-    
-    
-    
-        LATDbits.LATD1 = 0x1;
-        
-        // Wait for one second
-        __delay_ms(1000);
-        
-        // ************ MCP42XXX
-        
-        // Select Pot device
-        SPI1_CS1_LINE_PORT = 0x0;
-        
-        if (uiIndex1SPI >= 4) {
-            iuValuePot1 = 255;
-            MCP42XXX_Pot0_Write_Data_SPI1(iuValuePot1);
-            uiIndex1SPI = 0;
-        } else {
-            iuValuePot1 = 64 * uiIndex1SPI;
-            MCP42XXX_Pot0_Write_Data_SPI1(iuValuePot1);
-            uiIndex1SPI ++;
-        }
-        
-        // Deselect Pot device
-        SPI1_CS1_LINE_PORT = 0x1;
-        
-        LCD44780_MCP23S08_goto_line_SPI1(LCD44780_MCP23S08_FIRST_LINE);
-        LCD44780_MCP23S08_send_message_SPI1("VPot 1 : ");
-        LCD44780_MCP23S08_write_integer_SPI1(iuValuePot1, 0, LCD44780_MCP23S08_ZERO_CLEANING_ON);
-        
-        // ************ MCP425X
-        
-        // Select Pot device
-        SPI1_CS2_LINE_PORT = 0x0;
-        
-        if (uiIndex2SPI > 4) {
-            uiIndex2SPI = 0;
-        } else {
-            iuValuePot2 = 64 * uiIndex2SPI;
-            MCP425X_Pot1_Write_Data_SPI1(iuValuePot2);
-            uiIndex2SPI ++;
-        }
-                
-        // Deselect Pot device
-        SPI1_CS2_LINE_PORT = 0x1;
-        
-        LCD44780_MCP23S08_goto_line_SPI1(LCD44780_MCP23S08_SECOND_LINE);
-        LCD44780_MCP23S08_send_message_SPI1("VPot 2 : ");
-        LCD44780_MCP23S08_write_integer_SPI1((int16_t)iuValuePot2, 0, LCD44780_MCP23S08_ZERO_CLEANING_ON);
-        
-        // ************ MCP23S08
-        
-        uiBitsMask = 0x10;
-        
-        for (uiIndex3SPI = 0; uiIndex3SPI < 5; uiIndex3SPI++) {
-            // Wait for half second
-            __delay_ms(500);
-            
-            // Select Pot device
-            SPI1_CS3_LINE_PORT = 0x0;
-            MCP23S08_Write_Register_SPI1(0x00, MCP23S08_OLAT, uiBitsMask & 0xF0);
-            // Deselect Pot device
-            SPI1_CS3_LINE_PORT = 0x1;
-        
-            // Left shift
-            uiBitsMask = (uint8_t)(uiBitsMask << 1);
-        }
-                
-        // ********** End SPI Session **********
-        
-        LATDbits.LATD1 = 0x0;
-        
-        // Wait for 2 second
-        __delay_ms(2000);
-        // Invert RD0 level
-        LATDbits.LATD0 = ~LATDbits.LATD0;
-        
-        *********************************************/
-        
-        
+
+    /* This handles device-to-host transaction(s).
+     * Failure to call CDCTxService() periodically will prevent data from
+     * being sent to the USB host.
+     */
+    CDCTxService();
 }
