@@ -27,9 +27,10 @@ Scope:
   
 ## Basics
 
-##Early implementation
+## Early implementation
 
-![alt text](https://github.com/madmace/ALFONSo_ICL8038/blob/main/MixPanel1.png?raw=true)
+![MixPanel1](https://user-images.githubusercontent.com/122873753/214284695-f959e45d-0ba2-4988-ba2b-588b65fec1ae.png)
+
 
 ## Upcoming implementations
 
