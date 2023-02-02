@@ -1,3 +1,22 @@
+/*******************************************************************************
+
+ A.L.F.O.N.S
+ Author : Emiliano Mazza
+ Version : 1.0
+ Created on Date : 15/18/2020
+ Last update     : 31/01/2023
+
+ CopyRight 2006-2015 all rights are reserved
+
+ THIS SOFTWARE IS PROVIDED IN AN "AS IS" CONDITION. NO WARRANTIES,
+ WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING, BUT NOT LIMITED
+ TO, IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A
+ PARTICULAR PURPOSE APPLY TO THIS SOFTWARE. THE AUTHOR SHALL NOT,
+ IN ANY CIRCUMSTANCES, BE LIABLE FOR SPECIAL, INCIDENTAL OR
+ CONSEQUENTIAL DAMAGES, FOR ANY REASON WHATSOEVER.
+
+*******************************************************************************/
+
 #ifndef SERIALPORT_H
 #define SERIALPORT_H
 
@@ -8,8 +27,15 @@
 class SerialPort : public QObject
 {
     Q_OBJECT
+    Q_PROPERTY(bool isSerialPortOpen READ isSerialPortOpen CONSTANT)
+
 public:
+
+    // Constructor
     explicit SerialPort(QObject *parent = nullptr);
+
+    // Gets Properties
+    bool isSerialPortOpen();
 
 private:
 

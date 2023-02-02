@@ -1,9 +1,11 @@
+debug/harmonicsSwitchesLFOModel.o
 debug/main.o
 debug/mixer.o
 debug/potentiometer.o
 debug/protocol.o
 debug/serialPort.o
 debug/serialPortController.o
+debug/singleUnitLFOModel.o
 debug/tabButton.o
 debug/toggleSwitch.o
 debug/qrc_qml.o

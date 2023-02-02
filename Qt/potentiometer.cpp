@@ -1,5 +1,23 @@
+/*******************************************************************************
+
+ A.L.F.O.N.S
+ Author : Emiliano Mazza
+ Version : 1.0
+ Created on Date : 15/18/2020
+ Last update     : 31/01/2023
+
+ CopyRight 2006-2015 all rights are reserved
+
+ THIS SOFTWARE IS PROVIDED IN AN "AS IS" CONDITION. NO WARRANTIES,
+ WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING, BUT NOT LIMITED
+ TO, IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A
+ PARTICULAR PURPOSE APPLY TO THIS SOFTWARE. THE AUTHOR SHALL NOT,
+ IN ANY CIRCUMSTANCES, BE LIABLE FOR SPECIAL, INCIDENTAL OR
+ CONSEQUENTIAL DAMAGES, FOR ANY REASON WHATSOEVER.
+
+*******************************************************************************/
+
 #include "potentiometer.h"
-#include "serialPortController.h"
 #include <QtMath>
 #include <QLineF>
 
@@ -200,6 +218,8 @@ void Potentiometer::toAngle(qreal x, qreal y)
         {
             // Valid and add step
             setPotValue(potValue() + v);
+            // Emit change value signal
+            emit potValueChanged(m_potValue);
 
             // CouterClockWise
             if (v == -1)
@@ -207,11 +227,6 @@ void Potentiometer::toAngle(qreal x, qreal y)
             // ClockWise
             if (v == 1)
                 emit potClockWise(m_degreesSingleStep);
-
-            // Send to Serial Port
-            SerialPortController::getInstance()->requestSendWidgetCommand((quint8)potID(), (quint8)potType(), (quint8)potValue());
-
-            qDebug("ID -> %d Type -> %d potValue() -> %d", potID(), potType(), potValue());
         }
     }
 

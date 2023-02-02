@@ -1,9 +1,11 @@
+release/harmonicsSwitchesLFOModel.o
 release/main.o
 release/mixer.o
 release/potentiometer.o
 release/protocol.o
 release/serialPort.o
 release/serialPortController.o
+release/singleUnitLFOModel.o
 release/tabButton.o
 release/toggleSwitch.o
 release/qrc_qml.o

@@ -1,5 +1,23 @@
+/*******************************************************************************
+
+ A.L.F.O.N.S
+ Author : Emiliano Mazza
+ Version : 1.0
+ Created on Date : 15/18/2020
+ Last update     : 31/01/2023
+
+ CopyRight 2006-2015 all rights are reserved
+
+ THIS SOFTWARE IS PROVIDED IN AN "AS IS" CONDITION. NO WARRANTIES,
+ WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING, BUT NOT LIMITED
+ TO, IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A
+ PARTICULAR PURPOSE APPLY TO THIS SOFTWARE. THE AUTHOR SHALL NOT,
+ IN ANY CIRCUMSTANCES, BE LIABLE FOR SPECIAL, INCIDENTAL OR
+ CONSEQUENTIAL DAMAGES, FOR ANY REASON WHATSOEVER.
+
+*******************************************************************************/
+
 #include "tabButton.h"
-#include "serialPortController.h"
 
 // Default constants Values
 const int TabButton::defaultTabButtonID = 0;
@@ -46,10 +64,8 @@ void TabButton::setTabButtonSelected(bool newValue)
 {
     m_tabButtonSelected = newValue;
 
-    // Send to Serial Port
-    SerialPortController::getInstance()->requestSendWidgetCommand((quint8)tabButtonID(), (quint8)tabButtonType(), (quint8)tabButtonSelected());
-
-    qDebug("ID -> %d Type -> %d tabButtonSelected() -> %d", tabButtonID(), tabButtonType(), tabButtonSelected());
+    // Emit change value signal
+    emit tabButtonSelectedChanged(newValue);
 }
 
 void TabButton::init()

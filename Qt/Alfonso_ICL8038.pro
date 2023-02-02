@@ -5,12 +5,14 @@ QT += quick serialport
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+        harmonicsSwitchesLFOModel.cpp \
         main.cpp \
         mixer.cpp \
         potentiometer.cpp \
         protocol.cpp \
         serialPort.cpp \
         serialPortController.cpp \
+        singleUnitLFOModel.cpp \
         tabButton.cpp \
         toggleSwitch.cpp
 
@@ -29,11 +31,13 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
 HEADERS += \
+    harmonicsSwitchesLFOModel.h \
     mixer.h \
     potentiometer.h \
     protocol.h \
     serialPort.h \
     serialPortController.h \
+    singleUnitLFOModel.h \
     tabButton.h \
     toggleSwitch.h
 

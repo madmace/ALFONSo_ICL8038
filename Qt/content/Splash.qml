@@ -1,10 +1,30 @@
+/*******************************************************************************
+
+ A.L.F.O.N.S
+ Author : Emiliano Mazza
+ Version : 1.0
+ Created on Date : 15/18/2020
+ Last update     : 31/01/2023
+
+ CopyRight 2006-2015 all rights are reserved
+
+ THIS SOFTWARE IS PROVIDED IN AN "AS IS" CONDITION. NO WARRANTIES,
+ WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING, BUT NOT LIMITED
+ TO, IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A
+ PARTICULAR PURPOSE APPLY TO THIS SOFTWARE. THE AUTHOR SHALL NOT,
+ IN ANY CIRCUMSTANCES, BE LIABLE FOR SPECIAL, INCIDENTAL OR
+ CONSEQUENTIAL DAMAGES, FOR ANY REASON WHATSOEVER.
+
+*******************************************************************************/
+
 import QtQuick 2.12
 import QtQuick.Layouts 2.12
 import QtQuick.Controls 2.12
 
 import com.alfonso.protocol 1.0
-import com.alfonso.qml.controls 1.0
+import com.alfonso.mixer 1.0
 import com.alfonso.serialportcontroller 1.0
+import com.alfonso.qml.controls 1.0
 
 Rectangle {
     id: splashWindow
@@ -17,10 +37,6 @@ Rectangle {
 
     Timer {
         id: timer
-    }
-
-    Mixer {
-        id: mixerObj
     }
 
     function delay(delayTime, cb) {
@@ -38,7 +54,10 @@ Rectangle {
             // Set LFOMixer visible
             setALFONSoUSBMixerVisible(bResult);
             // Send request about state of all VCO
-            mixerObj.sendRequestSyncVCO(Protocol.syncAllVCO);
+            Mixer.sendRequestSyncVCO(Protocol.syncAllVCO);
+
+
+            //console.log("POT -> " + panelLFOMixer.singleUnitLFO.potDutyCycleLFOValue);
         }
     }
 

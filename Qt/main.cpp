@@ -1,3 +1,22 @@
+/*******************************************************************************
+
+ A.L.F.O.N.S
+ Author : Emiliano Mazza
+ Version : 1.0
+ Created on Date : 15/18/2020
+ Last update     : 31/01/2023
+
+ CopyRight 2006-2015 all rights are reserved
+
+ THIS SOFTWARE IS PROVIDED IN AN "AS IS" CONDITION. NO WARRANTIES,
+ WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING, BUT NOT LIMITED
+ TO, IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A
+ PARTICULAR PURPOSE APPLY TO THIS SOFTWARE. THE AUTHOR SHALL NOT,
+ IN ANY CIRCUMSTANCES, BE LIABLE FOR SPECIAL, INCIDENTAL OR
+ CONSEQUENTIAL DAMAGES, FOR ANY REASON WHATSOEVER.
+
+*******************************************************************************/
+
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
 #include <QQuickView>
@@ -21,15 +40,16 @@ int main(int argc, char *argv[])
 
     QGuiApplication app(argc, argv);
 
-    // Register singleton for constants
+    // Register singleton for Constants
     qmlRegisterSingletonType(QUrl("qrc:/content/Constants.qml"), "com.alfonso.qml.constants", 1, 0, "Constants");
-    // Register singleton for protocol
-    qmlRegisterSingletonType<Protocol>("com.alfonso.protocol", 1, 0, "Protocol", &Protocol::qmlInstance);
+    // Register singleton for Protocol
+    qmlRegisterSingletonType<Protocol>("com.alfonso.protocol", 1, 0, "Protocol", Protocol::qmlInstance);
+    // Register singleton for Mixer
+    qmlRegisterSingletonType<Mixer>("com.alfonso.mixer", 1, 0, "Mixer", Mixer::qmlInstance);
     // Register controller singleton for the Serial Port
-    qmlRegisterSingletonType<SerialPortController>("com.alfonso.serialportcontroller", 1, 0, "SerialPortController", &SerialPortController::qmlInstance);
+    qmlRegisterSingletonType<SerialPortController>("com.alfonso.serialportcontroller", 1, 0, "SerialPortController", SerialPortController::qmlInstance);
 
     // Register QML Controls
-    qmlRegisterType<Mixer> ("com.alfonso.qml.controls", 1, 0, "Mixer");
     qmlRegisterType<TabButton> ("com.alfonso.qml.controls", 1, 0, "TabButton");
     qmlRegisterType<Potentiometer> ("com.alfonso.qml.controls", 1, 0, "Potentiometer");
     qmlRegisterType<ToggleSwitch> ("com.alfonso.qml.controls", 1, 0, "ToggleSwitch");

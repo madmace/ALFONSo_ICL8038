@@ -1,3 +1,22 @@
+/*******************************************************************************
+
+ A.L.F.O.N.S
+ Author : Emiliano Mazza
+ Version : 1.0
+ Created on Date : 15/18/2020
+ Last update     : 31/01/2023
+
+ CopyRight 2006-2015 all rights are reserved
+
+ THIS SOFTWARE IS PROVIDED IN AN "AS IS" CONDITION. NO WARRANTIES,
+ WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING, BUT NOT LIMITED
+ TO, IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A
+ PARTICULAR PURPOSE APPLY TO THIS SOFTWARE. THE AUTHOR SHALL NOT,
+ IN ANY CIRCUMSTANCES, BE LIABLE FOR SPECIAL, INCIDENTAL OR
+ CONSEQUENTIAL DAMAGES, FOR ANY REASON WHATSOEVER.
+
+*******************************************************************************/
+
 #include "serialPortController.h"
 #include "protocol.h"
 
@@ -5,13 +24,13 @@
 SerialPortController *SerialPortController::oSerialPortController = 0;
 
 // ALFONSo USB Serial type
-const QString SerialPortController::usbALFONSoDesc = "Alfons CDC Proto 1";
-const quint16 SerialPortController::usbALFONSoVendID = 1240;    // 0x04D8
-const quint16 SerialPortController::usbALFONSoProdID = 10;      // 0x000A
+//const QString SerialPortController::usbALFONSoDesc = "Alfons CDC Proto 1";
+//const quint16 SerialPortController::usbALFONSoVendID = 1240;    // 0x04D8
+//const quint16 SerialPortController::usbALFONSoProdID = 10;      // 0x000A
 
-//const QString SerialPortController::usbALFONSoDesc = "Silicon Labs CP210x USB to UART Bridge";
-//const quint16 SerialPortController::usbALFONSoVendID = 4292;    // 0x10C4
-//const quint16 SerialPortController::usbALFONSoProdID = 60000;   // 0xEA60
+const QString SerialPortController::usbALFONSoDesc = "Silicon Labs CP210x USB to UART Bridge";
+const quint16 SerialPortController::usbALFONSoVendID = 4292;    // 0x10C4
+const quint16 SerialPortController::usbALFONSoProdID = 60000;   // 0xEA60
 
 // ALFONSo USB Serial settings
 const qint32 SerialPortController::usbALFONSoBaudRate = QSerialPort::Baud115200;
@@ -242,10 +261,16 @@ void SerialPortController::requestSendWidgetCommand(quint8 byID, quint8 byType, 
 
     }
 
+    // Controls correct bytes size
     if (byBuffer.length() == Protocol::REQUEST_SIZE) {
-        emit sendBytes(byBuffer);
-    }
+        // If serial port is open
+        if (oSerialPort->isSerialPortOpen()) {
+            // Send bytes to worker
+            emit sendBytes(byBuffer);
 
+            qDebug("SerialPortController::requestSendWidgetCommand ID -> %d Type -> %d potValue() -> %d", byID, byType, byValue);
+        }
+    }
 }
 
 
@@ -275,9 +300,66 @@ void SerialPortController::handleALFONSoUSBPresent(bool bResult) {
 // Signal for receive data from serial port
 void SerialPortController::receivedBytes(const QByteArray &data) {
 
-    qDebug() << "SerialPortController::receivedBytes() fired. Inbound data : " << data;
+    quint16 uiIDCommand = 0;            // Response command
+    quint16 uiValue = 0;                // Response value
+
+
+
+    // Convert to bytes array
+    //const char *byBuffer = qbaData.data();
+
+
+    qDebug() << data.toHex();
+
+
+    // Reading 2 byte command
+    uiIDCommand = (quint8)data[1] << 8;
+    uiIDCommand += (quint8)data[0];
+    // Reading 2 byte value
+    uiValue = (quint8)data[3] << 8;
+    uiValue += (quint8)data[2];
+
+    switch (uiIDCommand) {
+        case  Protocol::VCO_1_RSP_FREQUENCY:
+        {
+
+            double dTcap;
+            double dTosc;
+            double dTVCO;
+            double dFVCO;
+
+
+            qDebug() << "SerialPortController::receivedBytes() fired. VCO_1_RSP_FREQUENCY : " << uiValue;
+
+            dTcap = (double)uiValue * 8;
+            dTosc = (double)1 / 12000000;
+            dTVCO = dTcap * dTosc;
+            dFVCO = (double)1 / dTVCO;
+
+            qDebug() << "SerialPortController::receivedBytes() VCO Freq : " << dFVCO;
+
+            break;
+        }
+        case Protocol::VCO_2_RSP_FREQUENCY:
+
+            break;
+        case Protocol::VCO_3_RSP_FREQUENCY:
+
+            break;
+        case Protocol::VCO_4_RSP_FREQUENCY:
+
+            break;
+    }
+
+
+
+
+
+
 }
 
+// QML singleton type provider function (callback).
+// Second, define the singleton type provider function (callback).
 QObject* SerialPortController::qmlInstance(QQmlEngine *engine, QJSEngine *scriptEngine) {
 
     Q_UNUSED(engine);
