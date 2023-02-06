@@ -54,11 +54,41 @@ QHash<int, SingleUnitLFOModel*>* Mixer::getLFOMixerModel()
     return m_hsLFOMixerModel;
 }
 
-// Send Request for Sync command to serial port
-void Mixer::sendRequestSyncVCO(quint16 uiSyncRequest) {
+// Send Request for Sync All command to serial port
+void Mixer::sendRequestSyncAllVCO() {
+
+    QByteArray byBuffer;
+
+    // Adds Sync All request command
+    Protocol::append2Bytes(byBuffer, Protocol::SYNC_REQ_ALL);
+
+    // VCOs model iterator
+    QHashIterator<int, SingleUnitLFOModel*> i(*m_hsLFOMixerModel);
+    while (i.hasNext()) {
+        i.next();
+
+        qDebug("Mixer::sendRequestSyncAllVCO Assemply Mixer ID -> %d", i.key());
+
+        // Adds VCO settings
+
+        // VCO ID
+        byBuffer.append((quint8)i.key());
+        // VCO Enable
+        byBuffer.append(i.value()->getTabButtonLFOSelected());
+        // VCO Frequency
+        byBuffer.append(i.value()->getPotFrequencyLFOValue());
+        // VCO Duty Cycle
+        byBuffer.append(i.value()->getPotDutyCycleLFOValue());
+        // VCO Harmonic Sine output
+        byBuffer.append(i.value()->getHarmonicsSwitchesLFO()->getToggleSwitchLFOSineSelected());
+        // VCO Harmonic Square output
+        byBuffer.append(i.value()->getHarmonicsSwitchesLFO()->getToggleSwitchLFOSquareSelected());
+        // VCO Harmonic Triangle output
+        byBuffer.append(i.value()->getHarmonicsSwitchesLFO()->getToggleSwitchLFOTriangleSelected());
+    }
 
     // Send to Serial Port
-    SerialPortController::getInstance()->requestSendCommand(uiSyncRequest);
+    SerialPortController::getInstance()->requestSendRawData(byBuffer);
 }
 
 // Store the status of the single control
@@ -107,7 +137,7 @@ void Mixer::updateMixerModel(quint8 byID, quint8 byType, quint8 byValue) {
         case Protocol::dutyCyclePotTypeValue:
 
             // PotDutyCycleLF
-            pVCOModel->setpotDutyCycleLFOValue(byValue);
+            pVCOModel->setPotDutyCycleLFOValue(byValue);
 
             break;
 

@@ -41,7 +41,7 @@ quint8 SingleUnitLFOModel::getPotFrequencyLFOValue() {
     return m_potFrequencyLFOValue;
 }
 
-quint8 SingleUnitLFOModel::getpotDutyCycleLFOValue() {
+quint8 SingleUnitLFOModel::getPotDutyCycleLFOValue() {
     return m_potDutyCycleLFOValue;
 }
 
@@ -57,7 +57,7 @@ void SingleUnitLFOModel::setPotFrequencyLFOValue(quint8 newValue) {
     m_potFrequencyLFOValue = newValue;
 }
 
-void SingleUnitLFOModel::setpotDutyCycleLFOValue(quint8 newValue) {
+void SingleUnitLFOModel::setPotDutyCycleLFOValue(quint8 newValue) {
     m_potDutyCycleLFOValue = newValue;
 }
 

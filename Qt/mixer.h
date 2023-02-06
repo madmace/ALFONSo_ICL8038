@@ -63,8 +63,8 @@ public slots:
     // Store the status of the single control
     void setMixerValue(int iID, int iType, int iValue);
 
-    // Send Request for Sync command to serial port
-    void sendRequestSyncVCO(quint16 uiSyncRequest);
+    // Send Request for Sync All command to serial port
+    void sendRequestSyncAllVCO();
 
 
 };

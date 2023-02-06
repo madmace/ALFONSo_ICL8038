@@ -185,6 +185,30 @@ public:
     // Response for VCO 4 frequency
     static const quint16 VCO_4_RSP_FREQUENCY = 0x1004;
 
+    /*****************************
+     *
+     * Structure for Synchronize an Single VCO
+     *
+     ******************************/
+
+    struct SyncVCOStruct
+    {
+        bool bTabButtonLFOSelected;
+        quint8 uiPotFrequencyLFOValue;
+        quint8 uiPotDutyCycleLFOValue;
+        bool bToggleSwitchLFOSineSelected;
+        bool bToggleSwitchLFOSquareSelected;
+        bool bToggleSwitchLFOTriangleSelected;
+    };
+
+    /*****************************
+     *
+     * Utilites functions
+     *
+     ******************************/
+
+    // Append 2 bytes to QByteArray
+    static void append2Bytes(QByteArray& byBuffer, quint16 iValue);
 
 };
 

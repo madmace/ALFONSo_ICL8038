@@ -54,7 +54,7 @@ Rectangle {
             // Set LFOMixer visible
             setALFONSoUSBMixerVisible(bResult);
             // Send request about state of all VCO
-            Mixer.sendRequestSyncVCO(Protocol.syncAllVCO);
+            Mixer.sendRequestSyncAllVCO();
 
 
             //console.log("POT -> " + panelLFOMixer.singleUnitLFO.potDutyCycleLFOValue);

@@ -47,9 +47,6 @@ private:
     // Controller Destructor
     ~SerialPortController();
 
-    // Append 2 bytes to QByteArray
-    void append2Bytes(QByteArray& byBuffer, quint16 iValue);
-
 public:
 
     // ALFONSo USB Serial type
@@ -115,8 +112,8 @@ public slots:
     // When requestd all ALFONSo application is under shutdown
     void requestALFONSoUnderClosing();
 
-    // Request for send absolute command to serial port
-    void requestSendCommand(quint16 uiCommand);
+    // Request for send Raw Data to serial port
+    void requestSendRawData(const QByteArray &data);
 
     // Request for send widget command to serial port
     void requestSendWidgetCommand(quint8 byID, quint8 byType, quint8 byValue);

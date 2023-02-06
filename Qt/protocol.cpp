@@ -66,3 +66,27 @@ QObject* Protocol::qmlInstance(QQmlEngine *engine, QJSEngine *scriptEngine) {
     // C++ and QML instance they are the same instance
     return new Protocol();
 }
+
+/*****************************
+ *
+ * Utilites functions
+ *
+ ******************************/
+
+// Append 2 bytes to QByteArray
+void Protocol::append2Bytes(QByteArray& byBuffer, quint16 iValue) {
+
+    quint8 byLowByte = 0;
+    quint8 byHighByte = 0;
+
+    // Take low part
+    byLowByte = iValue & 0x00FF;
+    // Take high part
+    byHighByte = iValue >> 8;
+
+    // First Low byte
+    byBuffer.append(byLowByte);
+    // Second High byte
+    byBuffer.append(byHighByte);
+
+}

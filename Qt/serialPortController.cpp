@@ -105,19 +105,11 @@ void SerialPortController::requestIsALFONSoUSBPresent() {
 
 }
 
-// Request for send absolute command to serial port
-void SerialPortController::requestSendCommand(quint16 uiCommand) {
+// Request for send Raw Data to serial port
+void SerialPortController::requestSendRawData(const QByteArray &data) {
 
-    QByteArray byBuffer;
-
-    // Adds 2 byte command
-    append2Bytes(byBuffer, uiCommand);
-    // Adds byte value
-    byBuffer.append((quint8)0x00);
-
-    if (byBuffer.length() == Protocol::REQUEST_SIZE) {
-        emit sendBytes(byBuffer);
-    }
+    // Send bytes to worker
+    emit sendBytes(data);
 
 }
 
@@ -131,16 +123,16 @@ void SerialPortController::requestSendWidgetCommand(quint8 byID, quint8 byType, 
 
             switch (byID) {
                 case 1:
-                    append2Bytes(byBuffer, Protocol::VCO_1_REQ_ENABLE);
+                    Protocol::append2Bytes(byBuffer, Protocol::VCO_1_REQ_ENABLE);
                     break;
                 case 2:
-                    append2Bytes(byBuffer, Protocol::VCO_2_REQ_ENABLE);
+                    Protocol::append2Bytes(byBuffer, Protocol::VCO_2_REQ_ENABLE);
                     break;
                 case 3:
-                    append2Bytes(byBuffer, Protocol::VCO_3_REQ_ENABLE);
+                    Protocol::append2Bytes(byBuffer, Protocol::VCO_3_REQ_ENABLE);
                     break;
                 case 4:
-                    append2Bytes(byBuffer, Protocol::VCO_4_REQ_ENABLE);
+                    Protocol::append2Bytes(byBuffer, Protocol::VCO_4_REQ_ENABLE);
                     break;
             }
 
@@ -153,16 +145,16 @@ void SerialPortController::requestSendWidgetCommand(quint8 byID, quint8 byType, 
 
             switch (byID) {
                 case 1:
-                    append2Bytes(byBuffer, Protocol::VCO_1_REQ_FREQUENCY);
+                    Protocol::append2Bytes(byBuffer, Protocol::VCO_1_REQ_FREQUENCY);
                     break;
                 case 2:
-                    append2Bytes(byBuffer, Protocol::VCO_2_REQ_FREQUENCY);
+                    Protocol::append2Bytes(byBuffer, Protocol::VCO_2_REQ_FREQUENCY);
                     break;
                 case 3:
-                    append2Bytes(byBuffer, Protocol::VCO_3_REQ_FREQUENCY);
+                    Protocol::append2Bytes(byBuffer, Protocol::VCO_3_REQ_FREQUENCY);
                     break;
                 case 4:
-                    append2Bytes(byBuffer, Protocol::VCO_4_REQ_FREQUENCY);
+                    Protocol::append2Bytes(byBuffer, Protocol::VCO_4_REQ_FREQUENCY);
                     break;
             }
 
@@ -175,16 +167,16 @@ void SerialPortController::requestSendWidgetCommand(quint8 byID, quint8 byType, 
 
             switch (byID) {
                 case 1:
-                    append2Bytes(byBuffer, Protocol::VCO_1_REQ_DUTY_CYCLE);
+                    Protocol::append2Bytes(byBuffer, Protocol::VCO_1_REQ_DUTY_CYCLE);
                     break;
                 case 2:
-                    append2Bytes(byBuffer, Protocol::VCO_2_REQ_DUTY_CYCLE);
+                    Protocol::append2Bytes(byBuffer, Protocol::VCO_2_REQ_DUTY_CYCLE);
                     break;
                 case 3:
-                    append2Bytes(byBuffer, Protocol::VCO_3_REQ_DUTY_CYCLE);
+                    Protocol::append2Bytes(byBuffer, Protocol::VCO_3_REQ_DUTY_CYCLE);
                     break;
                 case 4:
-                    append2Bytes(byBuffer, Protocol::VCO_4_REQ_DUTY_CYCLE);
+                    Protocol::append2Bytes(byBuffer, Protocol::VCO_4_REQ_DUTY_CYCLE);
                     break;
             }
 
@@ -197,16 +189,16 @@ void SerialPortController::requestSendWidgetCommand(quint8 byID, quint8 byType, 
 
             switch (byID) {
                 case 1:
-                    append2Bytes(byBuffer, Protocol::VCO_1_REQ_ENABLE_SINE);
+                    Protocol::append2Bytes(byBuffer, Protocol::VCO_1_REQ_ENABLE_SINE);
                     break;
                 case 2:
-                    append2Bytes(byBuffer, Protocol::VCO_2_REQ_ENABLE_SINE);
+                    Protocol::append2Bytes(byBuffer, Protocol::VCO_2_REQ_ENABLE_SINE);
                     break;
                 case 3:
-                    append2Bytes(byBuffer, Protocol::VCO_3_REQ_ENABLE_SINE);
+                    Protocol::append2Bytes(byBuffer, Protocol::VCO_3_REQ_ENABLE_SINE);
                     break;
                 case 4:
-                    append2Bytes(byBuffer, Protocol::VCO_4_REQ_ENABLE_SINE);
+                    Protocol::append2Bytes(byBuffer, Protocol::VCO_4_REQ_ENABLE_SINE);
                     break;
             }
 
@@ -219,16 +211,16 @@ void SerialPortController::requestSendWidgetCommand(quint8 byID, quint8 byType, 
 
             switch (byID) {
                 case 1:
-                    append2Bytes(byBuffer, Protocol::VCO_1_REQ_ENABLE_SQUARE);
+                    Protocol::append2Bytes(byBuffer, Protocol::VCO_1_REQ_ENABLE_SQUARE);
                     break;
                 case 2:
-                    append2Bytes(byBuffer, Protocol::VCO_2_REQ_ENABLE_SQUARE);
+                    Protocol::append2Bytes(byBuffer, Protocol::VCO_2_REQ_ENABLE_SQUARE);
                     break;
                 case 3:
-                    append2Bytes(byBuffer, Protocol::VCO_3_REQ_ENABLE_SQUARE);
+                    Protocol::append2Bytes(byBuffer, Protocol::VCO_3_REQ_ENABLE_SQUARE);
                     break;
                 case 4:
-                    append2Bytes(byBuffer, Protocol::VCO_4_REQ_ENABLE_SQUARE);
+                    Protocol::append2Bytes(byBuffer, Protocol::VCO_4_REQ_ENABLE_SQUARE);
                     break;
             }
 
@@ -241,16 +233,16 @@ void SerialPortController::requestSendWidgetCommand(quint8 byID, quint8 byType, 
 
             switch (byID) {
                 case 1:
-                    append2Bytes(byBuffer, Protocol::VCO_1_REQ_ENABLE_TRIANGLE);
+                    Protocol::append2Bytes(byBuffer, Protocol::VCO_1_REQ_ENABLE_TRIANGLE);
                     break;
                 case 2:
-                    append2Bytes(byBuffer, Protocol::VCO_2_REQ_ENABLE_TRIANGLE);
+                    Protocol::append2Bytes(byBuffer, Protocol::VCO_2_REQ_ENABLE_TRIANGLE);
                     break;
                 case 3:
-                    append2Bytes(byBuffer, Protocol::VCO_3_REQ_ENABLE_TRIANGLE);
+                    Protocol::append2Bytes(byBuffer, Protocol::VCO_3_REQ_ENABLE_TRIANGLE);
                     break;
                 case 4:
-                    append2Bytes(byBuffer, Protocol::VCO_4_REQ_ENABLE_TRIANGLE);
+                    Protocol::append2Bytes(byBuffer, Protocol::VCO_4_REQ_ENABLE_TRIANGLE);
                     break;
             }
 
@@ -350,12 +342,6 @@ void SerialPortController::receivedBytes(const QByteArray &data) {
 
             break;
     }
-
-
-
-
-
-
 }
 
 // QML singleton type provider function (callback).
@@ -369,20 +355,3 @@ QObject* SerialPortController::qmlInstance(QQmlEngine *engine, QJSEngine *script
     return SerialPortController::getInstance();
 }
 
-// Append 2 bytes to QByteArray
-void SerialPortController::append2Bytes(QByteArray& byBuffer, quint16 iValue) {
-
-    quint8 byLowByte = 0;
-    quint8 byHighByte = 0;
-
-    // Take low part
-    byLowByte = iValue & 0x00FF;
-    // Take high part
-    byHighByte = iValue >> 8;
-
-    // First Low byte
-    byBuffer.append(byLowByte);
-    // Second High byte
-    byBuffer.append(byHighByte);
-
-}

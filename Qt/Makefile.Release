@@ -1424,18 +1424,146 @@ release/mixer.o: mixer.cpp mixer.h \
 		../../../../Working/Qt/6.2.4/mingw_64/include/QtQml/qqmlabstracturlinterceptor.h \
 		singleUnitLFOModel.h \
 		harmonicsSwitchesLFOModel.h \
-		serialPortController.h \
-		../../../../Working/Qt/6.2.4/mingw_64/include/QtCore/QThread \
+		protocol.h \
+		../../../../Working/Qt/6.2.4/mingw_64/include/QtCore/QtCore \
+		../../../../Working/Qt/6.2.4/mingw_64/include/QtCore/QtCoreDepends \
+		../../../../Working/Qt/6.2.4/mingw_64/include/QtCore/qabstractanimation.h \
+		../../../../Working/Qt/6.2.4/mingw_64/include/QtCore/qabstracteventdispatcher.h \
+		../../../../Working/Qt/6.2.4/mingw_64/include/QtCore/qeventloop.h \
+		../../../../Working/Qt/6.2.4/mingw_64/include/QtCore/qabstractitemmodel.h \
+		../../../../Working/Qt/6.2.4/mingw_64/include/QtCore/qabstractnativeeventfilter.h \
+		../../../../Working/Qt/6.2.4/mingw_64/include/QtCore/qabstractproxymodel.h \
+		../../../../Working/Qt/6.2.4/mingw_64/include/QtCore/qanimationgroup.h \
+		../../../../Working/Qt/6.2.4/mingw_64/include/QtCore/qassociativeiterable.h \
+		../../../../Working/Qt/6.2.4/mingw_64/include/QtCore/qbasictimer.h \
+		../../../../Working/Qt/6.2.4/mingw_64/include/QtCore/qbitarray.h \
+		../../../../Working/Qt/6.2.4/mingw_64/include/QtCore/qbuffer.h \
+		../../../../Working/Qt/6.2.4/mingw_64/include/QtCore/qiodevice.h \
+		../../../../Working/Qt/6.2.4/mingw_64/include/QtCore/qbytearraymatcher.h \
+		../../../../Working/Qt/6.2.4/mingw_64/include/QtCore/qcache.h \
+		../../../../Working/Qt/6.2.4/mingw_64/include/QtCore/qcalendar.h \
+		../../../../Working/Qt/6.2.4/mingw_64/include/QtCore/qlocale.h \
+		../../../../Working/Qt/6.2.4/mingw_64/include/QtCore/qcborarray.h \
+		../../../../Working/Qt/6.2.4/mingw_64/include/QtCore/qcborvalue.h \
+		../../../../Working/Qt/6.2.4/mingw_64/include/QtCore/qdatetime.h \
+		../../../../Working/Qt/6.2.4/mingw_64/include/QtCore/qcborcommon.h \
+		../../../../Working/Qt/6.2.4/mingw_64/include/QtCore/qregularexpression.h \
+		../../../../Working/Qt/6.2.4/mingw_64/include/QtCore/quuid.h \
+		../../../../Working/Qt/6.2.4/mingw_64/include/QtCore/qcbormap.h \
+		../../../../Working/Qt/6.2.4/mingw_64/include/QtCore/qcborstream.h \
+		../../../../Working/Qt/6.2.4/mingw_64/include/QtCore/qcborstreamreader.h \
+		../../../../Working/Qt/6.2.4/mingw_64/include/QtCore/qfloat16.h \
+		../../../../Working/Qt/6.2.4/mingw_64/include/QtCore/qcborstreamwriter.h \
+		../../../../Working/Qt/6.2.4/mingw_64/include/QtCore/qcollator.h \
+		../../../../Working/Qt/6.2.4/mingw_64/include/QtCore/qcommandlineoption.h \
+		../../../../Working/Qt/6.2.4/mingw_64/include/QtCore/qcommandlineparser.h \
+		../../../../Working/Qt/6.2.4/mingw_64/include/QtCore/qcoreapplication.h \
+		../../../../Working/Qt/6.2.4/mingw_64/include/QtCore/qnativeinterface.h \
+		../../../../Working/Qt/6.2.4/mingw_64/include/QtCore/qcoreapplication_platform.h \
+		../../../../Working/Qt/6.2.4/mingw_64/include/QtCore/qfuture.h \
+		../../../../Working/Qt/6.2.4/mingw_64/include/QtCore/qfutureinterface.h \
+		../../../../Working/Qt/6.2.4/mingw_64/include/QtCore/qmutex.h \
+		../../../../Working/Qt/6.2.4/mingw_64/include/QtCore/qresultstore.h \
+		../../../../Working/Qt/6.2.4/mingw_64/include/QtCore/qfuture_impl.h \
+		../../../../Working/Qt/6.2.4/mingw_64/include/QtCore/qthreadpool.h \
 		../../../../Working/Qt/6.2.4/mingw_64/include/QtCore/qthread.h \
 		../../../../Working/Qt/6.2.4/mingw_64/include/QtCore/qdeadlinetimer.h \
 		../../../../Working/Qt/6.2.4/mingw_64/include/QtCore/qelapsedtimer.h \
+		../../../../Working/Qt/6.2.4/mingw_64/include/QtCore/qrunnable.h \
+		../../../../Working/Qt/6.2.4/mingw_64/include/QtCore/qexception.h \
+		../../../../Working/Qt/6.2.4/mingw_64/include/QtCore/qpromise.h \
+		../../../../Working/Qt/6.2.4/mingw_64/include/QtCore/qconcatenatetablesproxymodel.h \
+		../../../../Working/Qt/6.2.4/mingw_64/include/QtCore/qcryptographichash.h \
+		../../../../Working/Qt/6.2.4/mingw_64/include/QtCore/qdir.h \
+		../../../../Working/Qt/6.2.4/mingw_64/include/QtCore/qfile.h \
+		../../../../Working/Qt/6.2.4/mingw_64/include/QtCore/qfiledevice.h \
+		../../../../Working/Qt/6.2.4/mingw_64/include/QtCore/qfileinfo.h \
+		../../../../Working/Qt/6.2.4/mingw_64/include/QtCore/qdiriterator.h \
+		../../../../Working/Qt/6.2.4/mingw_64/include/QtCore/qeasingcurve.h \
+		../../../../Working/Qt/6.2.4/mingw_64/include/QtCore/qendian.h \
+		../../../../Working/Qt/6.2.4/mingw_64/include/QtCore/qfactoryinterface.h \
+		../../../../Working/Qt/6.2.4/mingw_64/include/QtCore/qfileselector.h \
+		../../../../Working/Qt/6.2.4/mingw_64/include/QtCore/QStringList \
+		../../../../Working/Qt/6.2.4/mingw_64/include/QtCore/qfilesystemwatcher.h \
+		../../../../Working/Qt/6.2.4/mingw_64/include/QtCore/qfuturesynchronizer.h \
+		../../../../Working/Qt/6.2.4/mingw_64/include/QtCore/qfuturewatcher.h \
+		../../../../Working/Qt/6.2.4/mingw_64/include/QtCore/qidentityproxymodel.h \
+		../../../../Working/Qt/6.2.4/mingw_64/include/QtCore/qitemselectionmodel.h \
+		../../../../Working/Qt/6.2.4/mingw_64/include/QtCore/qjnienvironment.h \
+		../../../../Working/Qt/6.2.4/mingw_64/include/QtCore/QScopedPointer \
+		../../../../Working/Qt/6.2.4/mingw_64/include/QtCore/qjniobject.h \
+		../../../../Working/Qt/6.2.4/mingw_64/include/QtCore/qjsonarray.h \
+		../../../../Working/Qt/6.2.4/mingw_64/include/QtCore/qjsonvalue.h \
+		../../../../Working/Qt/6.2.4/mingw_64/include/QtCore/qjsondocument.h \
+		../../../../Working/Qt/6.2.4/mingw_64/include/QtCore/qjsonobject.h \
+		../../../../Working/Qt/6.2.4/mingw_64/include/QtCore/qlibrary.h \
+		../../../../Working/Qt/6.2.4/mingw_64/include/QtCore/qlibraryinfo.h \
+		../../../../Working/Qt/6.2.4/mingw_64/include/QtCore/qline.h \
+		../../../../Working/Qt/6.2.4/mingw_64/include/QtCore/qpoint.h \
+		../../../../Working/Qt/6.2.4/mingw_64/include/QtCore/qlockfile.h \
+		../../../../Working/Qt/6.2.4/mingw_64/include/QtCore/qloggingcategory.h \
+		../../../../Working/Qt/6.2.4/mingw_64/include/QtCore/qmargins.h \
+		../../../../Working/Qt/6.2.4/mingw_64/include/QtCore/qmessageauthenticationcode.h \
+		../../../../Working/Qt/6.2.4/mingw_64/include/QtCore/qmimedata.h \
+		../../../../Working/Qt/6.2.4/mingw_64/include/QtCore/qmimedatabase.h \
+		../../../../Working/Qt/6.2.4/mingw_64/include/QtCore/qmimetype.h \
+		../../../../Working/Qt/6.2.4/mingw_64/include/QtCore/qobjectcleanuphandler.h \
+		../../../../Working/Qt/6.2.4/mingw_64/include/QtCore/qoperatingsystemversion.h \
+		../../../../Working/Qt/6.2.4/mingw_64/include/QtCore/qparallelanimationgroup.h \
+		../../../../Working/Qt/6.2.4/mingw_64/include/QtCore/qpauseanimation.h \
+		../../../../Working/Qt/6.2.4/mingw_64/include/QtCore/qplugin.h \
+		../../../../Working/Qt/6.2.4/mingw_64/include/QtCore/qpluginloader.h \
+		../../../../Working/Qt/6.2.4/mingw_64/include/QtCore/qprocess.h \
+		../../../../Working/Qt/6.2.4/mingw_64/include/QtCore/qproperty.h \
+		../../../../Working/Qt/6.2.4/mingw_64/include/QtCore/qpropertyprivate.h \
+		../../../../Working/Qt/6.2.4/mingw_64/include/QtCore/qpropertyanimation.h \
+		../../../../Working/Qt/6.2.4/mingw_64/include/QtCore/qvariantanimation.h \
+		../../../../Working/Qt/6.2.4/mingw_64/include/QtCore/qqueue.h \
+		../../../../Working/Qt/6.2.4/mingw_64/include/QtCore/qrandom.h \
+		../../../../Working/Qt/6.2.4/mingw_64/include/QtCore/qreadwritelock.h \
+		../../../../Working/Qt/6.2.4/mingw_64/include/QtCore/qrect.h \
+		../../../../Working/Qt/6.2.4/mingw_64/include/QtCore/qsize.h \
+		../../../../Working/Qt/6.2.4/mingw_64/include/QtCore/qresource.h \
+		../../../../Working/Qt/6.2.4/mingw_64/include/QtCore/qsavefile.h \
+		../../../../Working/Qt/6.2.4/mingw_64/include/QtCore/qscopedvaluerollback.h \
+		../../../../Working/Qt/6.2.4/mingw_64/include/QtCore/qsemaphore.h \
+		../../../../Working/Qt/6.2.4/mingw_64/include/QtCore/qsequentialanimationgroup.h \
+		../../../../Working/Qt/6.2.4/mingw_64/include/QtCore/qsequentialiterable.h \
+		../../../../Working/Qt/6.2.4/mingw_64/include/QtCore/qsettings.h \
+		../../../../Working/Qt/6.2.4/mingw_64/include/QtCore/qsharedmemory.h \
+		../../../../Working/Qt/6.2.4/mingw_64/include/QtCore/qsignalmapper.h \
+		../../../../Working/Qt/6.2.4/mingw_64/include/QtCore/qsimd.h \
+		../../../../Working/Qt/6.2.4/mingw_64/include/QtCore/qsocketnotifier.h \
+		../../../../Working/Qt/6.2.4/mingw_64/include/QtCore/qsortfilterproxymodel.h \
+		../../../../Working/Qt/6.2.4/mingw_64/include/QtCore/qstack.h \
+		../../../../Working/Qt/6.2.4/mingw_64/include/QtCore/qstandardpaths.h \
+		../../../../Working/Qt/6.2.4/mingw_64/include/QtCore/qstorageinfo.h \
+		../../../../Working/Qt/6.2.4/mingw_64/include/QtCore/qstringlistmodel.h \
+		../../../../Working/Qt/6.2.4/mingw_64/include/QtCore/qsystemsemaphore.h \
+		../../../../Working/Qt/6.2.4/mingw_64/include/QtCore/qtemporarydir.h \
+		../../../../Working/Qt/6.2.4/mingw_64/include/QtCore/qtemporaryfile.h \
+		../../../../Working/Qt/6.2.4/mingw_64/include/QtCore/qtextboundaryfinder.h \
+		../../../../Working/Qt/6.2.4/mingw_64/include/QtCore/qthreadstorage.h \
+		../../../../Working/Qt/6.2.4/mingw_64/include/QtCore/qtimeline.h \
+		../../../../Working/Qt/6.2.4/mingw_64/include/QtCore/qtimer.h \
+		../../../../Working/Qt/6.2.4/mingw_64/include/QtCore/qtimezone.h \
+		../../../../Working/Qt/6.2.4/mingw_64/include/QtCore/qtranslator.h \
+		../../../../Working/Qt/6.2.4/mingw_64/include/QtCore/qtransposeproxymodel.h \
+		../../../../Working/Qt/6.2.4/mingw_64/include/QtCore/qurlquery.h \
+		../../../../Working/Qt/6.2.4/mingw_64/include/QtCore/qvector.h \
+		../../../../Working/Qt/6.2.4/mingw_64/include/QtCore/qwaitcondition.h \
+		../../../../Working/Qt/6.2.4/mingw_64/include/QtCore/QDeadlineTimer \
+		../../../../Working/Qt/6.2.4/mingw_64/include/QtCore/qwineventnotifier.h \
+		../../../../Working/Qt/6.2.4/mingw_64/include/QtCore/qxmlstream.h \
+		../../../../Working/Qt/6.2.4/mingw_64/include/QtCore/qtcoreversion.h \
+		serialPortController.h \
+		../../../../Working/Qt/6.2.4/mingw_64/include/QtCore/QThread \
 		../../../../Working/Qt/6.2.4/mingw_64/include/QtSerialPort/QSerialPortInfo \
 		../../../../Working/Qt/6.2.4/mingw_64/include/QtSerialPort/qserialportinfo.h \
 		../../../../Working/Qt/6.2.4/mingw_64/include/QtSerialPort/qserialportglobal.h \
 		serialPort.h \
 		../../../../Working/Qt/6.2.4/mingw_64/include/QtSerialPort/QSerialPort \
 		../../../../Working/Qt/6.2.4/mingw_64/include/QtSerialPort/qserialport.h \
-		../../../../Working/Qt/6.2.4/mingw_64/include/QtCore/qiodevice.h \
 		../../../../Working/Qt/6.2.4/mingw_64/include/QtCore/QDebug
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o release\mixer.o mixer.cpp
 
