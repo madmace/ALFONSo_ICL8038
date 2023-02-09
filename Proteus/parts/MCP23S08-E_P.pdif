@@ -1,0 +1,701 @@
+;Proteus Design Interchange Format
+
+(PDIF
+  (vendor "Labcenter Electronics")
+  (version 1 0)
+  (library
+    (part "MCP23S08EP"
+      (family "ANA")
+      (package "DIP254P762X43218")
+      (description "8_Bit_Expander")
+      (attribute "PKG_TYPE" "DIP254P762X43218")
+      (attribute "SUPPLIER" "Microchip")
+      (attribute "OC_FARNELL" "1332091")
+      (attribute "OC_NEWARK" "08J8732")
+      (attribute "PACKAGE" "DIP-18")
+      (attribute "MPN" "MCP23S08-E/P")
+      (gate
+        (swap 1)
+        (symbol "MCP23S08EP")
+        (pin "A0" 5 (type IP))
+        (pin "A1" 4 (type IP))
+        (pin "GP0" 10 (type IO))
+        (pin "GP1" 11 (type IO))
+        (pin "GP2" 12 (type IO))
+        (pin "GP3" 13 (type IO))
+        (pin "GP4" 14 (type IO))
+        (pin "GP5" 15 (type IO))
+        (pin "GP6" 16 (type IO))
+        (pin "GP7" 17 (type IO))
+        (pin "INT" 8 (type OP))
+        (pin "SCK" 1 (type IP))
+        (pin "SI" 2 (type IP))
+        (pin "SO" 3 (type OP))
+        (pin "VDD" 18 (type PP))
+        (pin "VSS" 9 (type PP))
+        (pin "~CS" 7 (type IP))
+        (pin "~RESET" 6 (type IP))
+      )
+    )
+    (symbol "MCP23S08EP"
+      (units THOU)
+      (graphic
+        (stroke 1)
+        (path (pt -500 600) (pt 500 600) (pt 500 -800) (pt -500 -800) (pt -500 600) (closed))
+      )
+      (terminal
+        (body (symbol "PIN_R0_U_L200") (pt -700.0 -200.0) (rot 0) (mir 0) (visible true))
+        (name (pt 239.37 0.0) (rot 0) (just MIDDLE LEFT) (visible true))
+        (number (pt -39.37 0.0) (rot 0) (just MIDDLE LEFT) (visible true))
+      )
+      (terminal
+        (body (symbol "PIN_R0_U_L200") (pt -700.0 -100.0) (rot 0) (mir 0) (visible true))
+        (name (pt 239.37 0.0) (rot 0) (just MIDDLE LEFT) (visible true))
+        (number (pt -39.37 0.0) (rot 0) (just MIDDLE LEFT) (visible true))
+      )
+      (terminal
+        (body (symbol "PIN_R180_U_L200") (pt 700.0 200.0) (rot 0) (mir 0) (visible true))
+        (name (pt -239.37 0.0) (rot 0) (just MIDDLE RIGHT) (visible true))
+        (number (pt -39.37 0.0) (rot 0) (just MIDDLE RIGHT) (visible true))
+      )
+      (terminal
+        (body (symbol "PIN_R180_U_L200") (pt 700.0 100.0) (rot 0) (mir 0) (visible true))
+        (name (pt -239.37 0.0) (rot 0) (just MIDDLE RIGHT) (visible true))
+        (number (pt -39.37 0.0) (rot 0) (just MIDDLE RIGHT) (visible true))
+      )
+      (terminal
+        (body (symbol "PIN_R180_U_L200") (pt 700.0 0.0) (rot 0) (mir 0) (visible true))
+        (name (pt -239.37 0.0) (rot 0) (just MIDDLE RIGHT) (visible true))
+        (number (pt -39.37 0.0) (rot 0) (just MIDDLE RIGHT) (visible true))
+      )
+      (terminal
+        (body (symbol "PIN_R180_U_L200") (pt 700.0 -100.0) (rot 0) (mir 0) (visible true))
+        (name (pt -239.37 0.0) (rot 0) (just MIDDLE RIGHT) (visible true))
+        (number (pt -39.37 0.0) (rot 0) (just MIDDLE RIGHT) (visible true))
+      )
+      (terminal
+        (body (symbol "PIN_R180_U_L200") (pt 700.0 -200.0) (rot 0) (mir 0) (visible true))
+        (name (pt -239.37 0.0) (rot 0) (just MIDDLE RIGHT) (visible true))
+        (number (pt -39.37 0.0) (rot 0) (just MIDDLE RIGHT) (visible true))
+      )
+      (terminal
+        (body (symbol "PIN_R180_U_L200") (pt 700.0 -300.0) (rot 0) (mir 0) (visible true))
+        (name (pt -239.37 0.0) (rot 0) (just MIDDLE RIGHT) (visible true))
+        (number (pt -39.37 0.0) (rot 0) (just MIDDLE RIGHT) (visible true))
+      )
+      (terminal
+        (body (symbol "PIN_R180_U_L200") (pt 700.0 -400.0) (rot 0) (mir 0) (visible true))
+        (name (pt -239.37 0.0) (rot 0) (just MIDDLE RIGHT) (visible true))
+        (number (pt -39.37 0.0) (rot 0) (just MIDDLE RIGHT) (visible true))
+      )
+      (terminal
+        (body (symbol "PIN_R180_U_L200") (pt 700.0 -600.0) (rot 0) (mir 0) (visible true))
+        (name (pt -239.37 0.0) (rot 0) (just MIDDLE RIGHT) (visible true))
+        (number (pt -39.37 0.0) (rot 0) (just MIDDLE RIGHT) (visible true))
+      )
+      (terminal
+        (body (symbol "PIN_R180_U_L200") (pt 700.0 -500.0) (rot 0) (mir 0) (visible true))
+        (name (pt -239.37 0.0) (rot 0) (just MIDDLE RIGHT) (visible true))
+        (number (pt -39.37 0.0) (rot 0) (just MIDDLE RIGHT) (visible true))
+      )
+      (terminal
+        (body (symbol "PIN_R0_U_L200") (pt -700.0 100.0) (rot 0) (mir 0) (visible true))
+        (name (pt 239.37 0.0) (rot 0) (just MIDDLE LEFT) (visible true))
+        (number (pt -39.37 0.0) (rot 0) (just MIDDLE LEFT) (visible true))
+      )
+      (terminal
+        (body (symbol "PIN_R0_U_L200") (pt -700.0 200.0) (rot 0) (mir 0) (visible true))
+        (name (pt 239.37 0.0) (rot 0) (just MIDDLE LEFT) (visible true))
+        (number (pt -39.37 0.0) (rot 0) (just MIDDLE LEFT) (visible true))
+      )
+      (terminal
+        (body (symbol "PIN_R180_U_L200") (pt 700.0 400.0) (rot 0) (mir 0) (visible true))
+        (name (pt -239.37 0.0) (rot 0) (just MIDDLE RIGHT) (visible true))
+        (number (pt -39.37 0.0) (rot 0) (just MIDDLE RIGHT) (visible true))
+      )
+      (terminal
+        (body (symbol "PIN_R0_U_L200") (pt -700.0 400.0) (rot 0) (mir 0) (visible true))
+        (name (pt 239.37 0.0) (rot 0) (just MIDDLE LEFT) (visible true))
+        (number (pt -39.37 0.0) (rot 0) (just MIDDLE LEFT) (visible true))
+      )
+      (terminal
+        (body (symbol "PIN_R0_U_L200") (pt -700.0 -600.0) (rot 0) (mir 0) (visible true))
+        (name (pt 239.37 0.0) (rot 0) (just MIDDLE LEFT) (visible true))
+        (number (pt -39.37 0.0) (rot 0) (just MIDDLE LEFT) (visible true))
+      )
+      (terminal
+        (body (symbol "PIN_R0_U_L200") (pt -700.0 -400.0) (rot 0) (mir 0) (visible true))
+        (name (pt 239.37 0.0) (rot 0) (just MIDDLE LEFT) (visible true))
+        (number (pt -39.37 0.0) (rot 0) (just MIDDLE LEFT) (visible true))
+      )
+      (terminal
+        (body (symbol "PIN_R0_U_L200") (pt -700.0 -300.0) (rot 0) (mir 0) (visible true))
+        (name (pt 239.37 0.0) (rot 0) (just MIDDLE LEFT) (visible true))
+        (number (pt -39.37 0.0) (rot 0) (just MIDDLE LEFT) (visible true))
+      )
+    )
+    (symbol "PIN_R0_U_L200"
+      (units THOU)
+      (graphic
+        (stroke 6.5)
+        (path (pt 0.0 0.0) (pt 200.0 0.0))
+      )
+    )
+    (symbol "PIN_R180_U_L200"
+      (units THOU)
+      (graphic
+        (stroke 6.5)
+        (path (pt 0.0 0.0) (pt -200.0 0.0))
+      )
+    )
+    (package "DIP254P762X43218"
+      (units THOU)
+      (layer TSLK
+        (graphic
+          (stroke 6.0)
+          (path (pt -20.0 838.0) (pt -20.0 853.0))
+        )
+        (graphic
+          (stroke 6.0)
+          (path (pt -280.0 -53.0) (pt -20.0 -53.0))
+        )
+        (graphic
+          (stroke 6.0)
+          (path (pt -20.0 -53.0) (pt -20.0 -38.0))
+        )
+        (graphic
+          (stroke 6.0)
+          (path (pt -20.0 853.0) (pt -138.0 853.0))
+        )
+        (graphic
+          (stroke 6.0)
+          (path (pt -138.0 853.0) (pt -162.0 853.0))
+        )
+        (graphic
+          (stroke 6.0)
+          (path (pt -162.0 853.0) (pt -280.0 853.0))
+        )
+        (graphic
+          (stroke 6.0)
+          (path (pt -280.0 853.0) (pt -280.0 843.0))
+        )
+        (graphic
+          (stroke 6.0)
+          (path (pt -280.0 -38.0) (pt -280.0 -53.0))
+        )
+        (graphic
+          (stroke 6)
+          (path
+            (arc (pt -138 853) (pt -162 841) (pt -138 865) (start -180) (sweep 0))
+            (pt -162 853)
+          )
+        )
+      )
+      (layer TASM
+        (graphic
+          (stroke 6.0)
+          (path (pt -280.0 780.0) (pt -280.0 820.0))
+        )
+        (graphic
+          (stroke 6.0)
+          (path (pt -280.0 820.0) (pt -319.0 820.0))
+        )
+        (graphic
+          (stroke 6.0)
+          (path (pt -319.0 820.0) (pt -319.0 780.0))
+        )
+        (graphic
+          (stroke 6.0)
+          (path (pt -319.0 780.0) (pt -280.0 780.0))
+        )
+        (graphic
+          (stroke 6.0)
+          (path (pt -280.0 680.0) (pt -280.0 720.0))
+        )
+        (graphic
+          (stroke 6.0)
+          (path (pt -280.0 720.0) (pt -319.0 720.0))
+        )
+        (graphic
+          (stroke 6.0)
+          (path (pt -319.0 720.0) (pt -319.0 680.0))
+        )
+        (graphic
+          (stroke 6.0)
+          (path (pt -319.0 680.0) (pt -280.0 680.0))
+        )
+        (graphic
+          (stroke 6.0)
+          (path (pt -280.0 580.0) (pt -280.0 620.0))
+        )
+        (graphic
+          (stroke 6.0)
+          (path (pt -280.0 620.0) (pt -319.0 620.0))
+        )
+        (graphic
+          (stroke 6.0)
+          (path (pt -319.0 620.0) (pt -319.0 580.0))
+        )
+        (graphic
+          (stroke 6.0)
+          (path (pt -319.0 580.0) (pt -280.0 580.0))
+        )
+        (graphic
+          (stroke 6.0)
+          (path (pt -280.0 480.0) (pt -280.0 520.0))
+        )
+        (graphic
+          (stroke 6.0)
+          (path (pt -280.0 520.0) (pt -319.0 520.0))
+        )
+        (graphic
+          (stroke 6.0)
+          (path (pt -319.0 520.0) (pt -319.0 480.0))
+        )
+        (graphic
+          (stroke 6.0)
+          (path (pt -319.0 480.0) (pt -280.0 480.0))
+        )
+        (graphic
+          (stroke 6.0)
+          (path (pt -280.0 380.0) (pt -280.0 420.0))
+        )
+        (graphic
+          (stroke 6.0)
+          (path (pt -280.0 420.0) (pt -319.0 420.0))
+        )
+        (graphic
+          (stroke 6.0)
+          (path (pt -319.0 420.0) (pt -319.0 380.0))
+        )
+        (graphic
+          (stroke 6.0)
+          (path (pt -319.0 380.0) (pt -280.0 380.0))
+        )
+        (graphic
+          (stroke 6.0)
+          (path (pt -280.0 280.0) (pt -280.0 320.0))
+        )
+        (graphic
+          (stroke 6.0)
+          (path (pt -280.0 320.0) (pt -319.0 320.0))
+        )
+        (graphic
+          (stroke 6.0)
+          (path (pt -319.0 320.0) (pt -319.0 280.0))
+        )
+        (graphic
+          (stroke 6.0)
+          (path (pt -319.0 280.0) (pt -280.0 280.0))
+        )
+        (graphic
+          (stroke 6.0)
+          (path (pt -280.0 180.0) (pt -280.0 220.0))
+        )
+        (graphic
+          (stroke 6.0)
+          (path (pt -280.0 220.0) (pt -319.0 220.0))
+        )
+        (graphic
+          (stroke 6.0)
+          (path (pt -319.0 220.0) (pt -319.0 180.0))
+        )
+        (graphic
+          (stroke 6.0)
+          (path (pt -319.0 180.0) (pt -280.0 180.0))
+        )
+        (graphic
+          (stroke 6.0)
+          (path (pt -280.0 80.0) (pt -280.0 120.0))
+        )
+        (graphic
+          (stroke 6.0)
+          (path (pt -280.0 120.0) (pt -319.0 120.0))
+        )
+        (graphic
+          (stroke 6.0)
+          (path (pt -319.0 120.0) (pt -319.0 80.0))
+        )
+        (graphic
+          (stroke 6.0)
+          (path (pt -319.0 80.0) (pt -280.0 80.0))
+        )
+        (graphic
+          (stroke 6.0)
+          (path (pt -280.0 -20.0) (pt -280.0 20.0))
+        )
+        (graphic
+          (stroke 6.0)
+          (path (pt -280.0 20.0) (pt -319.0 19.0))
+        )
+        (graphic
+          (stroke 6.0)
+          (path (pt -319.0 19.0) (pt -319.0 -20.0))
+        )
+        (graphic
+          (stroke 6.0)
+          (path (pt -319.0 -20.0) (pt -280.0 -20.0))
+        )
+        (graphic
+          (stroke 6.0)
+          (path (pt -20.0 20.0) (pt -20.0 -20.0))
+        )
+        (graphic
+          (stroke 6.0)
+          (path (pt -20.0 -20.0) (pt 19.0 -19.0))
+        )
+        (graphic
+          (stroke 6.0)
+          (path (pt 19.0 -19.0) (pt 19.0 20.0))
+        )
+        (graphic
+          (stroke 6.0)
+          (path (pt 19.0 20.0) (pt -20.0 20.0))
+        )
+        (graphic
+          (stroke 6.0)
+          (path (pt -20.0 120.0) (pt -20.0 80.0))
+        )
+        (graphic
+          (stroke 6.0)
+          (path (pt -20.0 80.0) (pt 19.0 81.0))
+        )
+        (graphic
+          (stroke 6.0)
+          (path (pt 19.0 81.0) (pt 19.0 120.0))
+        )
+        (graphic
+          (stroke 6.0)
+          (path (pt 19.0 120.0) (pt -20.0 120.0))
+        )
+        (graphic
+          (stroke 6.0)
+          (path (pt -20.0 220.0) (pt -20.0 180.0))
+        )
+        (graphic
+          (stroke 6.0)
+          (path (pt -20.0 180.0) (pt 19.0 180.0))
+        )
+        (graphic
+          (stroke 6.0)
+          (path (pt 19.0 180.0) (pt 19.0 220.0))
+        )
+        (graphic
+          (stroke 6.0)
+          (path (pt 19.0 220.0) (pt -20.0 220.0))
+        )
+        (graphic
+          (stroke 6.0)
+          (path (pt -20.0 320.0) (pt -20.0 280.0))
+        )
+        (graphic
+          (stroke 6.0)
+          (path (pt -20.0 280.0) (pt 19.0 280.0))
+        )
+        (graphic
+          (stroke 6.0)
+          (path (pt 19.0 280.0) (pt 19.0 320.0))
+        )
+        (graphic
+          (stroke 6.0)
+          (path (pt 19.0 320.0) (pt -20.0 320.0))
+        )
+        (graphic
+          (stroke 6.0)
+          (path (pt -20.0 420.0) (pt -20.0 380.0))
+        )
+        (graphic
+          (stroke 6.0)
+          (path (pt -20.0 380.0) (pt 19.0 380.0))
+        )
+        (graphic
+          (stroke 6.0)
+          (path (pt 19.0 380.0) (pt 19.0 420.0))
+        )
+        (graphic
+          (stroke 6.0)
+          (path (pt 19.0 420.0) (pt -20.0 420.0))
+        )
+        (graphic
+          (stroke 6.0)
+          (path (pt -20.0 520.0) (pt -20.0 480.0))
+        )
+        (graphic
+          (stroke 6.0)
+          (path (pt -20.0 480.0) (pt 19.0 480.0))
+        )
+        (graphic
+          (stroke 6.0)
+          (path (pt 19.0 480.0) (pt 19.0 520.0))
+        )
+        (graphic
+          (stroke 6.0)
+          (path (pt 19.0 520.0) (pt -20.0 520.0))
+        )
+        (graphic
+          (stroke 6.0)
+          (path (pt -20.0 620.0) (pt -20.0 580.0))
+        )
+        (graphic
+          (stroke 6.0)
+          (path (pt -20.0 580.0) (pt 19.0 580.0))
+        )
+        (graphic
+          (stroke 6.0)
+          (path (pt 19.0 580.0) (pt 19.0 620.0))
+        )
+        (graphic
+          (stroke 6.0)
+          (path (pt 19.0 620.0) (pt -20.0 620.0))
+        )
+        (graphic
+          (stroke 6.0)
+          (path (pt -20.0 720.0) (pt -20.0 680.0))
+        )
+        (graphic
+          (stroke 6.0)
+          (path (pt -20.0 680.0) (pt 19.0 680.0))
+        )
+        (graphic
+          (stroke 6.0)
+          (path (pt 19.0 680.0) (pt 19.0 720.0))
+        )
+        (graphic
+          (stroke 6.0)
+          (path (pt 19.0 720.0) (pt -20.0 720.0))
+        )
+        (graphic
+          (stroke 6.0)
+          (path (pt -20.0 820.0) (pt -20.0 780.0))
+        )
+        (graphic
+          (stroke 6.0)
+          (path (pt -20.0 780.0) (pt 19.0 780.0))
+        )
+        (graphic
+          (stroke 6.0)
+          (path (pt 19.0 780.0) (pt 19.0 820.0))
+        )
+        (graphic
+          (stroke 6.0)
+          (path (pt 19.0 820.0) (pt -20.0 820.0))
+        )
+        (graphic
+          (stroke 6.0)
+          (path (pt -280.0 -53.0) (pt -20.0 -53.0))
+        )
+        (graphic
+          (stroke 6.0)
+          (path (pt -20.0 -53.0) (pt -20.0 853.0))
+        )
+        (graphic
+          (stroke 6.0)
+          (path (pt -20.0 853.0) (pt -138.0 853.0))
+        )
+        (graphic
+          (stroke 6.0)
+          (path (pt -138.0 853.0) (pt -162.0 853.0))
+        )
+        (graphic
+          (stroke 6.0)
+          (path (pt -162.0 853.0) (pt -280.0 853.0))
+        )
+        (graphic
+          (stroke 6.0)
+          (path (pt -280.0 853.0) (pt -280.0 -53.0))
+        )
+        (graphic
+          (stroke 6)
+          (path
+            (arc (pt -138 853) (pt -162 841) (pt -138 865) (start -180) (sweep 0))
+            (pt -162 853)
+          )
+        )
+      )
+      (leg 1 (pt -300 800) (padstack 1))
+      (leg 2 (pt -300 700) (padstack 2))
+      (leg 3 (pt -300 600) (padstack 3))
+      (leg 4 (pt -300 500) (padstack 4))
+      (leg 5 (pt -300 400) (padstack 5))
+      (leg 6 (pt -300 300) (padstack 6))
+      (leg 7 (pt -300 200) (padstack 7))
+      (leg 8 (pt -300 100) (padstack 8))
+      (leg 9 (pt -300 0) (padstack 9))
+      (leg 10 (pt 0 0) (padstack 10))
+      (leg 11 (pt 0 100) (padstack 11))
+      (leg 12 (pt 0 200) (padstack 12))
+      (leg 13 (pt 0 300) (padstack 13))
+      (leg 14 (pt 0 400) (padstack 14))
+      (leg 15 (pt 0 500) (padstack 15))
+      (leg 16 (pt 0 600) (padstack 16))
+      (leg 17 (pt 0 700) (padstack 17))
+      (leg 18 (pt 0 800) (padstack 18))
+      (padstack 1
+        (hole 39)
+        (plated true)
+        (pad (layer TCOP) (square 59.0))
+        (pad (layer INNER) (square 59.0))
+        (pad (layer BCOP) (square 59.0))
+        (pad (layer TRES) (square 62.94))
+        (pad (layer BRES) (square 62.94))
+      )
+      (padstack 2
+        (hole 39)
+        (plated true)
+        (pad (layer TCOP) (round 59.0))
+        (pad (layer INNER) (round 59.0))
+        (pad (layer BCOP) (round 59.0))
+        (pad (layer TRES) (round 62.94))
+        (pad (layer BRES) (round 62.94))
+      )
+      (padstack 3
+        (hole 39)
+        (plated true)
+        (pad (layer TCOP) (round 59.0))
+        (pad (layer INNER) (round 59.0))
+        (pad (layer BCOP) (round 59.0))
+        (pad (layer TRES) (round 62.94))
+        (pad (layer BRES) (round 62.94))
+      )
+      (padstack 4
+        (hole 39)
+        (plated true)
+        (pad (layer TCOP) (round 59.0))
+        (pad (layer INNER) (round 59.0))
+        (pad (layer BCOP) (round 59.0))
+        (pad (layer TRES) (round 62.94))
+        (pad (layer BRES) (round 62.94))
+      )
+      (padstack 5
+        (hole 39)
+        (plated true)
+        (pad (layer TCOP) (round 59.0))
+        (pad (layer INNER) (round 59.0))
+        (pad (layer BCOP) (round 59.0))
+        (pad (layer TRES) (round 62.94))
+        (pad (layer BRES) (round 62.94))
+      )
+      (padstack 6
+        (hole 39)
+        (plated true)
+        (pad (layer TCOP) (round 59.0))
+        (pad (layer INNER) (round 59.0))
+        (pad (layer BCOP) (round 59.0))
+        (pad (layer TRES) (round 62.94))
+        (pad (layer BRES) (round 62.94))
+      )
+      (padstack 7
+        (hole 39)
+        (plated true)
+        (pad (layer TCOP) (round 59.0))
+        (pad (layer INNER) (round 59.0))
+        (pad (layer BCOP) (round 59.0))
+        (pad (layer TRES) (round 62.94))
+        (pad (layer BRES) (round 62.94))
+      )
+      (padstack 8
+        (hole 39)
+        (plated true)
+        (pad (layer TCOP) (round 59.0))
+        (pad (layer INNER) (round 59.0))
+        (pad (layer BCOP) (round 59.0))
+        (pad (layer TRES) (round 62.94))
+        (pad (layer BRES) (round 62.94))
+      )
+      (padstack 9
+        (hole 39)
+        (plated true)
+        (pad (layer TCOP) (round 59.0))
+        (pad (layer INNER) (round 59.0))
+        (pad (layer BCOP) (round 59.0))
+        (pad (layer TRES) (round 62.94))
+        (pad (layer BRES) (round 62.94))
+      )
+      (padstack 10
+        (hole 39)
+        (plated true)
+        (pad (layer TCOP) (round 59.0))
+        (pad (layer INNER) (round 59.0))
+        (pad (layer BCOP) (round 59.0))
+        (pad (layer TRES) (round 62.94))
+        (pad (layer BRES) (round 62.94))
+      )
+      (padstack 11
+        (hole 39)
+        (plated true)
+        (pad (layer TCOP) (round 59.0))
+        (pad (layer INNER) (round 59.0))
+        (pad (layer BCOP) (round 59.0))
+        (pad (layer TRES) (round 62.94))
+        (pad (layer BRES) (round 62.94))
+      )
+      (padstack 12
+        (hole 39)
+        (plated true)
+        (pad (layer TCOP) (round 59.0))
+        (pad (layer INNER) (round 59.0))
+        (pad (layer BCOP) (round 59.0))
+        (pad (layer TRES) (round 62.94))
+        (pad (layer BRES) (round 62.94))
+      )
+      (padstack 13
+        (hole 39)
+        (plated true)
+        (pad (layer TCOP) (round 59.0))
+        (pad (layer INNER) (round 59.0))
+        (pad (layer BCOP) (round 59.0))
+        (pad (layer TRES) (round 62.94))
+        (pad (layer BRES) (round 62.94))
+      )
+      (padstack 14
+        (hole 39)
+        (plated true)
+        (pad (layer TCOP) (round 59.0))
+        (pad (layer INNER) (round 59.0))
+        (pad (layer BCOP) (round 59.0))
+        (pad (layer TRES) (round 62.94))
+        (pad (layer BRES) (round 62.94))
+      )
+      (padstack 15
+        (hole 39)
+        (plated true)
+        (pad (layer TCOP) (round 59.0))
+        (pad (layer INNER) (round 59.0))
+        (pad (layer BCOP) (round 59.0))
+        (pad (layer TRES) (round 62.94))
+        (pad (layer BRES) (round 62.94))
+      )
+      (padstack 16
+        (hole 39)
+        (plated true)
+        (pad (layer TCOP) (round 59.0))
+        (pad (layer INNER) (round 59.0))
+        (pad (layer BCOP) (round 59.0))
+        (pad (layer TRES) (round 62.94))
+        (pad (layer BRES) (round 62.94))
+      )
+      (padstack 17
+        (hole 39)
+        (plated true)
+        (pad (layer TCOP) (round 59.0))
+        (pad (layer INNER) (round 59.0))
+        (pad (layer BCOP) (round 59.0))
+        (pad (layer TRES) (round 62.94))
+        (pad (layer BRES) (round 62.94))
+      )
+      (padstack 18
+        (hole 39)
+        (plated true)
+        (pad (layer TCOP) (round 59.0))
+        (pad (layer INNER) (round 59.0))
+        (pad (layer BCOP) (round 59.0))
+        (pad (layer TRES) (round 62.94))
+        (pad (layer BRES) (round 62.94))
+      )
+      (model MCP23S08-E_P.step
+        (euler 0 0 0)
+        (offset 0 0 0)
+      )
+    )
+  )
+)
