@@ -23,21 +23,38 @@ This Header contains definitions for serial protocol
 
 /*****************************
  * 
+ * Request Protocol Structure
+ * 
+ ******************************/
+
+// Position of Low byte part of command
+#define CMD_PART_LOW_BYTE 0
+// Position of High byte part of command
+#define CMD_PART_HIGH_BYTE 1
+// Initial position of the first byte of payload
+#define START_REQ_PAYLOAD 2
+
+/*****************************
+ * 
  * Commands for request states of VCO/Mixers from client.
  * 
  ******************************/
 
 // Resquest all ALFONSo State
 #define SYNC_REQ_ALL 0xFFFF
+// Lenght for SYNC_REQ_ALL request
+#define SYNC_REQ_ALL_LEN 30
 
 // Resquest VCO 1 State
 #define SYNC_REQ_VCO_1 0xFFE0
-// Resquest VCO 2 State
+// Resquest VCO 2 State 
 #define SYNC_REQ_VCO_2 0xFFE1
 // Resquest VCO 3 State
 #define SYNC_REQ_VCO_3 0xFFE2
 // Resquest VCO 4 State
 #define SYNC_REQ_VCO_4 0xFFE3
+// Lenght for SYNC_REQ_VCO_X request
+#define SYNC_REQ_VCO_LEN 3
 
 /*****************************
  * 
@@ -53,6 +70,8 @@ This Header contains definitions for serial protocol
 #define VCO_3_REQ_ENABLE 0x0003
 // Request for enable/disable VCO 4
 #define VCO_4_REQ_ENABLE 0x0004
+// Lenght for VCO_X_REQ_ENABLE request
+#define VCO_REQ_ENABLE_LEN 3
 
 // Request for set VCO 1 frequency
 #define VCO_1_REQ_FREQUENCY 0x0010
@@ -62,6 +81,8 @@ This Header contains definitions for serial protocol
 #define VCO_3_REQ_FREQUENCY 0x0012
 // Request for set VCO 4 frequency
 #define VCO_4_REQ_FREQUENCY 0x0013
+// Lenght for VCO_X_REQ_FREQUENCY request
+#define VCO_REQ_FREQUENCY_LEN 3
 
 // Request for set VCO 1 Duty cycle
 #define VCO_1_REQ_DUTY_CYCLE 0x0020
@@ -71,6 +92,8 @@ This Header contains definitions for serial protocol
 #define VCO_3_REQ_DUTY_CYCLE 0x0022
 // Request for set VCO 4 Duty cycle
 #define VCO_4_REQ_DUTY_CYCLE 0x0023
+// Lenght for VCO_X_REQ_DUTY_CYCLE request
+#define VCO_REQ_DUTY_CYCLE_LEN 3
 
 // Request for enable VCO 1 Sine line
 #define VCO_1_REQ_ENABLE_SINE 0x0030
@@ -80,6 +103,8 @@ This Header contains definitions for serial protocol
 #define VCO_3_REQ_ENABLE_SINE 0x0032
 // Request for enable VCO 4 Sine line
 #define VCO_4_REQ_ENABLE_SINE 0x0033
+// Lenght for VCO_X_REQ_ENABLE_SINE request
+#define VCO_REQ_ENABLE_SINE_LEN 3
 
 // Request for enable VCO 1 Square line
 #define VCO_1_REQ_ENABLE_SQUARE 0x0040
@@ -89,6 +114,8 @@ This Header contains definitions for serial protocol
 #define VCO_3_REQ_ENABLE_SQUARE 0x0042
 // Request for enable VCO 4 Square line
 #define VCO_4_REQ_ENABLE_SQUARE 0x0043
+// Lenght for VCO_X_REQ_ENABLE_SQUARE request
+#define VCO_REQ_ENABLE_SQUARE_LEN 3
 
 // Request for enable VCO 1 Triangle line
 #define VCO_1_REQ_ENABLE_TRIANGLE 0x0050
@@ -98,6 +125,8 @@ This Header contains definitions for serial protocol
 #define VCO_3_REQ_ENABLE_TRIANGLE 0x0052
 // Request for enable VCO 4 Triangle line
 #define VCO_4_REQ_ENABLE_TRIANGLE 0x0053
+// Lenght for VCO_X_REQ_ENABLE_TRIANGLE request
+#define VCO_REQ_ENABLE_TRIANGLE_LEN 3
 
 /*****************************
  * 

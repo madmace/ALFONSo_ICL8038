@@ -59,17 +59,26 @@ of main application.
 #define BlinkLEDGP1() { LED_GP1_PORT = 0x1; __delay_ms(100); LED_GP1_PORT = 0x0; }
 #define BlinkLEDGP2() { LED_GP2_PORT = 0x1; __delay_ms(100); LED_GP2_PORT = 0x0; }
 
-// CS Line (not included in SPI Library)
-#define SPI1_CS1_LINE_TRIS TRISAbits.RA5
-#define SPI1_CS1_LINE_PORT LATAbits.LATA5
-#define SPI1_CS2_LINE_TRIS TRISAbits.RA0
-#define SPI1_CS2_LINE_PORT LATAbits.LATA0
-#define SPI1_CS3_LINE_TRIS TRISAbits.RA1
-#define SPI1_CS3_LINE_PORT LATAbits.LATA1
+// CS Lines (not included in SPI Library)
 
-// CS Line for Hitachi 44780 LDC
+// CS for MCP42XXX Digital Potentiometer
+#define MCP42XXX_CS_LINE_TRIS TRISAbits.RA5
+#define MCP42XXX_CS_LINE_PORT LATAbits.LATA5
+
+// CS for MCP425X Digital Potentiometer
+#define MCP425X_CS_LINE_TRIS TRISAbits.RA0
+#define MCP425X_CS_LINE_PORT LATAbits.LATA0
+
+// CS for MCP23S08s GPIO Expander
+#define MCP23S08_CS_LINE_TRIS TRISAbits.RA2
+#define MCP23S08_CS_LINE_PORT LATAbits.LATA2
+
+// CS Line for MCP23S08 driving Hitachi 44780 LDC
 #define LCD44780_MCP23S08_CS_LINE_TRIS TRISAbits.RA1
 #define LCD44780_MCP23S08_CS_LINE_PORT LATAbits.LATA1
+
+// Address for MCP23S08 driving Hitachi 44780 LDC
+#define LCD44780_MCP23S08_ADDRESS 0x00
 
 // PCF8574 definitions
 #define PCF8574_INTERNAL_ADDRESS USED_DEVICE_PCF8574
@@ -87,7 +96,7 @@ typedef enum
 
 // Used in CCP2 Capture. If new frequency capture is
 // this tollerance, no data will send to client
-#define CCP2_CAPTURE_THRESHOLD_GAP 500
+#define CCP2_CAPTURE_THRESHOLD_GAP 10
 
 // Structure for state of all VCO
 typedef struct {
@@ -249,6 +258,7 @@ void SimpleMessageSPI16x2LCD(const char *message);
  *
  * @param cmd       Command name to put on display
  * @param bIsValue  If true the next value will be displayed
+ * @param byLenght  Lenght in bytes of value
  * @param byValue   Relative value if present
  *
  * @return void
@@ -256,7 +266,7 @@ void SimpleMessageSPI16x2LCD(const char *message);
  * This function is only for debugging of recevied commads.
  */
 #if defined(CMD_DEBUG_MODE)
-    void DebugCommandSPI16x2LCD(const char *cmd, bool bIsValue, uint8_t byValue);
+    void DebugCommandSPI16x2LCD(const char *cmd, bool bIsValue, uint8_t byLenght, uint8_t byValue);
 #endif
 
 /**
@@ -269,10 +279,10 @@ void SimpleMessageSPI16x2LCD(const char *message);
  *                        to input variable
  * 
  */
-bool updateCCPCapture(uint16_t *uiCapture);
+volatile bool updateCCPCapture(volatile uint16_t *uiCapture);
 
 
-uint8_t packResponseFrequency(uint8_t *buffer, uint16_t uiValue);
+volatile uint8_t packResponseFrequency(uint8_t *buffer, uint16_t uiValue);
 
 /**
  * Runs system level tasks that keep the system running

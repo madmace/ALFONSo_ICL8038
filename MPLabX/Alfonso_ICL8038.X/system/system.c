@@ -20,6 +20,7 @@ of main application.
 *******************************************************************************/
 
 #include <system.h>
+#include <math.h>
 
 // SPI libraries
 #include <SPILib.h>
@@ -51,11 +52,10 @@ static uint8_t writeBuffer[CDC_DATA_IN_EP_SIZE];
 
 // Current capture value from CCP2.
 // Needs for calculate frequency
-static uint16_t uiCaptureCCP2 = 0x0000;
 static volatile uint16_t uiLastCaptureCCP2 = 0x0000;
 
 // States Table about VCO present
-static VCOState_t aVCOInfo[NUM_VCO_PRESENT];
+static volatile VCOState_t aVCOInfo[NUM_VCO_PRESENT];
 
 // Interrupt function implementation for USB in High priority
 void INTERRUPT_HI SYS_InterruptHigh(void)
@@ -177,14 +177,17 @@ void StartUpIOPortsConfig(void) {
     LED_GP2_TRIS = 0x0;
     LED_GP2_PORT = 0x0;
     
-    // Set CS1,CS2 and CS3 for SPI as output
-    SPI1_CS1_LINE_TRIS = 0x0;
-    SPI1_CS2_LINE_TRIS = 0x0;
-    SPI1_CS3_LINE_TRIS = 0x0;
-    // Set Set CS1,CS2 and CS3 disable
-    SPI1_CS1_LINE_PORT = 0x1;
-    SPI1_CS2_LINE_PORT = 0x1;
-    SPI1_CS3_LINE_PORT = 0x1;
+    // CS for MCP42XXX Digital Potentiometer
+    MCP42XXX_CS_LINE_TRIS = 0x0;        // Output
+    MCP42XXX_CS_LINE_PORT = 0x1;        // CS Disabled
+    
+    // CS for MCP425X Digital Potentiometer
+    MCP425X_CS_LINE_TRIS = 0x0;         // Output
+    MCP425X_CS_LINE_PORT = 0x1;         // CS Disabled
+    
+    // CS for MCP23S08s GPIO Expander
+    MCP23S08_CS_LINE_TRIS = 0x0;        // Output
+    MCP23S08_CS_LINE_PORT = 0x1;        // CS Disabled
 }
 
 // Setup of SPI configuration of MSSP
@@ -212,7 +215,7 @@ void StartUpSPI16x2LCD(void) {
     // Initialization of MCP28S03 at hardware address 0x01
     // used with the library for driver an LCD 44780 Hitachi
     // compatible in 4 bit mode
-    LCD44780_MCP23S08_lcd_init_SPI1(0x01);
+    LCD44780_MCP23S08_lcd_init_SPI1(LCD44780_MCP23S08_ADDRESS);
     // Set cursor at first line
     LCD44780_MCP23S08_goto_line_SPI1(LCD44780_MCP23S08_FIRST_LINE);
     // Print the welcome message
@@ -233,26 +236,26 @@ void StartUpSPIGPIOExtender(void) {
     
     
     // Initialization of MCP28S03 at hardware address 0x00
-    SPI1_CS3_LINE_PORT = 0x0;
+    MCP23S08_CS_LINE_PORT = 0x0;
     MCP23S08_Write_Register_SPI1(0x00, MCP23S08_IOCON, 0x0A);
     // Deselect Extender device
-    SPI1_CS3_LINE_PORT = 0x1;
+    MCP23S08_CS_LINE_PORT = 0x1;
         
     __delay_us(50);
         
     // Select Extender device
-    SPI1_CS3_LINE_PORT = 0x0;
+    MCP23S08_CS_LINE_PORT = 0x0;
     MCP23S08_Write_Register_SPI1(0x00, MCP23S08_IODIR, 0x00);
     // Deselect Extender device
-    SPI1_CS3_LINE_PORT = 0x1;
+    MCP23S08_CS_LINE_PORT = 0x1;
 
     __delay_us(50);
 
     // Select Extender device
-    SPI1_CS3_LINE_PORT = 0x0;
+    MCP23S08_CS_LINE_PORT = 0x0;
     MCP23S08_Write_Register_SPI1(0x00, MCP23S08_OLAT, 0x00);
     // Deselect Extender device
-    SPI1_CS3_LINE_PORT = 0x1;
+    MCP23S08_CS_LINE_PORT = 0x1;
 }
 
 // Update the system by current USB status
@@ -323,7 +326,7 @@ void SimpleMessageSPI16x2LCD(const char *message) {
 // Put a command and relative value on first line of LCD 44780 Hitachi
 // by SPI MCP23S08
 #if defined(CMD_DEBUG_MODE)
-    void DebugCommandSPI16x2LCD(const char *cmd, bool bIsValue, uint8_t byValue) {
+    void DebugCommandSPI16x2LCD(const char *cmd, bool bIsValue, uint8_t byLenght, uint8_t byValue) {
         // Clear LCD
         LCD44780_MCP23S08_lcd_clear_SPI1();
         // Set cursor at first line
@@ -332,11 +335,14 @@ void SimpleMessageSPI16x2LCD(const char *message) {
         LCD44780_MCP23S08_send_message_SPI1("-> ");
         LCD44780_MCP23S08_send_message_SPI1(cmd);
         
+        // Set cursor at second line
+        LCD44780_MCP23S08_goto_line_SPI1(LCD44780_MCP23S08_SECOND_LINE);
+        LCD44780_MCP23S08_send_message_SPI1("L:");
+        LCD44780_MCP23S08_write_integer_SPI1((int16_t)byLenght, 1, LCD44780_MCP23S08_ZERO_CLEANING_OFF);
+        
         // Controls if value present
         if (bIsValue) {
-            // Set cursor at second line
-            LCD44780_MCP23S08_goto_line_SPI1(LCD44780_MCP23S08_SECOND_LINE);
-            LCD44780_MCP23S08_send_message_SPI1("-> ");
+            LCD44780_MCP23S08_send_message_SPI1(" V:");
             LCD44780_MCP23S08_write_integer_SPI1((int16_t)byValue, 1, LCD44780_MCP23S08_ZERO_CLEANING_OFF);
         }
     }
@@ -344,7 +350,7 @@ void SimpleMessageSPI16x2LCD(const char *message) {
 
 // Takes a current value of capture of CCP2 updated by the ISR
 // and controls if variance are in tollerance gap.
-bool updateCCPCapture(uint16_t *uiCapture) {
+volatile bool updateCCPCapture(volatile uint16_t *uiCapture) {
     
     int16_t iCaptureDelta = 0;
     bool bIsChanged = false;
@@ -352,22 +358,22 @@ bool updateCCPCapture(uint16_t *uiCapture) {
     // Controls if last CCP capture has changed from previous
     if ((*uiCapture) != uiLastCaptureCCP2) {
         // Calcs difference
-        iCaptureDelta = (int16_t)(*uiCapture) - (int16_t)uiLastCaptureCCP2;
+        //iCaptureDelta = (int16_t)(*uiCapture) - (int16_t)uiLastCaptureCCP2;
         // Controls if is threshold gap
-        if (abs(iCaptureDelta) > CCP2_CAPTURE_THRESHOLD_GAP) {
+        //if (abs(iCaptureDelta) > CCP2_CAPTURE_THRESHOLD_GAP) {
 
             // Save new value
             (*uiCapture) = uiLastCaptureCCP2;
             // Mark changed
             bIsChanged = true;
-        }
+        //}
     }
     
     return bIsChanged;
 }
 
 
-uint8_t packResponseFrequency(uint8_t *buffer, uint16_t uiValue) {
+volatile uint8_t packResponseFrequency(uint8_t *buffer, uint16_t uiValue) {
     
     // Clear write buffer
     ClearCDCUSBDataWriteBuffer();
@@ -384,14 +390,16 @@ uint8_t packResponseFrequency(uint8_t *buffer, uint16_t uiValue) {
     buffer[2] = (uint8_t)(uiValue & 0x00FF);
     // High Low byte value
     buffer[3] = (uint8_t)(uiValue >> 8);
-    
+        
     // Debug block
+    /*
     #if defined(CMD_DEBUG_MODE)
         LCD44780_MCP23S08_lcd_clear_SPI1();
         LCD44780_MCP23S08_goto_line_SPI1(LCD44780_MCP23S08_FIRST_LINE);
         LCD44780_MCP23S08_send_message_SPI1("Freq : ");
-        LCD44780_MCP23S08_write_integer_SPI1((int16_t)uiCaptureCCP2, 1, LCD44780_MCP23S08_ZERO_CLEANING_OFF);
+        LCD44780_MCP23S08_write_integer_SPI1((int16_t)uiValue, 1, LCD44780_MCP23S08_ZERO_CLEANING_OFF);
     #endif
+     */
     
     // Four bytes copied.
     return 4;
@@ -425,10 +433,13 @@ void MainSystemTasks(void) {
      */
     if(USBUSARTIsTxTrfReady() == true)
     {
-        uint16_t uiIDCommand = 0x00;
-        uint8_t byValue = 0;
-        uint8_t iNumBytesRead = 0;
-        uint8_t iNumBytesToWrite = 0;
+        uint16_t uiIDCommand = 0x00;                // Request Command received
+        uint8_t byVCOID = 0;                        // Working VCO ID 
+        uint8_t byIndex = 0;                        // Pointer Index to received buffer
+        uint8_t byValue = 0;                        // First byte Value received
+        uint8_t iNumBytesRead = 0;                  // Number of bytes read
+        uint8_t iNumBytesToWrite = 0;               // Number of bytes written
+        uint8_t byCounter = 0;                      // Simple counter
         
         // Reads bytes available from USB
         iNumBytesRead = getsUSBUSART(readBuffer, sizeof(readBuffer));
@@ -439,9 +450,9 @@ void MainSystemTasks(void) {
             BlinkLEDGP1();
             
             // Reading 2 byte command               
-            uiIDCommand = (uint16_t)(readBuffer[0] + (readBuffer[1] << 8));
+            uiIDCommand = (uint16_t)(readBuffer[CMD_PART_LOW_BYTE] + (readBuffer[CMD_PART_HIGH_BYTE] << 8));
             // Reading 1 byte value
-            byValue = readBuffer[2];
+            byValue = readBuffer[START_REQ_PAYLOAD];
             
             // Decode command
             switch(uiIDCommand) {
@@ -451,58 +462,107 @@ void MainSystemTasks(void) {
                 
                 // Resquest all ALFONSo State
                 case SYNC_REQ_ALL:
-                    #if defined(CMD_DEBUG_MODE)
-                        DebugCommandSPI16x2LCD("SYNC_REQ_ALL", false, 0);
-                    #endif
                     
-                    // To do ....
-                    
-                    // Takes the current Frequency captured for VCO1
-                    if (updateCCPCapture(&aVCOInfo[VCO1].uiAnalogFreqCCP)) {
+                    // Control if right size
+                    if (iNumBytesRead == SYNC_REQ_ALL_LEN) {
+                        #if defined(CMD_DEBUG_MODE)
+                            DebugCommandSPI16x2LCD("SYNC_REQ_ALL", false, iNumBytesRead, 0);
+                        #endif
                         
-                        // Blink LED
-                        BlinkLEDGP2();
-                        // Packs the value
-                        iNumBytesToWrite = packResponseFrequency(writeBuffer, aVCOInfo[VCO1].uiAnalogFreqCCP);
-                        // Swnd bytes to USB
-                        putUSBUSART(writeBuffer, iNumBytesToWrite);
+                        // Set index at start of payload buffer
+                        byIndex = START_REQ_PAYLOAD;
+                        // Should be equal to all VCOs available
+                        for(byCounter = 0; byCounter < NUM_VCO_PRESENT; byCounter++) {
+                            
+                            // Get VCO ID
+                            byVCOID = readBuffer[byIndex];
+                            byIndex++;
+                            
+                            // VCO Enable 
+                            aVCOInfo[byVCOID].bVCOEnable = (bool)readBuffer[byIndex];
+                            byIndex++;
+                            // VCO Frequency
+                            aVCOInfo[byVCOID].byFrequency = readBuffer[byIndex];
+                            byIndex++;
+                            // VCO Duty Cycle
+                            aVCOInfo[byVCOID].byDutyCycle = readBuffer[byIndex];
+                            byIndex++;
+                            // VCO Harmonic Sine
+                            aVCOInfo[byVCOID].bSineWaveEnable = (bool)readBuffer[byIndex];
+                            byIndex++;
+                            // VCO Harmonic Square
+                            aVCOInfo[byVCOID].bSquareWaveEnable = (bool)readBuffer[byIndex];
+                            byIndex++;
+                            // VCO Harmonic Triangle
+                            aVCOInfo[byVCOID].bTriangleWaveEnable = (bool)readBuffer[byIndex];
+                            byIndex++;                            
+                        }
+                        
+                        // To do ....
+                        // ADJUST 
+                        // !!!
+                        // !!!
+                        
+                        // Takes the current Frequency captured for VCO1
+                        if (updateCCPCapture(&aVCOInfo[VCO1].uiAnalogFreqCCP)) {
+                        
+                            // Blink LED
+                            BlinkLEDGP2();
+                            // Packs the value
+                            iNumBytesToWrite = packResponseFrequency(writeBuffer, aVCOInfo[VCO1].uiAnalogFreqCCP);
+                            // Swnd bytes to USB
+                            putUSBUSART(writeBuffer, iNumBytesToWrite);
+                        }                    
                     }
                     
                     break;
 
-                case SYNC_REQ_VCO_1:
-                    #if defined(CMD_DEBUG_MODE)
-                        DebugCommandSPI16x2LCD("SYNCREQ_VCO1", false, 0);
-                    #endif
+                case SYNC_REQ_VCO_1 :
+                    // Control if right size
+                    if (iNumBytesRead == SYNC_REQ_VCO_LEN) {
+                        #if defined(CMD_DEBUG_MODE)
+                            DebugCommandSPI16x2LCD("SYNCREQ_VCO1", false, iNumBytesRead, 0);
+                        #endif
 
-                    // To do ....
+                        // To do ....
+                        
+                    }
                     
                     break;
                     
                 case SYNC_REQ_VCO_2:
-                    #if defined(CMD_DEBUG_MODE)
-                        DebugCommandSPI16x2LCD("SYNCREQ_VCO2", false, 0);
-                    #endif
+                    // Control if right size
+                    if (iNumBytesRead == SYNC_REQ_VCO_LEN) {
+                        #if defined(CMD_DEBUG_MODE)
+                            DebugCommandSPI16x2LCD("SYNCREQ_VCO2", false, iNumBytesRead, 0);
+                        #endif
 
-                    // To do ....
+                        // To do ....
+                    }
                     
                     break;
                     
                 case SYNC_REQ_VCO_3:
-                    #if defined(CMD_DEBUG_MODE)
-                        DebugCommandSPI16x2LCD("SYNCREQ_VCO3", false, 0);
-                    #endif
+                    // Control if right size
+                    if (iNumBytesRead == SYNC_REQ_VCO_LEN) {
+                        #if defined(CMD_DEBUG_MODE)
+                            DebugCommandSPI16x2LCD("SYNCREQ_VCO3", false, iNumBytesRead, 0);
+                        #endif
 
-                    // To do ....
+                        // To do ....
+                    }
                     
                     break;
                     
                 case SYNC_REQ_VCO_4:
-                    #if defined(CMD_DEBUG_MODE)
-                        DebugCommandSPI16x2LCD("SYNCREQ_VCO4", false, 0);
-                    #endif
+                    // Control if right size
+                    if (iNumBytesRead == SYNC_REQ_VCO_LEN) {
+                        #if defined(CMD_DEBUG_MODE)
+                            DebugCommandSPI16x2LCD("SYNCREQ_VCO4", false, iNumBytesRead, 0);
+                        #endif
 
-                    // To do ....
+                        // To do ....
+                    }
                     
                     break;
                     
@@ -510,11 +570,38 @@ void MainSystemTasks(void) {
                 // VCO Enable command
                     
                 case VCO_1_REQ_ENABLE:
-                    #if defined(CMD_DEBUG_MODE)
-                        DebugCommandSPI16x2LCD("VCO1REQ_ENA", true, byValue);
-                    #endif
+                    // Control if right size
+                    if (iNumBytesRead == VCO_REQ_ENABLE_LEN) {
+                        #if defined(CMD_DEBUG_MODE)
+                            DebugCommandSPI16x2LCD("VCO1REQ_ENA", true, iNumBytesRead, byValue);
+                        #endif
 
-                    // To do ....
+                        // Update VCO Enable 
+                        aVCOInfo[VCO1].bVCOEnable = (bool)byValue;
+                            
+                        // To do ....
+                        
+                        // TEST !!!!
+                        byCounter = (uint8_t)(byValue << 4);
+                        // Select IO EXP device
+                        MCP23S08_CS_LINE_PORT = 0x0;
+                        MCP23S08_Write_Register_SPI1(0x00, MCP23S08_GPIO, byCounter);
+                        // Deselect Pot device
+                        MCP23S08_CS_LINE_PORT = 0x1;
+                        
+                        // ****
+                        
+                        // Takes the current Frequency captured for VCO1
+                        if (updateCCPCapture(&aVCOInfo[VCO1].uiAnalogFreqCCP)) {
+
+                            // Blink LED
+                            BlinkLEDGP2();
+                            // Packs the value
+                            iNumBytesToWrite = packResponseFrequency(writeBuffer, aVCOInfo[VCO1].uiAnalogFreqCCP);
+                            // Swnd bytes to USB
+                            putUSBUSART(writeBuffer, iNumBytesToWrite);
+                        }
+                    }
                     
                     break;
                     
@@ -522,11 +609,17 @@ void MainSystemTasks(void) {
                 // VCO Frequency command
                 
                 case VCO_1_REQ_FREQUENCY:
-                    #if defined(CMD_DEBUG_MODE)
-                        DebugCommandSPI16x2LCD("VCO1REQ_FREQ", true, byValue);
-                    #endif
+                    // Control if right size
+                    if (iNumBytesRead == VCO_REQ_FREQUENCY_LEN) {
+                        #if defined(CMD_DEBUG_MODE)
+                            DebugCommandSPI16x2LCD("VCO1REQ_FREQ", true, iNumBytesRead, byValue);
+                        #endif
 
-                    // To do ....
+                        // Update VCO Frequency 
+                        aVCOInfo[VCO1].byFrequency = byValue;
+
+                        // To do ....
+                    }
                     
                     break;
                     
@@ -534,11 +627,17 @@ void MainSystemTasks(void) {
                 // VCO Duty cycle command
                 
                 case VCO_1_REQ_DUTY_CYCLE:
-                    #if defined(CMD_DEBUG_MODE)
-                        DebugCommandSPI16x2LCD("VCO1REQ_DTY_CY", true, byValue);
-                    #endif
+                    // Control if right size
+                    if (iNumBytesRead == VCO_REQ_DUTY_CYCLE_LEN) {
+                        #if defined(CMD_DEBUG_MODE)
+                            DebugCommandSPI16x2LCD("VCO1REQ_DTY_CY", true, iNumBytesRead, byValue);
+                        #endif
 
-                    // To do ....
+                        // Update VCO Duty Cycle 
+                        aVCOInfo[VCO1].byDutyCycle = byValue;
+
+                        // To do ....
+                    }
                     
                     break;
                     
@@ -546,11 +645,17 @@ void MainSystemTasks(void) {
                 // VCO Enable Sine harmonica command    
                 
                 case VCO_1_REQ_ENABLE_SINE:
-                    #if defined(CMD_DEBUG_MODE)
-                        DebugCommandSPI16x2LCD("VCO1ENA_SINE", true, byValue);
-                    #endif
+                    // Control if right size
+                    if (iNumBytesRead == VCO_REQ_ENABLE_SINE_LEN) {
+                        #if defined(CMD_DEBUG_MODE)
+                            DebugCommandSPI16x2LCD("VCO1ENA_SINE", true, iNumBytesRead, byValue);
+                        #endif
 
-                    // To do ....
+                        // Update VCO Sine Harmonic
+                        aVCOInfo[VCO1].bSineWaveEnable = (bool)byValue;
+
+                        // To do ....
+                    }
                     
                     break;
                     
@@ -558,11 +663,17 @@ void MainSystemTasks(void) {
                 // VCO Enable Square harmonica command    
                 
                 case VCO_1_REQ_ENABLE_SQUARE:
-                    #if defined(CMD_DEBUG_MODE)
-                        DebugCommandSPI16x2LCD("VCO1ENA_SQUAR", true, byValue);
-                    #endif
+                    // Control if right size
+                    if (iNumBytesRead == VCO_REQ_ENABLE_SQUARE_LEN) {
+                        #if defined(CMD_DEBUG_MODE)
+                            DebugCommandSPI16x2LCD("VCO1ENA_SQUAR", true, iNumBytesRead, byValue);
+                        #endif
 
-                    // To do ....
+                        // Update VCO Square Harmonic
+                        aVCOInfo[VCO1].bSquareWaveEnable = (bool)byValue;
+                        
+                        // To do ....
+                    }
                     
                     break;
                     
@@ -570,14 +681,20 @@ void MainSystemTasks(void) {
                 // VCO Enable Triangle harmonica command    
                 
                 case VCO_1_REQ_ENABLE_TRIANGLE:
-                    #if defined(CMD_DEBUG_MODE)
-                        DebugCommandSPI16x2LCD("VCO1ENA_TRIAN", true, byValue);
-                    #endif
+                    // Control if right size
+                    if (iNumBytesRead == VCO_REQ_ENABLE_TRIANGLE_LEN) {
+                        #if defined(CMD_DEBUG_MODE)
+                            DebugCommandSPI16x2LCD("VCO1ENA_TRIAN", true, iNumBytesRead, byValue);
+                        #endif
 
-                    // To do ....
+                        // Update VCO Triangle Harmonic
+                        aVCOInfo[VCO1].bTriangleWaveEnable = (bool)byValue;
+                        
+                        // To do ....
+                    }
                     
                     break;
-                            
+                    
             }
         }
     }

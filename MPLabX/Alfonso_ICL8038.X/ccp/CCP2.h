@@ -36,11 +36,16 @@ This Header contains all functions for used with CCP1 module
  * 
  * CCPx_CAPTURE_1_FALL, CCPx_CAPTURE_1_RISE
  * CCPx_CAPTURE_4_RISE, CCPx_CAPTURE_16_RISE
+ * 
+ * @param timer_prescale Is ratio to set to Timer's prescaler.
+ * 
+ * CCPx_TIMER_PRESCALE_1, CCPx_TIMER_PRESCALE_2
+ * CCPx_TIMER_PRESCALE_4, CCPx_TIMER_PRESCALE_8
  *
  * @return The Signal frequency 
  * 
  */
-double getFrequencyFromTimer(uint16_t capture_time, uint8_t capture_mode);
+volatile double getFrequencyFromTimer(uint16_t capture_time, uint8_t capture_mode, uint8_t timer_prescale);
 
 /**
  * This macro function configure and initialize the CCP module

@@ -42,7 +42,7 @@ uint16_t CCP2CaptureTask (void) {
         TMR3L = 0x00;
         
         //Clear interrupt flag
-        CCP2ClearUSBInterrupt();
+        CCP2ClearInterrupt();
         
     }
     
@@ -52,32 +52,62 @@ uint16_t CCP2CaptureTask (void) {
 // CCP2_init Implementation
 void CCP2_init (void) {
     
-    // Configure CCP2 in capture mode for every 16th rising edge
-    CCP2_init_capture(CCPx_CAPTURE_16_RISE);
+    // Configure CCP2 in capture mode for every rising edge
+    CCP2_init_capture(CCPx_CAPTURE_1_RISE, CCPx_TIMER_PRESCALE_8);
     
 }
 
 // getFrequencyFromTimer Implementation
-double getFrequencyFromTimer(uint16_t capture_time, uint8_t capture_mode) {
+volatile double getFrequencyFromTimer(uint16_t capture_time, uint8_t capture_mode, uint8_t timer_prescale) {
     
-    double TOsc = 4 / SYSTEM_CLOCK;         // TCycle period
-    double TSignal = 0;                     // TSignal period
+    //double dTOsc = 4 / (SYSTEM_CLOCK / 1000000);        // TCycle period
+    double dTOsc = 0.0833;
+    double dTSignal = 0;                                // TSignal period
+    uint8_t byTimerRatio = 0;                           // Timer Prescaler ratio
+    uint8_t byCaptureSamples = 0;                       // Capture Samples
+    double dDivider = 0;                                // TOsc divider by 
+                                                        // Timer Prescaler ratio and Capture Samples
+    double dTimerCount = 0;                             // Count TOsc for Timer
     
     // Select capture mode
     switch (capture_mode) {
         
         case CCPx_CAPTURE_1_FALL:
         case CCPx_CAPTURE_1_RISE:
-            TSignal = capture_time * TOsc;
+            byCaptureSamples = 1;
             break;
         case CCPx_CAPTURE_4_RISE:
-            TSignal = (capture_time / 4) * TOsc;
+            byCaptureSamples = 4;
             break;
         case CCPx_CAPTURE_16_RISE:
-            TSignal = (capture_time / 16) * TOsc;
+            byCaptureSamples = 16;
             break;
     }
     
-    return (1 / TSignal) * 1000;
+    // Select Timer ratio
+    switch (timer_prescale) {
+        
+        case CCPx_TIMER_PRESCALE_1:
+            byTimerRatio = 1;
+            break;
+        case CCPx_TIMER_PRESCALE_2:
+            byTimerRatio = 2;
+            break;
+        case CCPx_TIMER_PRESCALE_4:
+            byTimerRatio = 4;
+            break;
+        case CCPx_TIMER_PRESCALE_8:
+            byTimerRatio = 8;
+            break;
+    }
+    
+    // Calcs divider
+    dDivider = byTimerRatio / byCaptureSamples;
+    // Calcs TOsc in Timer count
+    dTimerCount = (double)capture_time * dDivider;
+    // Calcs period
+    dTSignal = dTimerCount * dTOsc;
+    // Return frequncy
+    return 1000 / dTSignal;
     
 }
