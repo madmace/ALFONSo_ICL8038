@@ -42,9 +42,10 @@ Item {
 
     SingleUnitLFO {
         id: singleUnitLFO1
-        x: 10
+        anchors.left: parent.left
+        anchors.leftMargin: 10
         y: 40
-        width: 300
+        width: 320
         height: 350
         singleUnitLFOText: "VCO/LFO 1"
         singleUnitLFOLabelText: "MIX MODULE 1"
@@ -53,9 +54,10 @@ Item {
 
     SingleUnitLFO {
         id: singleUnitLFO2
-        x: 320
+        anchors.left: singleUnitLFO1.right
+        anchors.leftMargin: 10
         y: 40
-        width: 300
+        width: 320
         height: 350
         singleUnitLFOText: "VCO/LFO 2"
         singleUnitLFOLabelText: "MIX MODULE 2"
@@ -64,9 +66,10 @@ Item {
 
     SingleUnitLFO {
         id: singleUnitLFO3
-        x: 630
+        anchors.left: singleUnitLFO2.right
+        anchors.leftMargin: 10
         y: 40
-        width: 300
+        width: 320
         height: 350
         singleUnitLFOText: "VCO/LFO 3"
         singleUnitLFOLabelText: "MIX MODULE 3"
@@ -75,9 +78,10 @@ Item {
 
     SingleUnitLFO {
         id: singleUnitLFO4
-        x: 940
+        anchors.left: singleUnitLFO3.right
+        anchors.leftMargin: 10
         y: 40
-        width: 300
+        width: 320
         height: 350
         singleUnitLFOText: "VCO/LFO 4"
         singleUnitLFOLabelText: "MIX MODULE 4"

@@ -58,6 +58,9 @@ public:
 
 signals:
 
+    // Signal for update botton panel info text
+    void updateBottomInfoText(QString sInfoText);
+
 public slots:
 
     // Store the status of the single control

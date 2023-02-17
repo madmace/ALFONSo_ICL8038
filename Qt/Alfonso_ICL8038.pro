@@ -5,6 +5,7 @@ QT += quick serialport
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+        freqSelector.cpp \
         harmonicsSwitchesLFOModel.cpp \
         main.cpp \
         mixer.cpp \
@@ -31,6 +32,7 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
 HEADERS += \
+    freqSelector.h \
     harmonicsSwitchesLFOModel.h \
     mixer.h \
     potentiometer.h \
@@ -43,13 +45,17 @@ HEADERS += \
 
 DISTFILES += \
     content/Constants.qml \
-    content/HarmonicsSwitchesLFO.qml \
-    content/LFOMixer.qml \
+    content/FreqSelectorButtonLFO.qml \
+    content/FreqSelectorLFO.qml \
     content/PotDutyCycleLFO.qml \
     content/PotFrequencyLFO.qml \
-    content/SingleUnitLFO.qml \
-    content/Splash.qml \
+    content/FreqLabelLFO.qml \
     content/TabButtonLFO.qml \
     content/ToggleSwitchLFO.qml \
     content/ViewPanelLFO.qml \
+    content/HarmonicsSwitchesLFO.qml \
+    content/SingleUnitLFO.qml \
+    content/LFOMixer.qml \
+    content/Splash.qml \
+
     main.qml

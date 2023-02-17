@@ -17,11 +17,42 @@
 
 *******************************************************************************/
 
-import QtQuick 2.8
+import QtQuick 2.12
+import QtQuick.Window 2.12
+import QtQuick.Controls 2.12
+
+import com.alfonso.protocol 1.0
+import com.alfonso.mixer 1.0
+import com.alfonso.serialportcontroller 1.0
+import com.alfonso.qml.controls 1.0
 
 Item {
     id: viewPanelLFO
     state: "state_state_active"
+    property alias bottomInfoText: panelBottomBarText.text
+
+    Component.onCompleted: {
+        // Update Infomations
+        bottomInfoText = "Ready.";
+    }
+
+    Connections {
+        target: Mixer
+
+        function onUpdateBottomInfoText(sInfoText) {
+            // Update Infomations
+            bottomInfoText = sInfoText;
+        }
+    }
+
+    Connections {
+        target: SerialPortController
+
+        function onUpdateBottomInfoText(sInfoText) {
+            // Update Infomations
+            bottomInfoText = sInfoText;
+        }
+    }
 
     Rectangle {
         id: panelBackground
@@ -43,6 +74,18 @@ Item {
         color: "#38383f"
         border.color: "#33c2ff"
         border.width: 1
+
+        Text {
+            id: panelBottomBarText
+            anchors.left: parent.left
+            anchors.leftMargin: 15
+            anchors.top: parent.top
+            anchors.topMargin: 15
+            color: "#dcdada"
+            font.pixelSize: 14
+            font.family: "Abel"
+            font.weight: Font.Normal
+        }
     }
 
     Rectangle {

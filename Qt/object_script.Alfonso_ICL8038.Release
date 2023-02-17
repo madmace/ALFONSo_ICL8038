@@ -1,3 +1,4 @@
+release/freqSelector.o
 release/harmonicsSwitchesLFOModel.o
 release/main.o
 release/mixer.o
@@ -10,6 +11,7 @@ release/tabButton.o
 release/toggleSwitch.o
 release/qrc_qml.o
 release/qrc_qmake_qmake_immediate.o
+release/moc_freqSelector.o
 release/moc_mixer.o
 release/moc_potentiometer.o
 release/moc_protocol.o

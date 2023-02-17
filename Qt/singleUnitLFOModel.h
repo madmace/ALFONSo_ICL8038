@@ -33,11 +33,13 @@ public:
     // Properties
 
     bool getTabButtonLFOSelected();
+    quint8 getFreqSelectorLFOValue();
     quint8 getPotFrequencyLFOValue();
     quint8 getPotDutyCycleLFOValue();
     HarmonicsSwitchesLFO* getHarmonicsSwitchesLFO();
 
     void setTabButtonLFOSelected(bool newValue);
+    void setFreqSelectorLFOValue(quint8 newValue);
     void setPotFrequencyLFOValue(quint8 newValue);
     void setPotDutyCycleLFOValue(quint8 newValue);
     void setHarmonicsSwitchesLFO(HarmonicsSwitchesLFO *newObj);
@@ -45,6 +47,7 @@ public:
 private:
 
     bool m_tabButtonLFOSelected;
+    quint8 m_freqSelectorLFOValue;
     quint8 m_potFrequencyLFOValue;
     quint8 m_potDutyCycleLFOValue;
     HarmonicsSwitchesLFO* m_oHarmonicsSwitchesLFO;

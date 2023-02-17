@@ -29,6 +29,7 @@
 #include "potentiometer.h"
 #include "toggleSwitch.h"
 #include "tabButton.h"
+#include "freqSelector.h"
 
 int main(int argc, char *argv[])
 {
@@ -51,6 +52,7 @@ int main(int argc, char *argv[])
 
     // Register QML Controls
     qmlRegisterType<TabButton> ("com.alfonso.qml.controls", 1, 0, "TabButton");
+    qmlRegisterType<FreqSelector> ("com.alfonso.qml.controls", 1, 0, "FreqSelector");
     qmlRegisterType<Potentiometer> ("com.alfonso.qml.controls", 1, 0, "Potentiometer");
     qmlRegisterType<ToggleSwitch> ("com.alfonso.qml.controls", 1, 0, "ToggleSwitch");
 

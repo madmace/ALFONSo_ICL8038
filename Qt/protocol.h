@@ -44,6 +44,7 @@ class Protocol : public QObject
      ******************************/
 
     Q_PROPERTY(int tabButtonType READ tabButtonType CONSTANT)
+    Q_PROPERTY(int freqSelectorType READ freqSelectorType CONSTANT)
     Q_PROPERTY(int frequencyPotType READ frequencyPotType CONSTANT)
     Q_PROPERTY(int dutyCyclePotType READ dutyCyclePotType CONSTANT)
     Q_PROPERTY(int toggleSwitchSineType READ toggleSwitchSineType CONSTANT)
@@ -60,6 +61,7 @@ class Protocol : public QObject
 
 public:
 
+    // Constructor
     explicit Protocol(QObject *parent = nullptr);
 
     // QML singleton type provider function (callback).
@@ -68,6 +70,7 @@ public:
 
     // Gets Properties
     int tabButtonType();
+    int freqSelectorType();
     int frequencyPotType();
     int dutyCyclePotType();
     int toggleSwitchSineType();
@@ -83,11 +86,12 @@ public:
      ******************************/
 
     static const int tabButtonTypeValue = 1;                // Main Tab Enabler VCO/LFO
-    static const int frequencyPotTypeValue = 2;             // Frequency Potentiometer VCO/LFO
-    static const int dutyCyclePotTypeValue = 3;             // Duty Cycle Potentiometer VCO/LFO
-    static const int toggleSwitchSineTypeValue = 4;         // Switch Sine VCO/LFO Signal
-    static const int toggleSwitchSquareTypeValue = 5;       // Switch Square VCO/LFO Signal
-    static const int toggleSwitchTriangleTypeValue = 6;     // Switch Triangle VCO/LFO Signal
+    static const int freqSelectorTypeValue = 2;             // Frequency Range selector VCO/LFO
+    static const int frequencyPotTypeValue = 3;             // Frequency Potentiometer VCO/LFO
+    static const int dutyCyclePotTypeValue = 4;             // Duty Cycle Potentiometer VCO/LFO
+    static const int toggleSwitchSineTypeValue = 5;         // Switch Sine VCO/LFO Signal
+    static const int toggleSwitchSquareTypeValue = 6;       // Switch Square VCO/LFO Signal
+    static const int toggleSwitchTriangleTypeValue = 7;     // Switch Triangle VCO/LFO Signal
 
     /*****************************
      *
@@ -125,50 +129,59 @@ public:
     // Resquest for enable/disable VCO 4
     static const quint16 VCO_4_REQ_ENABLE = 0x0004;
 
+    // Resquest for set VCO 1 frequency Range
+    static const quint16 VCO_1_REQ_FREQ_SELECTOR = 0x0010;
+    // Resquest for set VCO 2 frequency Range
+    static const quint16 VCO_2_REQ_FREQ_SELECTOR = 0x0011;
+    // Resquest for set VCO 3 frequency Range
+    static const quint16 VCO_3_REQ_FREQ_SELECTOR = 0x0012;
+    // Resquest for set VCO 4 frequency Range
+    static const quint16 VCO_4_REQ_FREQ_SELECTOR = 0x0013;
+
     // Resquest for set VCO 1 frequency
-    static const quint16 VCO_1_REQ_FREQUENCY = 0x0010;
+    static const quint16 VCO_1_REQ_FREQUENCY = 0x0020;
     // Resquest for set VCO 2 frequency
-    static const quint16 VCO_2_REQ_FREQUENCY = 0x0011;
+    static const quint16 VCO_2_REQ_FREQUENCY = 0x0021;
     // Resquest for set VCO 3 frequency
-    static const quint16 VCO_3_REQ_FREQUENCY = 0x0012;
+    static const quint16 VCO_3_REQ_FREQUENCY = 0x0022;
     // Resquest for set VCO 4 frequency
-    static const quint16 VCO_4_REQ_FREQUENCY = 0x0013;
+    static const quint16 VCO_4_REQ_FREQUENCY = 0x0023;
 
     // Resquest for set VCO 1 Duty cycle
-    static const quint16 VCO_1_REQ_DUTY_CYCLE = 0x0020;
+    static const quint16 VCO_1_REQ_DUTY_CYCLE = 0x0030;
     // Resquest for set VCO 2 Duty cycle
-    static const quint16 VCO_2_REQ_DUTY_CYCLE = 0x0021;
+    static const quint16 VCO_2_REQ_DUTY_CYCLE = 0x0031;
     // Resquest for set VCO 3 Duty cycle
-    static const quint16 VCO_3_REQ_DUTY_CYCLE = 0x0022;
+    static const quint16 VCO_3_REQ_DUTY_CYCLE = 0x0032;
     // Resquest for set VCO 4 Duty cycle
-    static const quint16 VCO_4_REQ_DUTY_CYCLE = 0x0023;
+    static const quint16 VCO_4_REQ_DUTY_CYCLE = 0x0033;
 
     // Resquest for enable VCO 1 Sine line
-    static const quint16 VCO_1_REQ_ENABLE_SINE = 0x0030;
+    static const quint16 VCO_1_REQ_ENABLE_SINE = 0x0040;
     // Resquest for enable VCO 2 Sine line
-    static const quint16 VCO_2_REQ_ENABLE_SINE = 0x0031;
+    static const quint16 VCO_2_REQ_ENABLE_SINE = 0x0041;
     // Resquest for enable VCO 3 Sine line
-    static const quint16 VCO_3_REQ_ENABLE_SINE = 0x0032;
+    static const quint16 VCO_3_REQ_ENABLE_SINE = 0x0042;
     // Resquest for enable VCO 4 Sine line
-    static const quint16 VCO_4_REQ_ENABLE_SINE = 0x0033;
+    static const quint16 VCO_4_REQ_ENABLE_SINE = 0x0043;
 
     // Resquest for enable VCO 1 Square line
-    static const quint16 VCO_1_REQ_ENABLE_SQUARE = 0x0040;
+    static const quint16 VCO_1_REQ_ENABLE_SQUARE = 0x0050;
     // Resquest for enable VCO 2 Square line
-    static const quint16 VCO_2_REQ_ENABLE_SQUARE = 0x0041;
+    static const quint16 VCO_2_REQ_ENABLE_SQUARE = 0x0051;
     // Resquest for enable VCO 3 Square line
-    static const quint16 VCO_3_REQ_ENABLE_SQUARE = 0x0042;
+    static const quint16 VCO_3_REQ_ENABLE_SQUARE = 0x0052;
     // Resquest for enable VCO 4 Square line
-    static const quint16 VCO_4_REQ_ENABLE_SQUARE = 0x0043;
+    static const quint16 VCO_4_REQ_ENABLE_SQUARE = 0x0053;
 
     // Resquest for enable VCO 1 Triangle line
-    static const quint16 VCO_1_REQ_ENABLE_TRIANGLE = 0x0050;
+    static const quint16 VCO_1_REQ_ENABLE_TRIANGLE = 0x0060;
     // Resquest for enable VCO 2 Triangle line
-    static const quint16 VCO_2_REQ_ENABLE_TRIANGLE = 0x0051;
+    static const quint16 VCO_2_REQ_ENABLE_TRIANGLE = 0x0061;
     // Resquest for enable VCO 3 Triangle line
-    static const quint16 VCO_3_REQ_ENABLE_TRIANGLE = 0x0052;
+    static const quint16 VCO_3_REQ_ENABLE_TRIANGLE = 0x0062;
     // Resquest for enable VCO 4 Triangle line
-    static const quint16 VCO_4_REQ_ENABLE_TRIANGLE = 0x0053;
+    static const quint16 VCO_4_REQ_ENABLE_TRIANGLE = 0x0063;
 
     /*****************************
      *
@@ -194,6 +207,7 @@ public:
     struct SyncVCOStruct
     {
         bool bTabButtonLFOSelected;
+        quint8 uiFreqSelectorIndexValue;
         quint8 uiPotFrequencyLFOValue;
         quint8 uiPotDutyCycleLFOValue;
         bool bToggleSwitchLFOSineSelected;

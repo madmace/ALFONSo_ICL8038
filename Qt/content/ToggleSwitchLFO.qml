@@ -118,7 +118,7 @@ Item {
             PropertyChanges { target: knob; x: 2 }
             PropertyChanges { target: background; source: "qrc:/resources/ToggleSwitch.svg" }
             PropertyChanges { target: label; text: qsTr("OFF") }
-            PropertyChanges { target: label; x: toggleSwitchLFO.width - knob.width - 8}
+            PropertyChanges { target: label; x: toggleSwitchLFO.width - knob.width - 8 }
         }
     ]
 

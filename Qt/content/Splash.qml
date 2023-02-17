@@ -35,15 +35,79 @@ Rectangle {
 
     signal isALFONSoUSBPresent()
 
-    Timer {
-        id: timer
+    Image { source: "qrc:/resources/alum-texture-blue-900x900.jpg"; fillMode: Image.Tile; anchors.fill: parent }
+
+    // Bizarre way to draw lines :)
+    Rectangle {
+        id:  borderRectangleLeft
+        anchors.left: parent.left
+        anchors.leftMargin: 0
+        anchors.top: parent.top
+        anchors.topMargin: 2
+        width: 2
+        anchors.bottom: parent.bottom
+        anchors.bottomMargin: 2
+        color: "white"
+        border.color: "white"
+        border.width: 4
     }
 
-    function delay(delayTime, cb) {
-            timer.interval = delayTime;
-            timer.repeat = false;
-            timer.triggered.connect(cb);
-            timer.start();
+    // Bizarre way to draw lines :)
+    Rectangle {
+        id:  borderRectangleTop
+        anchors.left: parent.left
+        anchors.leftMargin: 0
+        anchors.top: parent.top
+        anchors.topMargin: 0
+        anchors.right: parent.right
+        anchors.rightMargin: 1
+        height: 2
+        color: "black"
+        border.color: "black"
+        border.width: 4
+    }
+
+    // Bizarre way to draw lines :)
+    Rectangle {
+        id:  borderRectangleRight
+        x: parent.width - 2
+        anchors.top: parent.top
+        anchors.topMargin: 0
+        width: 2
+        anchors.bottom: parent.bottom
+        anchors.bottomMargin: 2
+        color: "black"
+        border.color: "black"
+        border.width: 4
+    }
+
+    // Bizarre way to draw lines :)
+    Rectangle {
+        id:  borderRectangleBotton
+        anchors.left: parent.left
+        anchors.leftMargin: 0
+        y: parent.height - 2
+        anchors.right: parent.right
+        anchors.rightMargin: 2
+        height: 2
+        color: "white"
+        border.color: "white"
+        border.width: 4
+    }
+
+    Timer {
+        id: timerObj
+
+        function setTimeout(cb, delayTime) {
+                timerObj.interval = delayTime;
+                timerObj.repeat = false;
+                timerObj.triggered.connect(cb);
+                timerObj.triggered.connect(function release () {
+                    timerObj.triggered.disconnect(cb); // This is important
+                    timerObj.triggered.disconnect(release); // This is important as well
+                });
+                timerObj.start();
+            }
     }
 
     Connections {
@@ -69,15 +133,19 @@ Rectangle {
 
             console.log("ALFONSo Port preesent.")
 
-            // Set Splash window
-            splashWindow.visible = false;
-            splashWindow.enabled = false;
-            // Set LFOMixer window
-            panelLFOMixer.visible = true;
-            panelLFOMixer.enabled = true;
             // Set Description
             panelConnectionBox.panelConnectionLabelText = Constants.splashUSBDeviceFound;
             panelConnectionBox.panelConnectionLEDSource = "qrc:/resources/GreenLight.svg"
+
+            // Wait for 0.5s
+            timerObj.setTimeout(function () {
+                // Set Splash window
+                splashWindow.visible = false;
+                splashWindow.enabled = false;
+                // Set LFOMixer window
+                panelLFOMixer.visible = true;
+                panelLFOMixer.enabled = true;
+            }, 500)
 
         } else {
 
@@ -108,9 +176,6 @@ Rectangle {
         panelConnectionBox.panelConnectionLEDSource = "qrc:/resources/RedLight.svg"
     }
 
-    Image { source: "qrc:/resources/alum-texture-blue-900x900.jpg"; fillMode: Image.Tile; anchors.fill: parent }
-
-
     Text {
         id: mainTitleLabel
         anchors.left: parent.left
@@ -118,7 +183,7 @@ Rectangle {
         anchors.top: parent.bottom
         anchors.topMargin: -120
         color: "goldenrod"
-        text: qsTr("Alfonso")
+        text: Constants.splashMainName
         font.pixelSize: 70
         font.bold: true
         font.weight: Font.ExtraBold
@@ -134,7 +199,7 @@ Rectangle {
             anchors.leftMargin: 5
             anchors.topMargin: -10
             color: "black"
-            text: qsTr("Analog Low Frequency Oscillator No linear Sequencer")
+            text: Constants.splashMainSlogan
             font.pixelSize: 20
             font.weight: Font.Normal
             horizontalAlignment: Text.AlignHCenter
@@ -161,8 +226,8 @@ Rectangle {
     Rectangle {
         id: panelPowerBox
         anchors.left: parent.left
-        anchors.leftMargin: 20
-        y: 10
+        anchors.leftMargin: 40
+        y: 30
         width: 180
         height: 230
         color: "transparent"
@@ -188,9 +253,11 @@ Rectangle {
                     if (mouse.button === Qt.LeftButton) {
                         // Set for searching
                         setALFONSoUSBSeaching();
-                        // Wait for 200 ms and emit request for search Serial USB
-                        delay(400, function() {})
-                        splashWindow.isALFONSoUSBPresent();
+                        // Wait for 0.5s and emit request for search Serial USB
+                        timerObj.setTimeout(function () {
+                            // Send signal for USB verify
+                            splashWindow.isALFONSoUSBPresent();
+                        }, 500);
                     }
                 }
             }
@@ -211,9 +278,9 @@ Rectangle {
 
     Rectangle {
         id: panelConnectionBox
-        anchors.left: panelPowerBox.left
-        anchors.leftMargin: panelPowerBox.width + 20
-        y: 10
+        anchors.left: panelPowerBox.right
+        anchors.leftMargin: 20
+        anchors.top: panelPowerBox.top
         width: 350
         height: 110
         color: "transparent"

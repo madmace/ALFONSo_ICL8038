@@ -28,6 +28,11 @@ int Protocol::tabButtonType()
     return Protocol::tabButtonTypeValue;
 }
 
+int Protocol::freqSelectorType()
+{
+    return Protocol::freqSelectorTypeValue;
+}
+
 int Protocol::frequencyPotType()
 {
     return Protocol::frequencyPotTypeValue;

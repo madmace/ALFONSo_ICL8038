@@ -33,12 +33,19 @@ QtObject {
     readonly property string swVersion: "0.0.1"
     readonly property int splashHeight: 450
 
-    readonly property int mainWidth: 1250
+    readonly property int mainWidth: 1330
     readonly property int mainHeight: 450
 
 
     //readonly property color backgroundColor: "#443224"
     //readonly property int defaultMargin: 8
+
+    /*
+    * Constant GUI Titles
+    */
+
+    readonly property string splashMainName: "Alfonso"
+    readonly property string splashMainSlogan: "Analog Low Frequency Oscillator No linear Sequencer"
 
     /*
     * Constant GUI Messages

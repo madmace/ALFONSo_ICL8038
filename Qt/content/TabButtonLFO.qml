@@ -98,6 +98,7 @@ Item {
         font.family: "Abel"
         font.weight: Font.Normal
     }
+
     states: [
         State {
             name: "state_pressed"

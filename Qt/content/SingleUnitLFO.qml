@@ -52,16 +52,31 @@ Rectangle {
         font.weight: Font.Normal
     }
 
+    FreqLabelLFO {
+        id: freqLabelLFO
+        anchors.right: parent.right
+        anchors.rightMargin: 10
+        y: 7
+    }
+
+    FreqSelectorLFO {
+        id: freqSelectorLFO
+        anchors.left: parent.left
+        anchors.leftMargin: 10
+        y: 40
+        freqSelectorLFOID: singleUnitLFO.singleUnitLFOID
+    }
+
     PotFrequencyLFO {
         id: potFrequencyLFO
-        x: 95
-        y: 65
+        x: 155
+        y: 70
         potFrequencyLFOID: singleUnitLFO.singleUnitLFOID
     }
 
     PotDutyCycleLFO {
         id: potDutyCycleLFO
-        x: 170
+        x: 190
         y: 220
         potDutyCycleLFOID: singleUnitLFO.singleUnitLFOID
     }

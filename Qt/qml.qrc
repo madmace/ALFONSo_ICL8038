@@ -1,17 +1,30 @@
 <RCC>
     <qresource prefix="/">
         <file>main.qml</file>
-        <file>content/LFOMixer.qml</file>
+        <file>content/Constants.qml</file>
         <file>content/ViewPanelLFO.qml</file>
         <file>content/TabButtonLFO.qml</file>
         <file>content/PotFrequencyLFO.qml</file>
         <file>content/PotDutyCycleLFO.qml</file>
+        <file>content/FreqLabelLFO.qml</file>
+        <file>content/FreqSelectorLFO.qml</file>
+        <file>content/FreqSelectorButtonLFO.qml</file>
         <file>content/SingleUnitLFO.qml</file>
-        <file>content/Constants.qml</file>
         <file>content/ToggleSwitchLFO.qml</file>
         <file>content/HarmonicsSwitchesLFO.qml</file>
+        <file>content/LFOMixer.qml</file>
         <file>content/Splash.qml</file>
+        <file>resources/favicon.png</file>
         <file>resources/train_digits.svg</file>
+        <file>resources/GreenLight.svg</file>
+        <file>resources/RedLight.svg</file>
+        <file>resources/GrayLight.svg</file>
+        <file>resources/PowerButtonSelected.svg</file>
+        <file>resources/PowerButtonUnselected.svg</file>
+        <file>resources/PotDutyCycleMetal.svg</file>
+        <file>resources/PotDutyCyclePlastic.svg</file>
+        <file>resources/PotFrequencyMetal.svg</file>
+        <file>resources/PotFrequencyPlastic.svg</file>
         <file>resources/PotGauge.svg</file>
         <file>resources/ToggleSwitch.svg</file>
         <file>resources/ToggleSwitchSelected.svg</file>
@@ -19,17 +32,10 @@
         <file>resources/SineLabel.svg</file>
         <file>resources/SquareLabel.svg</file>
         <file>resources/TriangleLabel.svg</file>
-        <file>resources/PotDutyCycleMetal.svg</file>
-        <file>resources/PotDutyCyclePlastic.svg</file>
-        <file>resources/PotFrequencyMetal.svg</file>
-        <file>resources/PotFrequencyPlastic.svg</file>
+        <file>resources/FreqSelectorMetalSelected.svg</file>
+        <file>resources/FreqSelectorMetalUnselected.svg</file>
         <file>resources/alum-texture-blue-900x900.jpg</file>
         <file>resources/alum-texture-gray-900x900.jpg</file>
         <file>resources/PCBBackground.svg</file>
-        <file>resources/GreenLight.svg</file>
-        <file>resources/RedLight.svg</file>
-        <file>resources/favicon.png</file>
-        <file>resources/PowerButtonSelected.svg</file>
-        <file>resources/PowerButtonUnselected.svg</file>
     </qresource>
 </RCC>

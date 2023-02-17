@@ -1,3 +1,4 @@
+debug/freqSelector.o
 debug/harmonicsSwitchesLFOModel.o
 debug/main.o
 debug/mixer.o
@@ -10,6 +11,7 @@ debug/tabButton.o
 debug/toggleSwitch.o
 debug/qrc_qml.o
 debug/qrc_qmake_qmake_immediate.o
+debug/moc_freqSelector.o
 debug/moc_mixer.o
 debug/moc_potentiometer.o
 debug/moc_protocol.o

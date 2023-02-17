@@ -27,6 +27,7 @@ SingleUnitLFOModel::SingleUnitLFOModel()
 
     //Clear Properties
     m_tabButtonLFOSelected = false;
+    m_freqSelectorLFOValue = 0;
     m_potFrequencyLFOValue = 0;
     m_potDutyCycleLFOValue = 0;
 }
@@ -35,6 +36,10 @@ SingleUnitLFOModel::SingleUnitLFOModel()
 
 bool SingleUnitLFOModel::getTabButtonLFOSelected() {
     return m_tabButtonLFOSelected;
+}
+
+quint8 SingleUnitLFOModel::getFreqSelectorLFOValue() {
+    return m_freqSelectorLFOValue;
 }
 
 quint8 SingleUnitLFOModel::getPotFrequencyLFOValue() {
@@ -51,6 +56,10 @@ HarmonicsSwitchesLFO* SingleUnitLFOModel::getHarmonicsSwitchesLFO() {
 
 void SingleUnitLFOModel::setTabButtonLFOSelected(bool newValue) {
     m_tabButtonLFOSelected = newValue;
+}
+
+void SingleUnitLFOModel::setFreqSelectorLFOValue(quint8 newValue) {
+    m_freqSelectorLFOValue = newValue;
 }
 
 void SingleUnitLFOModel::setPotFrequencyLFOValue(quint8 newValue) {

@@ -75,6 +75,8 @@ void Mixer::sendRequestSyncAllVCO() {
         byBuffer.append((quint8)i.key());
         // VCO Enable
         byBuffer.append(i.value()->getTabButtonLFOSelected());
+        // VCO Selector
+        byBuffer.append(i.value()->getFreqSelectorLFOValue());
         // VCO Frequency
         byBuffer.append(i.value()->getPotFrequencyLFOValue());
         // VCO Duty Cycle
@@ -89,6 +91,10 @@ void Mixer::sendRequestSyncAllVCO() {
 
     // Send to Serial Port
     SerialPortController::getInstance()->requestSendRawData(byBuffer);
+
+    // Update infomations
+    emit updateBottomInfoText("VCOs Synchronized.");
+
 }
 
 // Store the status of the single control
@@ -124,6 +130,13 @@ void Mixer::updateMixerModel(quint8 byID, quint8 byType, quint8 byValue) {
 
             // TabButtonLFO
             pVCOModel->setTabButtonLFOSelected(byValue);
+
+            break;
+
+        case Protocol::freqSelectorTypeValue:
+
+            // TabButtonLFO
+            pVCOModel->setFreqSelectorLFOValue(byValue);
 
             break;
 
