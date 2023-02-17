@@ -2,8 +2,8 @@
 
 Author : Emiliano Mazza
 Version : 1.0
-Created on Date : 01/03/2016
-Last update     : 18/03/2016
+Created on Date : 15/18/2020
+Last update     : 31/01/2023
 
 CopyRight 2006-2015 all rights are reserved
 
@@ -73,58 +73,69 @@ This Header contains definitions for serial protocol
 // Lenght for VCO_X_REQ_ENABLE request
 #define VCO_REQ_ENABLE_LEN 3
 
+// Resquest for set VCO 1 frequency Range
+#define VCO_1_REQ_FREQ_SELECTOR 0x0010
+// Resquest for set VCO 2 frequency Range
+#define VCO_2_REQ_FREQ_SELECTOR 0x0011
+// Resquest for set VCO 3 frequency Range
+#define VCO_3_REQ_FREQ_SELECTOR 0x0012
+// Resquest for set VCO 4 frequency Range
+#define VCO_4_REQ_FREQ_SELECTOR 0x0013
+// Lenght for VCO_X_REQ_FREQ_SELECTOR request
+#define VCO_REQ_FREQ_SELECTOR_LEN 3
+        
 // Request for set VCO 1 frequency
-#define VCO_1_REQ_FREQUENCY 0x0010
+#define VCO_1_REQ_FREQUENCY 0x0020
 // Request for set VCO 2 frequency
-#define VCO_2_REQ_FREQUENCY 0x0011
+#define VCO_2_REQ_FREQUENCY 0x0021
 // Request for set VCO 3 frequency
-#define VCO_3_REQ_FREQUENCY 0x0012
+#define VCO_3_REQ_FREQUENCY 0x0022
 // Request for set VCO 4 frequency
-#define VCO_4_REQ_FREQUENCY 0x0013
+#define VCO_4_REQ_FREQUENCY 0x0023
 // Lenght for VCO_X_REQ_FREQUENCY request
 #define VCO_REQ_FREQUENCY_LEN 3
 
 // Request for set VCO 1 Duty cycle
-#define VCO_1_REQ_DUTY_CYCLE 0x0020
+#define VCO_1_REQ_DUTY_CYCLE 0x0030
 // Request for set VCO 2 Duty cycle
-#define VCO_2_REQ_DUTY_CYCLE 0x0021
+#define VCO_2_REQ_DUTY_CYCLE 0x0031
 // Request for set VCO 3 Duty cycle
-#define VCO_3_REQ_DUTY_CYCLE 0x0022
+#define VCO_3_REQ_DUTY_CYCLE 0x0032
 // Request for set VCO 4 Duty cycle
-#define VCO_4_REQ_DUTY_CYCLE 0x0023
+#define VCO_4_REQ_DUTY_CYCLE 0x0033
 // Lenght for VCO_X_REQ_DUTY_CYCLE request
 #define VCO_REQ_DUTY_CYCLE_LEN 3
 
 // Request for enable VCO 1 Sine line
-#define VCO_1_REQ_ENABLE_SINE 0x0030
+#define VCO_1_REQ_ENABLE_SINE 0x0040
 // Request for enable VCO 2 Sine line
-#define VCO_2_REQ_ENABLE_SINE 0x0031
+#define VCO_2_REQ_ENABLE_SINE 0x0041
 // Request for enable VCO 3 Sine line
-#define VCO_3_REQ_ENABLE_SINE 0x0032
+#define VCO_3_REQ_ENABLE_SINE 0x0042
 // Request for enable VCO 4 Sine line
-#define VCO_4_REQ_ENABLE_SINE 0x0033
+#define VCO_4_REQ_ENABLE_SINE 0x0043
 // Lenght for VCO_X_REQ_ENABLE_SINE request
 #define VCO_REQ_ENABLE_SINE_LEN 3
 
 // Request for enable VCO 1 Square line
-#define VCO_1_REQ_ENABLE_SQUARE 0x0040
+#define VCO_1_REQ_ENABLE_SQUARE 0x0050
 // Request for enable VCO 2 Square line
-#define VCO_2_REQ_ENABLE_SQUARE 0x0041
+#define VCO_2_REQ_ENABLE_SQUARE 0x0051
 // Request for enable VCO 3 Square line
-#define VCO_3_REQ_ENABLE_SQUARE 0x0042
+#define VCO_3_REQ_ENABLE_SQUARE 0x0052
 // Request for enable VCO 4 Square line
-#define VCO_4_REQ_ENABLE_SQUARE 0x0043
+#define VCO_4_REQ_ENABLE_SQUARE 0x0053
 // Lenght for VCO_X_REQ_ENABLE_SQUARE request
 #define VCO_REQ_ENABLE_SQUARE_LEN 3
 
 // Request for enable VCO 1 Triangle line
-#define VCO_1_REQ_ENABLE_TRIANGLE 0x0050
+#define VCO_1_REQ_ENABLE_TRIANGLE 0x0060
 // Request for enable VCO 2 Triangle line
-#define VCO_2_REQ_ENABLE_TRIANGLE 0x0051
+#define VCO_2_REQ_ENABLE_TRIANGLE 0x0061
 // Request for enable VCO 3 Triangle line
-#define VCO_3_REQ_ENABLE_TRIANGLE 0x0052
+#define VCO_3_REQ_ENABLE_TRIANGLE 0x0062
 // Request for enable VCO 4 Triangle line
-#define VCO_4_REQ_ENABLE_TRIANGLE 0x0053
+#define VCO_4_REQ_ENABLE_TRIANGLE 0x0063
 // Lenght for VCO_X_REQ_ENABLE_TRIANGLE request
 #define VCO_REQ_ENABLE_TRIANGLE_LEN 3
 

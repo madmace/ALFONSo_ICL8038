@@ -2,8 +2,8 @@
 
 Author : Emiliano Mazza
 Version : 1.0
-Created on Date : 01/03/2016
-Last update     : 18/03/2016
+Created on Date : 15/18/2020
+Last update     : 31/01/2023
 
 CopyRight 2006-2015 all rights are reserved
 
@@ -80,6 +80,11 @@ of main application.
 // Address for MCP23S08 driving Hitachi 44780 LDC
 #define LCD44780_MCP23S08_ADDRESS 0x00
 
+// Address for first MCP23S08 GPIO Expander
+#define MCP23S08_EXP_1_ADDRESS 0x00
+// Address for seconf MCP23S08 GPIO Expander
+#define MCP23S08_EXP_2_ADDRESS 0x01
+
 // PCF8574 definitions
 #define PCF8574_INTERNAL_ADDRESS USED_DEVICE_PCF8574
 
@@ -101,6 +106,7 @@ typedef enum
 // Structure for state of all VCO
 typedef struct {
         bool    bVCOEnable;                 // VCO Enabled
+        uint8_t byFreqSelector;             // VCO Range frequency selector
         uint8_t byFrequency;                // VCO Steps frequency
         uint8_t byDutyCycle;                // VCO Steps Duty Cycle
         bool    bSineWaveEnable;            // VCO Sine wave Enable
@@ -108,6 +114,12 @@ typedef struct {
         bool    bTriangleWaveEnable;        // VCO Triangle wave Enable
         uint16_t uiAnalogFreqCCP;           // VCO Real frequency from CCP
 } VCOState_t;
+
+// Frequency Ranges Value
+#define HVCO 1                              // High Frequencies range
+#define VCO 2                               // Normal audible Frequencies range
+#define LFO 3                               // Low audible Frequencies range
+#define VLFO 4                              // Lowest Frequencies range
 
 // Number of all VCO present
 #define NUM_VCO_PRESENT 4
@@ -279,10 +291,23 @@ void SimpleMessageSPI16x2LCD(const char *message);
  *                        to input variable
  * 
  */
-volatile bool updateCCPCapture(volatile uint16_t *uiCapture);
+bool updateCCPCapture(volatile uint16_t *uiCapture);
 
-
-volatile uint8_t packResponseFrequency(uint8_t *buffer, uint16_t uiValue);
+/**
+ * Prepare the 16bit Frequency value to be send to client
+ * by the response protocol
+ *
+ * @param buffer          Pointer by Reference buffer to write
+ * 
+ * @param uiValue         Frequency value to pack
+ * 
+ * @param byVCOID         VCO ID of Frequency value
+ *
+ * @return bool           Return True if the capture is taken and wrote
+ *                        to input variable
+ * 
+ */
+uint8_t packResponseFrequency(uint8_t *buffer, uint16_t uiValue, uint8_t byVCOID);
 
 /**
  * Runs system level tasks that keep the system running

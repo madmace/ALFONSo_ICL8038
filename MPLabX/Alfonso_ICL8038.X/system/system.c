@@ -2,8 +2,8 @@
 
 Author : Emiliano Mazza
 Version : 1.0
-Created on Date : 01/03/2016
-Last update     : 18/03/2016
+Created on Date : 15/18/2020
+Last update     : 31/01/2023
 
 CopyRight 2006-2015 all rights are reserved
 
@@ -91,6 +91,7 @@ void ClearAllVCOStates(void) {
     
     for (idx = 0; idx < NUM_VCO_PRESENT; idx++) {
         aVCOInfo[idx].bVCOEnable = false;
+        aVCOInfo[idx].byFreqSelector = 0x00;
         aVCOInfo[idx].byFrequency = 0x00;
         aVCOInfo[idx].byDutyCycle = 0x00;
         aVCOInfo[idx].bSineWaveEnable = false;
@@ -350,7 +351,7 @@ void SimpleMessageSPI16x2LCD(const char *message) {
 
 // Takes a current value of capture of CCP2 updated by the ISR
 // and controls if variance are in tollerance gap.
-volatile bool updateCCPCapture(volatile uint16_t *uiCapture) {
+bool updateCCPCapture(volatile uint16_t *uiCapture) {
     
     int16_t iCaptureDelta = 0;
     bool bIsChanged = false;
@@ -372,8 +373,9 @@ volatile bool updateCCPCapture(volatile uint16_t *uiCapture) {
     return bIsChanged;
 }
 
-
-volatile uint8_t packResponseFrequency(uint8_t *buffer, uint16_t uiValue) {
+// Prepare the 16bit Frequency value to be send to client
+// by the response protocol
+uint8_t packResponseFrequency(uint8_t *buffer, uint16_t uiValue, uint8_t byVCOID) {
     
     // Clear write buffer
     ClearCDCUSBDataWriteBuffer();
@@ -440,6 +442,7 @@ void MainSystemTasks(void) {
         uint8_t iNumBytesRead = 0;                  // Number of bytes read
         uint8_t iNumBytesToWrite = 0;               // Number of bytes written
         uint8_t byCounter = 0;                      // Simple counter
+        uint8_t byAux = 0;                          // Temporary byte variable
         
         // Reads bytes available from USB
         iNumBytesRead = getsUSBUSART(readBuffer, sizeof(readBuffer));
@@ -481,6 +484,9 @@ void MainSystemTasks(void) {
                             // VCO Enable 
                             aVCOInfo[byVCOID].bVCOEnable = (bool)readBuffer[byIndex];
                             byIndex++;
+                            // VCO Range frequency selector
+                            aVCOInfo[byVCOID].byFreqSelector = readBuffer[byIndex];
+                            byIndex++;
                             // VCO Frequency
                             aVCOInfo[byVCOID].byFrequency = readBuffer[byIndex];
                             byIndex++;
@@ -509,8 +515,8 @@ void MainSystemTasks(void) {
                             // Blink LED
                             BlinkLEDGP2();
                             // Packs the value
-                            iNumBytesToWrite = packResponseFrequency(writeBuffer, aVCOInfo[VCO1].uiAnalogFreqCCP);
-                            // Swnd bytes to USB
+                            iNumBytesToWrite = packResponseFrequency(writeBuffer, aVCOInfo[VCO1].uiAnalogFreqCCP, VCO1);
+                            // Send bytes to USB
                             putUSBUSART(writeBuffer, iNumBytesToWrite);
                         }                    
                     }
@@ -582,11 +588,11 @@ void MainSystemTasks(void) {
                         // To do ....
                         
                         // TEST !!!!
-                        byCounter = (uint8_t)(byValue << 4);
-                        // Select IO EXP device
+                        byAux = (uint8_t)(byValue << 4);
+                        // Select first IO EXP device
                         MCP23S08_CS_LINE_PORT = 0x0;
-                        MCP23S08_Write_Register_SPI1(0x00, MCP23S08_GPIO, byCounter);
-                        // Deselect Pot device
+                        MCP23S08_Write_Register_SPI1(MCP23S08_EXP_1_ADDRESS, MCP23S08_GPIO, byAux);
+                        // Deselect first IO EXP device
                         MCP23S08_CS_LINE_PORT = 0x1;
                         
                         // ****
@@ -597,8 +603,8 @@ void MainSystemTasks(void) {
                             // Blink LED
                             BlinkLEDGP2();
                             // Packs the value
-                            iNumBytesToWrite = packResponseFrequency(writeBuffer, aVCOInfo[VCO1].uiAnalogFreqCCP);
-                            // Swnd bytes to USB
+                            iNumBytesToWrite = packResponseFrequency(writeBuffer, aVCOInfo[VCO1].uiAnalogFreqCCP, VCO1);
+                            // Send bytes to USB
                             putUSBUSART(writeBuffer, iNumBytesToWrite);
                         }
                     }
