@@ -28,6 +28,16 @@ Scope:
   
 ## Basics
 
+The ICL8038 waveform generator is a monolithic integrated circuit capable of producing high accuracy sine, square, triangular, sawtooth and pulse waveforms. The frequency (or repetition rate) can be selected externally from 0.001Hz to more than 300kHz.
+In used configuration, the frequency has been fixed in the audio frequency range 1Hz to 20KHz. Integrators via comparators create the primary triangle which is then flip-flopped to obtain the square and a smoothing network based on multiple transistors stages.
+The sweep is modulated via a dc voltage to pin 8. The relative frequency range depends on the capacitor applied to pin 10.
+4 different meshes with different values are needed to get good linearity. This especially applies to operation as an LFO. 4 different selectable operating modes have been selected.
+
+- **HVCO**
+- **VCO**
+- **LFO**
+- **VLFO**
+
 ## Early implementation
 
 This first implementation is oriented to develop and test all the HW functionalities of the VCOs/LFOs and the core SW libraries for their command.
