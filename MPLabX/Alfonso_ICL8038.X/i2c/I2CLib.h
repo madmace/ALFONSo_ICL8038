@@ -33,10 +33,10 @@ This Header contains I2C Library functions.
 
 /****************************************************
  *
- * This function Opens the I2C module enabling SCL and SDA lines. 
+ * @brief This function Opens the I2C module enabling SCL and SDA lines. 
  *
- * @param device_type It specifies if the device is a Master or a Slave [I2C_MASTER, I2C_SLAVE_7_BIT_ADDRESS, I2C_SLAVE_10_BIT_ADDRESS] 
- *
+ * @param device_type
+ * It specifies if the device is a Master or a Slave [I2C_MASTER, I2C_SLAVE_7_BIT_ADDRESS, I2C_SLAVE_10_BIT_ADDRESS] 
  *
  * @return void
  *
@@ -51,7 +51,7 @@ void I2C1_open (uint8_t device_type);
 #endif
 
  /**
- * This function Closes the I2C module. 
+ * @brief This function Closes the I2C module. 
  *
  * @param none
  *
@@ -64,14 +64,13 @@ void I2C1_close (void);
 #endif
 
 /**
- * This function sets the bus baudrate in case the device is a Master device. 
+ * @brief This function sets the bus baudrate in case the device is a Master device. 
  *
  * @param bus_baud_rate_KHZ Baud Rate is in KHz [min: 1, max:400]
  *
  * @return void
  * 
- * @Warning
- * You must not set the baudrate for a slave device. Doing so may change the slave address. 
+ * @Warning You must not set the baudrate for a slave device. Doing so may change the slave address. 
  *
  */  
 void I2C1_baud_rate (uint16_t bus_baud_rate_KHz);
@@ -80,7 +79,7 @@ void I2C1_baud_rate (uint16_t bus_baud_rate_KHz);
 #endif
 
 /**
- * This function sets I2C slave address. 
+ * @brief This function sets I2C slave address. 
  *
  * @param device_address Slave Address 
  *
@@ -93,7 +92,7 @@ void I2C1_set_slave_address (uint16_t device_address);
 #endif
 
 /**
- * This macro reads the input buffer.
+ * @brief This macro reads the input buffer.
  *
  * @param void
  *
@@ -106,14 +105,15 @@ void I2C1_set_slave_address (uint16_t device_address);
 #endif
 
 /**
- * This function writes a byte to the output buffer and performs several error tests.
+ * @brief This function writes a byte to the output buffer and performs several error tests.
  *
  * @param byte_to_send Byte to be sent out
  *
- * @return error 0: ACK received for the byte sent out
- *              -1: Bus Conflict occurs  
- *              -2: NACK has been received
- *              -3: Unknown Error
+ * @return
+ * error 0: ACK received for the byte sent out
+ * -1: Bus Conflict occurs  
+ * -2: NACK has been received
+ * -3: Unknown Error
  *
  */    
 int8_t I2C1_write_byte (uint8_t byte_to_send);
@@ -122,7 +122,7 @@ int8_t I2C1_write_byte (uint8_t byte_to_send);
 #endif
 
  /**
- * This function waits for the bus to be Idle before continuing. 
+ * @brief This function waits for the bus to be Idle before continuing. 
  *
  * @param void
  *
@@ -135,14 +135,13 @@ void I2C1_wait_bus_IDLE (void);
 #endif  
 
 /**
- * This function releases the start bit and waits until Start bit is out (idle). 
+ * @brief This function releases the start bit and waits until Start bit is out (idle). 
  *
  * @param void
  *
  * @return void
  *
- * @Warning
- * This is a blocking function.
+ * @Warning This is a blocking function.
  * 
  */     
 void I2C1_start_bit (void);
@@ -152,14 +151,13 @@ void I2C1_start_bit (void);
     
     
  /**
- * This function releases the stop bit and waits until Stop bit is out (idle). 
+ * @brief This function releases the stop bit and waits until Stop bit is out (idle). 
  *
  * @param void
  *
  * @return void
  *
- * @Warning
- * This is a blocking function.
+ * @Warning This is a blocking function.
  *
  */     
 void I2C1_stop_bit (void);
@@ -168,7 +166,7 @@ void I2C1_stop_bit (void);
 #endif
     
 /**
- * This function resets the write collision bit.
+ * @brief This function resets the write collision bit.
  *
  * @param void
  *
@@ -182,17 +180,20 @@ void I2C1_reset_write_collision_flag (void);
 #endif
     
 /**
- * This function write a byte to an external device made of 1 control byte, 1 address byte and 1 byte data.
+ * @brief This function write a byte to an external device made of 1 control byte, 1 address byte and 1 byte data.
  *
- * @param control_byte Control byte of the external device
- *        register_address Address to be written within the external device
- *        data Data to be written within the pointed address                  
+ * @param control_byte
+ * Control byte of the external device
+ * register_address Address to be written within the external device
+ * data Data to be written within the pointed address                  
  *
- * @return error Communication error
- *               0: No communication error
- *              -1: Bus Collision error 
- *              -2: Not ACK Error
- *              -3: Write Collision
+ * @return
+ * error Communication error
+ * 0: No communication error
+ * -1: Bus Collision error 
+ * -2: Not ACK Error
+ * -3: Write Collision
+ * 
  */     
 int8_t I2C1_write_byte_to_external_device (uint8_t control_byte, uint8_t register_address, uint8_t data);
 #ifdef I2C2_AVAILABLE 
@@ -201,17 +202,19 @@ int8_t I2C1_write_byte_to_external_device (uint8_t control_byte, uint8_t registe
     
     
 /**
- * This function read a byte from an external device made of 1 control byte, 1 address byte.
+ * @brief This function read a byte from an external device made of 1 control byte, 1 address byte.
  *
- * @param control_byte Control byte of the external device
- *        register_address Address to be written within the external device
- *        data pointer to the variable where the read data will be written into. 
+ * @param control_byte
+ * Control byte of the external device
+ * register_address Address to be written within the external device
+ * data pointer to the variable where the read data will be written into. 
  * 
- * @return error Communication error or data byte
- *               0: No communication error
- *              -1: Bus Collision error 
- *              -2: Not ACK Error
- *              -3: Write Collision               
+ * @return
+ * error Communication error or data byte
+ * 0: No communication error
+ * -1: Bus Collision error 
+ * -2: Not ACK Error
+ * -3: Write Collision               
  *
  * @return void
  *
@@ -222,17 +225,19 @@ int8_t I2C1_read_byte_from_external_device (uint8_t control_byte, uint8_t regist
 #endif   
    
 /**
- * This function write a word (16bits) to an external device made of 1 control byte, 1 address byte and 2 bytes of data.
+ * @brief This function write a word (16bits) to an external device made of 1 control byte, 1 address byte and 2 bytes of data.
  *
- * @param control_byte Control byte of the external device
- *        register_address Address to be written within the external device
- *        data Data to be written within the pointed address                  
+ * @param control_byte
+ * Control byte of the external device
+ * register_address Address to be written within the external device
+ * data Data to be written within the pointed address                  
  *
  * @return error Communication error
- *               0: No communication error
- *              -1: Bus Collision error 
- *              -2: Not ACK Error
- *              -3: Write Collision
+ * 0: No communication error
+ * -1: Bus Collision error 
+ * -2: Not ACK Error
+ * -3: Write Collision
+ * 
  */     
 int8_t I2C1_write_word_to_external_device (uint8_t control_byte, uint8_t register_address, uint16_t data);
 #ifdef I2C2_AVAILABLE 
@@ -240,17 +245,18 @@ int8_t I2C1_write_word_to_external_device (uint8_t control_byte, uint8_t registe
 #endif
 
 /**
- * This function read a word (16 bits) from an external device made of 1 control byte, 1 address byte.
+ * @brief This function read a word (16 bits) from an external device made of 1 control byte, 1 address byte.
  *
- * @param control_byte Control byte of the external device
- *        register_address Address to be written within the external device
- *        data pointer to the variable where the read data will be written into. 
+ * @param control_byte
+ * Control byte of the external device
+ * register_address Address to be written within the external device
+ * data pointer to the variable where the read data will be written into. 
  * 
  * @return error Communication error or data byte
- *               0: No communication error
- *              -1: Bus Collision error 
- *              -2: Not ACK Error
- *              -3: Write Collision               
+ * 0: No communication error
+ * -1: Bus Collision error 
+ * -2: Not ACK Error
+ * -3: Write Collision               
  *
  * @return void
  *
@@ -261,13 +267,14 @@ int8_t I2C1_read_word_from_external_device (uint8_t control_byte, uint8_t regist
 #endif       
     
 /**
- * This macro checks if there is any data ready in the RX buffer.
+ * @brief This macro checks if there is any data ready in the RX buffer.
  *
  * @param void
  *
  * @return flag It returns data ready flag. 
- *              0: Buffer is empty
- *              1: Buffer is full
+ * 0: Buffer is empty
+ * 1: Buffer is full
+ * 
  */     
 #define I2C1_check_data_ready() (SSPSTATbits.BF)
 #ifdef I2C2_AVAILABLE 
@@ -275,13 +282,13 @@ int8_t I2C1_read_word_from_external_device (uint8_t control_byte, uint8_t regist
 #endif
     
 /**
- * This macro checks if received command is a read or write operation.
+ * @brief This macro checks if received command is a read or write operation.
  *
  * @param void
  *
  * @return flag It returns RW flag. 
- *              0: Write Command
- *              1: Read Command
+ * 0: Write Command
+ * 1: Read Command
  *
  */     
 #define I2C1_check_read_write_operation() (SSPSTATbits.R_W)
@@ -290,13 +297,13 @@ int8_t I2C1_read_word_from_external_device (uint8_t control_byte, uint8_t regist
 #endif
 
 /**
- * This macro checks if the stop bit has been detected.
+ * @brief This macro checks if the stop bit has been detected.
  *
  * @param void
  *
  * @return flag It returns Stop bit flag. 
- *              0: Stop bit is not detected
- *              1: Stop bit has been detected
+ * 0: Stop bit is not detected
+ * 1: Stop bit has been detected
  *
  */      
 #define I2C1_check_stop_bit() (SSPSTATbits.P)
@@ -305,13 +312,14 @@ int8_t I2C1_read_word_from_external_device (uint8_t control_byte, uint8_t regist
 #endif
     
  /**
- * This macro checks if the start bit has been detected.
+ * @brief This macro checks if the start bit has been detected.
  *
  * @param void
  *
  * @return flag It returns Start bit flag. 
- *              0: Start bit is not detected
- *              1: Start bit has been detected
+ * 0: Start bit is not detected
+ * 1: Start bit has been detected
+  * 
  */    
 #define I2C1_check_start_bit() (SSPSTATbits.S)
 #ifdef I2C2_AVAILABLE 
@@ -319,13 +327,13 @@ int8_t I2C1_read_word_from_external_device (uint8_t control_byte, uint8_t regist
 #endif 
 
 /**
- * This macro checks if a bus collision happened.
+ * @brief This macro checks if a bus collision happened.
  *
  * @param void
  *
  * @return flag It returns the bus collision status. 
- *              0: Normal transmission
- *              1: Bus collision has been detected
+ * 0: Normal transmission
+ * 1: Bus collision has been detected
  *
  */
 #define I2C1_check_bus_collision() (PIR2bits.BCLIF)
@@ -342,13 +350,14 @@ int8_t I2C1_read_word_from_external_device (uint8_t control_byte, uint8_t regist
 #endif    
  
 /**
- * This macro checks if the ACK has been received.
+ * @brief This macro checks if the ACK has been received.
  *
  * @param void
  *
  * @return flag It returns the ACK status. 
- *              0: ACK has been received
- *              1: ACK has not been received
+ * 0: ACK has been received
+ * 1: ACK has not been received
+ * 
  */     
 #define I2C1_check_ACK() (SSPCON2bits.ACKSTAT)
 #ifdef I2C2_AVAILABLE 
@@ -356,7 +365,7 @@ int8_t I2C1_read_word_from_external_device (uint8_t control_byte, uint8_t regist
 #endif
     
 /**
- * This macro restarts the I2C module
+ * @brief This macro restarts the I2C module
  *
  * @param void
  *
@@ -368,7 +377,7 @@ int8_t I2C1_read_word_from_external_device (uint8_t control_byte, uint8_t regist
 #endif
 
  /**
- * This macro releases an ACK sequence 
+ * @brief This macro releases an ACK sequence 
  *
  * @param void
  *
@@ -381,7 +390,7 @@ int8_t I2C1_read_word_from_external_device (uint8_t control_byte, uint8_t regist
 #endif  
     
 /**
- * This macro releases a negative ACK sequence NACK
+ * @brief This macro releases a negative ACK sequence NACK
  *
  * @param void
  *
@@ -394,7 +403,7 @@ int8_t I2C1_read_word_from_external_device (uint8_t control_byte, uint8_t regist
 #endif      
     
 /**
- * This macro sets the I2C module as receiver to enable the data read (read sequence).
+ * @brief This macro sets the I2C module as receiver to enable the data read (read sequence).
  *
  * @param void
  *

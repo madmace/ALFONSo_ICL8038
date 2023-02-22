@@ -47,6 +47,7 @@ Not include CS operations. It will be managed out functions provided.
 #define SPI_MODE_3 0x03
 
 /**
+ * @brief
  * This function opens the SPI module for communication.
  * In particular it sets the device type either to Master or Slave.
  *
@@ -54,7 +55,8 @@ Not include CS operations. It will be managed out functions provided.
  *
  * @return void
  *
- * @warning This function should be called only after having set the module with the right 
+ * @warning
+ * This function should be called only after having set the module with the right 
  * baudrate and mode.
  * 
  */
@@ -65,7 +67,7 @@ void SPI1_open (uint8_t device_type);
 
     
 /**
- * This function closes the SPI module.
+ * @brief This function closes the SPI module.
  *
  * @param void
  *
@@ -79,6 +81,7 @@ void SPI1_close (void);
 
     
 /**
+ * @brief
  * This function sets the communication baudrate.
  * It should be called before SPI_open function.
  *
@@ -96,6 +99,7 @@ void SPI1_baudrate (uint8_t baudrate);
 
 
 /**
+ * @brief
  * This function sets the communication mode.
  * It should be called before SPI_open function.
  *
@@ -113,7 +117,7 @@ void SPI1_mode (uint8_t communication_mode);
 
     
 /**
- * This function writes a single byte on the bus.
+ * @brief This function writes a single byte on the bus.
  *
  * @param byte_to_send Byte to send [0..255]
  *
@@ -129,7 +133,7 @@ int8_t SPI1_write_byte (uint8_t byte_to_send);
 
      
 /**
- * This function reads a single byte from the bus
+ * @brief This function reads a single byte from the bus
  *
  * @param void
  *
@@ -145,12 +149,14 @@ uint8_t SPI1_read_byte (void);
 
 
 /**
- * This macro checks if the data is ready. It can be used for TX mode only.
+ * @brief This macro checks if the data is ready. It can be used for TX mode only.
  *
  * @param void
  *
- * @return Bit BF 0: Receive buffer is not full
- *                1: Receive buffer is full
+ * @return Bit BF
+ * 0: Receive buffer is not full
+ * 1: Receive buffer is full
+ * 
  */
 #define SPI1_check_data_ready() (SSPSTATbits.BF)
 #ifdef SPI2_AVAILABLE
@@ -158,12 +164,14 @@ uint8_t SPI1_read_byte (void);
 #endif
 
 /**
- * This macro checks if any communication .
+ * @brief This macro checks if any communication .
  *
  * @param void
  *
- * @return Bit WCOL 0: No communication collision. 
- *                  1: Communication collision dedected.
+ * @return Bit WCOL
+ * 0: No communication collision. 
+ * 1: Communication collision dedected.
+ * 
  */
 #define SPI1_check_bus_collision() (SSPCON1bits.WCOL)
 #ifdef SPI2_AVAILABLE
@@ -171,12 +179,14 @@ uint8_t SPI1_read_byte (void);
 #endif
 
 /**
- * This macro checks if any buffer overflow occured.
+ * @brief This macro checks if any buffer overflow occured.
  *
  * @param void
  *
- * @return Bit WCOL 0: No overflow. 
- *                  1: Buffer Overflow dedected.
+ * @return Bit WCOL
+ * 0: No overflow. 
+ * 1: Buffer Overflow dedected.
+ * 
  */ 
 #define SPI1_check_buffer_overflow() (SSPCON1bits.SSPOV)
 #ifdef SPI2_AVAILABLE
@@ -184,12 +194,14 @@ uint8_t SPI1_read_byte (void);
 #endif
     
 /**
- * This macro checks TX transition is over. It check the interrupt flag as reference.
+ * @brief This macro checks TX transition is over. It check the interrupt flag as reference.
  *
  * @param void
  *
- * @return Bit Interrupt Flag   0: Communication in progress
- *                              1: Communication completed
+ * @return Bit Interrupt Flag
+ * 0: Communication in progress
+ * 1: Communication completed
+ * 
  */
 #define SPI1_is_TX_over() (PIR1bits.SSPIF)
 #ifdef SPI2_AVAILABLE

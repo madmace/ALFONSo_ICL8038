@@ -234,11 +234,16 @@ void StartUpSPI16x2LCD(void) {
 // Setup of the SPI MCP23S08 that is used as
 // GPIO Extender
 void StartUpSPIGPIOExtender(void) {
-    
-    
+    //
     // Initialization of MCP28S03 at hardware address 0x00
+    //
+    // Sequential Operation mode bit disabled
+    // Slew rate enabled
+    // Enables the MCP23S08 address pins
+    // Active driver output (INTPOL bit sets the polarity).
+    // Polarity of the INT output pin Active High.
     MCP23S08_CS_LINE_PORT = 0x0;
-    MCP23S08_Write_Register_SPI1(0x00, MCP23S08_IOCON, 0x0A);
+    MCP23S08_Write_Register_SPI1(0x00, MCP23S08_IOCON, 0x2A);
     // Deselect Extender device
     MCP23S08_CS_LINE_PORT = 0x1;
         

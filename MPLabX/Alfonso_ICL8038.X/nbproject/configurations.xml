@@ -24,6 +24,9 @@
           </logicalFolder>
           <itemPath>spi/MCP23S08/MCP23S08.h</itemPath>
         </logicalFolder>
+        <logicalFolder name="f4" displayName="MCP23S17" projectFiles="true">
+          <itemPath>spi/MCP23S17/MCP23S17.h</itemPath>
+        </logicalFolder>
         <logicalFolder name="f2" displayName="MCP425X" projectFiles="true">
           <itemPath>SPI/MCP425X/MCP425X.h</itemPath>
         </logicalFolder>
@@ -75,6 +78,9 @@
           </logicalFolder>
           <itemPath>spi/MCP23S08/MCP23S08.c</itemPath>
         </logicalFolder>
+        <logicalFolder name="f4" displayName="MCP23S17" projectFiles="true">
+          <itemPath>spi/MCP23S17/MCP23S17.c</itemPath>
+        </logicalFolder>
         <logicalFolder name="f2" displayName="MCP425X" projectFiles="true">
           <itemPath>SPI/MCP425X/MCP425X.c</itemPath>
         </logicalFolder>
@@ -114,7 +120,7 @@
         <targetDevice>PIC18F4550</targetDevice>
         <targetHeader></targetHeader>
         <targetPluginBoard></targetPluginBoard>
-        <platformTool>PICkit3PlatformTool</platformTool>
+        <platformTool>noID</platformTool>
         <languageToolchain>XC8</languageToolchain>
         <languageToolchainVersion>2.36</languageToolchainVersion>
         <platform>3</platform>
@@ -158,7 +164,7 @@
         <property key="define-macros" value=""/>
         <property key="disable-optimizations" value="true"/>
         <property key="extra-include-directories"
-                  value="globals;system;usb;spi;ccp;spi\MCP42XXX;spi\MCP425X;spi\MCP23S08;spi\MCP23S08\LCD44780_MCP23S08;i2c;i2c\PCF8574;utilities"/>
+                  value="globals;system;usb;spi;ccp;spi\MCP42XXX;spi\MCP425X;spi\MCP23S08;spi\MCP23S08\LCD44780_MCP23S08;spi\MCP23S17;i2c;i2c\PCF8574;utilities"/>
         <property key="favor-optimization-for" value="-speed,+space"/>
         <property key="garbage-collect-data" value="true"/>
         <property key="garbage-collect-functions" value="true"/>

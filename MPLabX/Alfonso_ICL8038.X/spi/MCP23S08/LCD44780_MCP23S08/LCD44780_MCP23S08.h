@@ -153,13 +153,14 @@ Affect Single and Daisy-Chain transactions.
 #define LCD44780_MCP23S08_ZERO_CLEANING_OFF 0x00
 
 /**
- * This function set the MCP23S08 with internal buffer
+ * @brief This function set the MCP23S08 with internal buffer
  *
  * @warning This function is a Private one. It should not be used by the user.
  */
 void LCD44780_MCP23S08_write_buffer_SPI1 (void);
 
 /**
+ * @brief
  * This function set the MCP23S08 with internal buffer
  * and before and after setting GPIO respectively up/down the enable
  *
@@ -168,7 +169,7 @@ void LCD44780_MCP23S08_write_buffer_SPI1 (void);
 void LCD44780_MCP23S08_EN_trigger_write_buffer_SPI1 (void);
 
 /**
- * This function controls if LCD is in busy state
+ * @brief This function controls if LCD is in busy state
  *
  * @param none
  *
@@ -178,7 +179,7 @@ void LCD44780_MCP23S08_EN_trigger_write_buffer_SPI1 (void);
 uint8_t LCD44780_MCP23S08_busy_SPI1 (void);
 
 /**
- * This function set then lower 4bit of buffer, leaves the higher bit intact.
+ * @brief This function set then lower 4bit of buffer, leaves the higher bit intact.
  *
  * @param buffer Byte to be write on MCP23S08
  * 
@@ -187,6 +188,7 @@ uint8_t LCD44780_MCP23S08_busy_SPI1 (void);
 void LCD44780_MCP23S08_set_low_nibble_buffer (uint8_t data);
 
 /**
+ * @brief 
  * This function send half byte command pad
  * 4 bit LCD mode, one nibble will be send.
  *
@@ -197,6 +199,7 @@ void LCD44780_MCP23S08_set_low_nibble_buffer (uint8_t data);
 void LCD44780_MCP23S08_send_nibble_SPI1 (uint8_t command);
 
 /**
+ * @brief 
  * This function send a full command pad
  * 4 bit LCD mode, two nibble will be send.
  * High nibble first.
@@ -208,74 +211,81 @@ void LCD44780_MCP23S08_send_nibble_SPI1 (uint8_t command);
 void LCD44780_MCP23S08_send_cmd_SPI1 (uint8_t command);
 
 /**
- * This Function cleans the LCD display.
+ * @brief This Function cleans the LCD display.
  *
  */
 void LCD44780_MCP23S08_lcd_clear_SPI1 (void);
 
 /**
- * This function locates the cursor at home location. First line first character.
+ * @brief This function locates the cursor at home location. First line first character.
  *
  */
 void LCD44780_MCP23S08_lcd_home_SPI1 (void);
 
 /**
+ * @brief 
  * This function define the Set entry mode
  * for LCD 44780
  * 
  * @param options constant of relative set for entry modes
  *
+ * @note
  * Options:
- *
- *  INC_CURSOR - Incremnt cursor after character written
- *  DEC_CURSOR - Decrement cursor after character written
- *  SHIFT_ON - Switch Cursor shifting on
+ * INC_CURSOR - Incremnt cursor after character written
+ * DEC_CURSOR - Decrement cursor after character written
+ * SHIFT_ON - Switch Cursor shifting on
+ * 
  */
 void LCD44780_MCP23S08_lcd_emode_SPI1 (uint8_t options);
 
 /**
+ * @brief
  * This function define the display mode
  * for LCD 44780
  * 
  * @param options constant of relative set for display modes
  *
+ * @note
  * Options:
- *
- *  DISPLAY_ON - Turn Display on
- *  DISPLAY_OFF - Turn Display off
- *  CURSOR_ON  - Turn Cursor on
- *  BLINK_ON - Blink Cursor
+ * DISPLAY_ON - Turn Display on
+ * DISPLAY_OFF - Turn Display off
+ * CURSOR_ON  - Turn Cursor on
+ * BLINK_ON - Blink Cursor
+ * 
  */
 void LCD44780_MCP23S08_lcd_dmode_SPI1(uint8_t options);
 
 /**
- * This function define the cursor mode
+ * @brief This function define the cursor mode
  * 
  * @param options constant of relative set for cursor modes
  *
+ * @note
  * Options:
- *
- *  SHIFT_DISP - Shift Display
- *  SHIFT_RIGHT - Move cursor right
- *  SHIFT_LEFT - Move cursor left
+ * SHIFT_DISP - Shift Display
+ * SHIFT_RIGHT - Move cursor right
+ * SHIFT_LEFT - Move cursor left
+ * 
  */
 void LCD44780_MCP23S08_lcd_cmode_SPI1 (uint8_t options);
 
 /**
- * This function define the function settings
+ * @brief This function define the function settings
  *
  * @param options constant of relative set for the function settings
  * 
+ * @note
  * Options:
- *
- *  4BIT_IFACE - 4-bit interface
- *  8BIT_IFACE - 8-bit interface
- *  1_16_DUTY - 1/16 duty 
- *  5X10_DOTS - 5x10 dot characters
+ * 4BIT_IFACE - 4-bit interface
+ * 8BIT_IFACE - 8-bit interface
+ * 1_16_DUTY - 1/16 duty 
+ * 5X10_DOTS - 5x10 dot characters
+ * 
  */
 void LCD44780_MCP23S08_lcd_fmode_SPI1 (uint8_t options);
 
-/** This function initializes the LCD to work in 4 bit modality.
+/** 
+ * @brief This function initializes the LCD to work in 4 bit modality.
  *
  * @param device_address Address hardware configured for MCP23S08
  *
@@ -284,18 +294,21 @@ void LCD44780_MCP23S08_lcd_fmode_SPI1 (uint8_t options);
 void LCD44780_MCP23S08_lcd_init_SPI1 (uint8_t device_address);
 
 /**
- * This function shifts the LCD screen on the left or right.
+ * @brief This function shifts the LCD screen on the left or right.
  *
  * @param shift Specify where the shift should be [LCD_LEFT, LCD_RIGHT].
  *
  * @param number_of_shift Specify the number of times the shift is executed.
  *
- * @note Use the constants LEFT, RIGHT to specify the direction
- *       to ensure the compatibility with LCD_44780 library.
+ * @note 
+ * Use the constants LEFT, RIGHT to specify the direction
+ * to ensure the compatibility with LCD_44780 library.
+ * 
  */
 void LCD44780_MCP23S08_shift_SPI1 (uint8_t shift, uint8_t number_of_shift);
 
 /**
+ * @brief
  * This function shifts the LCD cursor on the left or right. The position of the cursor is where the
  * next writing will be performed.
  *
@@ -303,21 +316,25 @@ void LCD44780_MCP23S08_shift_SPI1 (uint8_t shift, uint8_t number_of_shift);
  *
  * @param number_of_shift Specify the number of times the shift is executed.
  *
- * @note Use the constants LEFT, RIGHT to specify the direction
- *       to ensure the compatibility with LCD_44780 library.
+ * @note 
+ * Use the constants LEFT, RIGHT to specify the direction
+ * to ensure the compatibility with LCD_44780 library.
+ * 
  */
 void LCD44780_MCP23S08_shift_cursor_SPI1 (uint8_t shift, uint8_t number_of_shift);
 
 /**
- * This function locates the LCD cursor on the selected line. Tested on 20x4 16x2 LCD displays.
+ * @brief This function locates the LCD cursor on the selected line. Tested on 20x4 16x2 LCD displays.
  *
  * @param line Specify the number of the line
  *
  * @warning It might not work with all the LCD Displays.
+ * 
  */
 void LCD44780_MCP23S08_goto_line_SPI1 (uint8_t line);
 
 /**
+ * @brief 
  * This function locates the LCD cursor to an arbitrary X Y location.
  * Y represents the line number from top.
  *
@@ -326,88 +343,89 @@ void LCD44780_MCP23S08_goto_line_SPI1 (uint8_t line);
  * @param y It Specifies vertical position (line number)
  *
  * @warning It might not work with all the LCD Displays. Tested on 20x4 16x2 LCD displays.
+ * 
  */
 void LCD44780_MCP23S08_goto_xy_SPI1 (uint8_t x, uint8_t y);
 
 /**
- * This function writes a char to the LCD display. (e.g LCD_write_char ('a'); )
+ * @brief This function writes a char to the LCD display. (e.g LCD_write_char ('a'); )
  *
  * @param value Specify the character to be sent [0-128 ASCII code].
  *
  * @note The function accept ASCII integer or constants 'a'..'z'.
+ * 
  */
 void LCD44780_MCP23S08_send_data_SPI1 (uint8_t value);
 
 /**
- * This function writes a const string to the LCD display, e.g LCD_write_message ("Hello"); .
+ * @brief This function writes a const string to the LCD display, e.g LCD_write_message ("Hello"); .
  *
  * @param buffer Is a const string written in rom (is not an array).
  *
- * @note The function accepts strings written in rom (constant), it does not accept array.
- *       To write arrays refers the LCD44780_MCP23S08_send_string_SPI1 () function.
+ * @note 
+ * The function accepts strings written in rom (constant), it does not accept array.
+ * To write arrays refers the LCD44780_MCP23S08_send_string_SPI1 () function.
  *
  */
 void LCD44780_MCP23S08_send_message_SPI1 (const char *buffer);
 
 /**
- * This function writes an array of char to the LCD display, terminated with /0 .
+ * @brief This function writes an array of char to the LCD display, terminated with /0 .
  *
  * @param buffer It is an array of char terminated with /0 .
  *
- * @note The function accepts strings  within an array. To use const array within rom use write_message_LCD ().
+ * @note
+ * The function accepts strings within an array.
+ * To use const array within rom use write_message_LCD ().
  *
  */
 void LCD44780_MCP23S08_send_string_SPI1 (uint8_t *buffer);
 
 /**
- * This function writes an integer to the LCD display. The integer is converted to string.
+ * @brief This function writes an integer to the LCD display. The integer is converted to string.
  *
  * @param value It is integer that must be written to the LCD display.
  *
- * @param numeber_of_digits It specifies the number of shown digit [0-5].
- *                    0: Left Justified
- *                    1-5: Right Justified with n digit
+ * @param
+ * numeber_of_digits It specifies the number of shown digit [0-5].
+ * 0: Left Justified
+ * 1-5: Right Justified with n digit
  *
  * @param zero_cleaning It specifies whether the left zero must be removed [LCD44780_MCP23S08_ZERO_CLEANING_ON, LCD44780_MCP23S08_ZERO_CLEANING_OFF].
  *
- * @note If you set a number of digit less than required the digit will be lost starting from the less
- *       significant digit. Minus is like a digit.
+ * @note
+ * If you set a number of digit less than required the digit will be lost starting from the less
+ * significant digit. Minus is like a digit.
  *
  */
 void LCD44780_MCP23S08_write_integer_SPI1 (int16_t value, uint8_t number_of_digits, uint8_t zero_cleaning);
 
 /**
- * This function controls the cursor option (blinking, active)
+ * @brief This function controls the cursor option (blinking, active)
  *
  * @param active Activate the cursor, showing it or not [LCD_TURN_ON_CURSOR, LCD_TURN_OFF_CURSOR]
  *
  * @param blinking  Let the cursor blink [LCD_BLINK_ON, LCD_BLINK_OFF]
  *
- * @note You must use the constant LCD_TURN_ON_CURSOR, LCD_TURN_OFF_CURSOR, LCD_BLINKING_ON, LCD_BLINKING_OFF
- *       to ensure the compatibility with LCD_44780 library.
+ * @note
+ * You must use the constant LCD_TURN_ON_CURSOR, LCD_TURN_OFF_CURSOR, LCD_BLINKING_ON, LCD_BLINKING_OFF
+ * to ensure the compatibility with LCD_44780 library.
  *
  */
 void LCD44780_MCP23S08_cursor_SPI1 (uint8_t active, uint8_t blinking);
 
 /**
- * This function controls the backligth LED.
+ * @brief This function controls the backligth LED.
  *
  * @param active Activate the LED backlight [LCD_TURN_ON_LED, LCD_TURN_OFF_LED]
  *
  * @param blinking  Let the cursor blink [LCD_BLINKING_ON, LCD_BLINKING_OFF]
  *
- * @note You must use the constant LCD_TURN_ON_LED, LCD_TURN_OFF_LED
- *       to ensure the compatibility with LCD_44780 library.
+ * @note
+ * You must use the constant LCD_TURN_ON_LED, LCD_TURN_OFF_LED
+ * to ensure the compatibility with LCD_44780 library.
+ * 
  */
 void LCD44780_MCP23S08_backlight_SPI1 (uint8_t active);
-
-/**
- * This function initializes the LCD to work in 4 bit modality.
- *
- * @param device_address Address hardware configured for MCP23S08
- *
- * @note You must properly set the microcontroller pins using the TRISx registers.
- */
-//void  LCD44780_MCP23S08_initialize_SPI1 (uint8_t device_address);
 
 #endif	/* LCD44780_MCP23S08_H */

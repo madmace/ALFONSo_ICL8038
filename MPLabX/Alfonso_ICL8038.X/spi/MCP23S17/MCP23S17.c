@@ -15,12 +15,14 @@ IN ANY CIRCUMSTANCES, BE LIABLE FOR SPECIAL, INCIDENTAL OR
 CONSEQUENTIAL DAMAGES, FOR ANY REASON WHATSOEVER.
 
 This source contains SPI Library functions implementations for
-8-Bit I/O Expander MCP23S08
+16-Bit I/O Expander MCP23S17
 
-- 8-Bit remote bidirectional I/O port, default to input
+- 16-Bit remote bidirectional I/O port, default to input
 - High-speed SPI interface 10Mhz
-- 2 pins to allow up to four device using same chip-select
+- 3 pins to allow up to eight device using same chip-select
 - SPI serial interface (mode 0,0 and 1,1)
+- Byte mode disables automatic Address Pointer incrementing
+- Used IOCON.BANK = 0. The address pointer to toggle between associated A/B register pairs
 
 Attention !!
 Not include CS operations. It will be managed out functions provided.
@@ -28,20 +30,20 @@ Affect Single and Daisy-Chain transactions.
 
 *******************************************************************************/
 
-#include "MCP23S08.h"
+#include "MCP23S17.h"
 #include "SPILib.h"
 
-// MCP23S08_Write_Register_SPI1 Implementation
-int8_t MCP23S08_Write_Register_SPI1 (uint8_t device_address, uint8_t register_address, uint8_t data) {
+// MCP23S17_Write_Register_SPI1 Implementation
+int8_t MCP23S17_Write_Register_SPI1 (uint8_t device_address, uint8_t register_address, uint8_t data) {
     
     signed char cRes = -1;      // Default in error
     
     uint8_t opcode = 0x00;      // Device Opcode
     
-    // Copy 2 bits address + 0 for write operation
-    opcode = (device_address << 1) & 0x07;
+    // Copy 3 bits address for write operation
+    opcode = (device_address << 1) & 0x0F;
     // Add prefix
-    opcode |= PREFIX_DEVICE_MCP23S08;
+    opcode |= PREFIX_DEVICE_MCP23S17;
     
     // Send Device Opcode
     cRes = SPI1_write_byte(opcode);
@@ -60,17 +62,16 @@ int8_t MCP23S08_Write_Register_SPI1 (uint8_t device_address, uint8_t register_ad
 }
 
 #ifdef SPI2_AVAILABLE
-// MCP23S08_Write_Register_SPI2 Implementation
-int8_t MCP23S08_Write_Register_SPI2 (uint8_t device_address, uint8_t register_address, uint8_t data) {
+int8_t MCP23S17_Write_Register_SPI2 (uint8_t device_address, uint8_t register_address, uint8_t data) {
     
     signed char cRes = -1;      // Default in error
     
     uint8_t opcode = 0x00;      // Device Opcode
     
-    // Copy 2 bits address + 0 for write operation
-    opcode = (device_address << 1) & 0x07;
+    // Copy 3 bits address for write operation
+    opcode = (device_address << 1) & 0x0F;
     // Add prefix
-    opcode |= PREFIX_DEVICE_MCP23S08;
+    opcode |= PREFIX_DEVICE_MCP23S17;
     
     // Send Device Opcode
     cRes = SPI2_write_byte(opcode);
@@ -89,17 +90,17 @@ int8_t MCP23S08_Write_Register_SPI2 (uint8_t device_address, uint8_t register_ad
 }
 #endif
 
-// MCP23S08_Read_Register_SPI1 Implementation
-int8_t MCP23S08_Read_Register_SPI1 (uint8_t device_address, uint8_t register_address, uint8_t *data) {
+// MCP23S17_Read_Register_SPI1 Implementation
+int8_t MCP23S17_Read_Register_SPI1 (uint8_t device_address, uint8_t register_address, uint8_t *data) {
     
     signed char cRes = -1;      // Default in error
     
     uint8_t opcode = 0x00;      // Device Opcode
     
     // Copy 2 bits address + 1 for read operation
-    opcode = ((device_address << 1) + 1) & 0x07;
+    opcode = ((device_address << 1) + 1) & 0x0F;
     // Add prefix
-    opcode |= PREFIX_DEVICE_MCP23S08;
+    opcode |= PREFIX_DEVICE_MCP23S17;
     
     // Send Device Opcode
     cRes = SPI1_write_byte(opcode);
@@ -118,16 +119,16 @@ int8_t MCP23S08_Read_Register_SPI1 (uint8_t device_address, uint8_t register_add
 }
 
 #ifdef SPI2_AVAILABLE
-int8_t MCP23S08_Read_Register_SPI2 (uint8_t device_address, uint8_t register_address, uint8_t *data) {
+int8_t MCP23S17_Read_Register_SPI2 (uint8_t device_address, uint8_t register_address, uint8_t *data) {
     
     signed char cRes = -1;      // Default in error
     
     uint8_t opcode = 0x00;      // Device Opcode
     
     // Copy 2 bits address + 1 for read operation
-    opcode = ((device_address << 1) + 1) & 0x07;
+    opcode = ((device_address << 1) + 1) & 0x0F;
     // Add prefix
-    opcode |= PREFIX_DEVICE_MCP23S08;
+    opcode |= PREFIX_DEVICE_MCP23S17;
     
     // Send Device Opcode
     cRes = SPI2_write_byte(opcode);

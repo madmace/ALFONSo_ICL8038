@@ -38,19 +38,21 @@ PCF8574/PCF8574A
 #endif
 
 /**
- * This function writes to the data Port of the I2C I/O expander.
+ * @brief This function writes to the data Port of the I2C I/O expander.
  *
  * @param control Is the address of the PCF8574 (Internal Address + Pin address)
  *
  * @param data Byte to write [min: 0, max: 255]
  *
- * @return status 0: The byte has been properly written
- *               -1: Communication Error
+ * @return status
+ * 0: The byte has been properly written
+ * -1: Communication Error
  *
- * @note    PCF8574  Address : 0100xxx0
- *          PCF8574A Address : 0111xxx0
- *
- *          xxx = A2 A1 A0 (External Address Pins)
+ * @note
+ * PCF8574  Address : 0100xxx0
+ * PCF8574A Address : 0111xxx0
+ * xxx = A2 A1 A0 (External Address Pins)
+ * 
  */
 int8_t PCF8574_I2C1_write_data (uint8_t device_address, uint8_t data);
 #ifdef I2C2_AVAILABLE
@@ -58,19 +60,21 @@ int8_t PCF8574_I2C1_write_data (uint8_t device_address, uint8_t data);
 #endif
 
 /**
- * This function reads to the data Port of the I2C I/O expander.
+ * @brief This function reads to the data Port of the I2C I/O expander.
  *
  * @param control Is the address of the PCF8574 (Internal Address + Pin address
  *
  * @param data Address where the data is written into.
  *
- * @return status 0: The byte has been properly written
- *               -1: Communication Error
+ * @return status
+ * 0: The byte has been properly written
+ * -1: Communication Error
  *
- * @note    PCF8574  Address : 0100xxx0
- *          PCF8574A Address : 0111xxx0
- *
- *          xxx = A2 A1 A0 (External Address Pins) 
+ * @note
+ * PCF8574  Address : 0100xxx0
+ * PCF8574A Address : 0111xxx0
+ * xxx = A2 A1 A0 (External Address Pins)
+ * 
  */
 int8_t PCF8574_I2C1_read_data(uint8_t device_address, uint8_t *data);
 #ifdef I2C2_AVAILABLE

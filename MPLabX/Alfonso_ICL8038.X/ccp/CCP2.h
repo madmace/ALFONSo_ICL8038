@@ -29,16 +29,18 @@ This Header contains all functions for used with CCP2 module
 #include <CCPLIb.h>
 
 /**
- * Take the time capture and return to the frequency in KHz
+ * @brief Take the time capture and return to the frequency in KHz
  *
  * @param capture_time CCPx capture Time
  * @param capture_mode Capture mode used :
  * 
+ * @note
  * CCPx_CAPTURE_1_FALL, CCPx_CAPTURE_1_RISE
  * CCPx_CAPTURE_4_RISE, CCPx_CAPTURE_16_RISE
  * 
  * @param timer_prescale Is ratio to set to Timer's prescaler.
  * 
+ * @note
  * CCPx_TIMER_PRESCALE_1, CCPx_TIMER_PRESCALE_2
  * CCPx_TIMER_PRESCALE_4, CCPx_TIMER_PRESCALE_8
  *
@@ -48,6 +50,7 @@ This Header contains all functions for used with CCP2 module
 volatile double getFrequencyFromTimer(uint16_t capture_time, uint8_t capture_mode, uint8_t timer_prescale);
 
 /**
+ * @brief
  * This macro function configure and initialize the CCP module
  * in capture mode for every 16th rising edge
  *
@@ -59,7 +62,7 @@ volatile double getFrequencyFromTimer(uint16_t capture_time, uint8_t capture_mod
 void CCP2_init (void);
 
 /**
- * This macro function is called in interrupt request
+ * @brief This macro function is called in interrupt request
  *
  * @param void
  *

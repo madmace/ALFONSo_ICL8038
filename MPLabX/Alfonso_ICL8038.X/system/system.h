@@ -135,7 +135,7 @@ typedef struct {
  ***************************************/
 
 /**
- * Clear CDC USB Out data buffer 
+ * @brief Clear CDC USB Out data buffer 
  *
  * @param void
  *
@@ -145,7 +145,7 @@ typedef struct {
 void ClearCDCUSBDataWriteBuffer (void);
 
 /**
- * Clear CDC USB In data buffer 
+ * @brief Clear CDC USB In data buffer 
  *
  * @param void
  *
@@ -155,7 +155,7 @@ void ClearCDCUSBDataWriteBuffer (void);
 void ClearCDCUSBDataReadBuffer (void);
 
 /**
- * Clear all the VCO States
+ * @brief Clear all the VCO States
  *
  * @param void
  *
@@ -169,10 +169,10 @@ void ClearAllVCOStates (void);
  ***************************************/
 
 /**
- * Main system state machine function
- * This function is a facade function that care for
- * initial configure and next configuration of all micro GPIO about 
- * the state machine.
+ * @brief Main system state machine function
+ *        This function is a facade function that care for
+ *        initial configure and next configuration of all micro GPIO about 
+ *        the state machine.
  *
  * @param state An value of SYSTEM_STATE enumerator. 
  *
@@ -182,9 +182,9 @@ void ClearAllVCOStates (void);
 void ConfigSystemState(SYSTEM_STATE state);
 
 /**
- * Set all GPIO port for initial start up.
- * Should be call at initial life of program or if we want
- * return to initial state again.
+ * @brief Set all GPIO port for initial start up.
+ *        Should be call at initial life of program or if we want
+ *        return to initial state again.
  *
  * @param void
  *
@@ -194,8 +194,8 @@ void ConfigSystemState(SYSTEM_STATE state);
 void StartUpIOPortsConfig(void);
 
 /**
- * Setup of SPI configuration of MSSP
- * To do at startup.
+ * @brief Setup of SPI configuration of MSSP
+ *        To do at startup.
  *
  * @param void
  *
@@ -205,9 +205,9 @@ void StartUpIOPortsConfig(void);
 void StartUpSPIConfig(void);
 
 /**
- * Setup of CCP module for configure CCP2
- * as capture.
- * To do at startup.
+ * @brief Setup of CCP module for configure CCP2
+ *        as capture.
+ *        To do at startup.
  *
  * @param void
  *
@@ -217,13 +217,13 @@ void StartUpSPIConfig(void);
 void StartUpCCP2Config(void);
 
 /**
- * Setup of the SPI MCP23S08 that driver an
- * LCD 44780 Hitachi compatible in 4 bit mode
- * To do at startup.
+ * @brief Setup of the SPI MCP23S08 that driver an
+ *        LCD 44780 Hitachi compatible in 4 bit mode
+ *        To do at startup.
  * 
- * Perform initial presentation with
- * System Model
- * Actual Firmware Version
+ *        Perform initial presentation with
+ *        System Model
+ *        Actual Firmware Version
  *
  * @param void
  *
@@ -233,7 +233,7 @@ void StartUpCCP2Config(void);
 void StartUpSPI16x2LCD(void);
 
 /**
- * Setup of the SPI MCP23S08 8 GPIO Extender
+ * @brief Setup of the SPI MCP23S08 8 GPIO Extender
  *
  * @param void
  *
@@ -243,8 +243,8 @@ void StartUpSPI16x2LCD(void);
 void StartUpSPIGPIOExtender(void);
 
 /**
- * Update the system by current USB status.
- * Should be call in callback pump USB events function.
+ * @brief Update the system by current USB status.
+ *        Should be call in callback pump USB events function.
  *
  * @param void
  *
@@ -254,8 +254,8 @@ void StartUpSPIGPIOExtender(void);
 void UpdateUSBStatus(void);
 
 /**
- * Put a simple message on first line of LCD 44780 Hitachi
- * by SPI MCP23S08
+ * @brief Put a simple message on first line of LCD 44780 Hitachi
+ *        by SPI MCP23S08
  *
  * @param message Message to put on display
  *
@@ -265,8 +265,8 @@ void UpdateUSBStatus(void);
 void SimpleMessageSPI16x2LCD(const char *message);
 
 /**
- * Put a command and relative value on first line of LCD 44780 Hitachi
- * by SPI MCP23S08
+ * @brief Put a command and relative value on first line of LCD 44780 Hitachi
+ *        by SPI MCP23S08
  *
  * @param cmd       Command name to put on display
  * @param bIsValue  If true the next value will be displayed
@@ -282,8 +282,8 @@ void SimpleMessageSPI16x2LCD(const char *message);
 #endif
 
 /**
- * Takes a current value of capture of CCP2 updated by the ISR
- * and controls if variance are in tollerance gap.
+ * @brief Takes a current value of capture of CCP2 updated by the ISR
+ *        and controls if variance are in tollerance gap.
  *
  * @param uiCapture       Pointer by Reference to 16bits output variable
  *
@@ -294,8 +294,8 @@ void SimpleMessageSPI16x2LCD(const char *message);
 bool updateCCPCapture(volatile uint16_t *uiCapture);
 
 /**
- * Prepare the 16bit Frequency value to be send to client
- * by the response protocol
+ * @brief Prepare the 16bit Frequency value to be send to client
+ *        by the response protocol
  *
  * @param buffer          Pointer by Reference buffer to write
  * 
@@ -310,12 +310,12 @@ bool updateCCPCapture(volatile uint16_t *uiCapture);
 uint8_t packResponseFrequency(uint8_t *buffer, uint16_t uiValue, uint8_t byVCOID);
 
 /**
- * Runs system level tasks that keep the system running
+ * @brief Runs system level tasks that keep the system running
  *
- * PreCondition: System has been initialized with 
- * ConfigSystemState(SYSTEM_STATE_START_INIT)
- * and completed with
- * ConfigSystemState(SYSTEM_STATE_COMPLETED_INIT)
+ *        PreCondition: System has been initialized with 
+ *        ConfigSystemState(SYSTEM_STATE_START_INIT)
+ *        and completed with
+ *        ConfigSystemState(SYSTEM_STATE_COMPLETED_INIT)
  *
  * @param void
  *

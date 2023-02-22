@@ -49,13 +49,14 @@ Affect Single and Daisy-Chain transactions.
 #define MCP425X_DECREMENT_WIPER_POT1_CMD 0x18
 
 /**
- * This function writes a new wiper position on Pot 0
+ * @brief This function writes a new wiper position on Pot 0
  *
  * @param newTapValue Tap to set [0..256]
  *
- * @return error Communication error 
- *               0: The byte has been properly written
- *               -1: Communication error
+ * @return error
+ * Communication error 
+ * 0: The byte has been properly written
+ * -1: Communication error
  * 
  */
 int8_t MCP425X_Pot0_Write_Data_SPI1 (uint16_t newTapValue);
@@ -64,7 +65,7 @@ int8_t MCP425X_Pot0_Write_Data_SPI1 (uint16_t newTapValue);
 #endif
 
 /**
- * This function read the current taps value from the Pot 0
+ * @brief This function read the current taps value from the Pot 0
  *
  * @param void
  *
@@ -79,13 +80,14 @@ uint16_t MCP425X_Pot0_Read_Data_SPI1 (void);
 #endif
 
 /**
- * This function increment by one tap the Pot 0
+ * @brief This function increment by one tap the Pot 0
  *
  * @param void
  *
- * @return error Communication error 
- *               0: The byte has been properly written
- *               -1: Communication error
+ * @return error
+ * Communication error 
+ * 0: The byte has been properly written
+ * -1: Communication error
  * 
  */
 int8_t MCP425X_Pot0_Increment_Wiper_SPI1 (void);
@@ -94,13 +96,14 @@ int8_t MCP425X_Pot0_Increment_Wiper_SPI1 (void);
 #endif
 
 /**
- * This function decrement by one tap the Pot 0
+ * @brief This function decrement by one tap the Pot 0
  *
  * @param void
  *
- * @return error Communication error 
- *               0: The byte has been properly written
- *               -1: Communication error
+ * @return error
+ * Communication error 
+ * 0: The byte has been properly written
+ * -1: Communication error
  * 
  */
 int8_t MCP425X_Pot0_Decrement_Wiper_SPI1 (void);
@@ -109,13 +112,14 @@ int8_t MCP425X_Pot0_Decrement_Wiper_SPI1 (void);
 #endif
 
 /**
- * This function writes a new wiper position on Pot 1
+ * @brief This function writes a new wiper position on Pot 1
  *
  * @param newTapValue Tap to set [0..256]
  *
- * @return error Communication error 
- *               0: The byte has been properly written
- *               -1: Communication error
+ * @return error
+ * Communication error 
+ * 0: The byte has been properly written
+ * -1: Communication error
  * 
  */
 int8_t MCP425X_Pot1_Write_Data_SPI1 (uint16_t newTapValue);
@@ -124,7 +128,7 @@ int8_t MCP425X_Pot1_Write_Data_SPI1 (uint16_t newTapValue);
 #endif
 
 /**
- * This function read the current taps value from the Pot 1
+ * @brief This function read the current taps value from the Pot 1
  *
  * @param void
  *
@@ -139,13 +143,14 @@ uint16_t MCP425X_Pot1_Read_Data_SPI1 (void);
 #endif
 
 /**
- * This function increment by one tap the Pot 1
+ * @brief This function increment by one tap the Pot 1
  *
  * @param void
  *
- * @return error Communication error 
- *               0: The byte has been properly written
- *               -1: Communication error
+ * @return error
+ * Communication error 
+ * 0: The byte has been properly written
+ * -1: Communication error
  * 
  */
 int8_t MCP425X_Pot1_Increment_Wiper_SPI1 (void);
@@ -154,13 +159,14 @@ int8_t MCP425X_Pot1_Increment_Wiper_SPI1 (void);
 #endif
 
 /**
- * This function decrement by one tap the Pot 1
+ * @brief This function decrement by one tap the Pot 1
  *
  * @param void
  *
- * @return error Communication error 
- *               0: The byte has been properly written
- *               -1: Communication error
+ * @return error
+ * Communication error 
+ * 0: The byte has been properly written
+ * -1: Communication error
  * 
  */
 int8_t MCP425X_Pot1_Decrement_Wiper_SPI1 (void);

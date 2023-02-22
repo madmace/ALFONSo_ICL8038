@@ -67,22 +67,24 @@ Timer1 is the capture/compare clock source for CCP1
 #endif
 
 /**
- * Configure the CCPx in standard mode for capture
+ * @brief Configure the CCPx in standard mode for capture
  *
  * @param sampling_type  Is the four bits in CCPxCON register CCPxCON<3:0>
  *        These are the value :
  * 
- *        CCPx_CAPTURE_1_FALL   Capture every falling edge
- *        CCPx_CAPTURE_1_RISE   Capture every rising edge
- *        CCPx_CAPTURE_4_RISE   Capture every 4th rising edge
- *        CCPx_CAPTURE_16_RISE  Capture every 16th rising edge
+ * @note
+ * CCPx_CAPTURE_1_FALL   Capture every falling edge
+ * CCPx_CAPTURE_1_RISE   Capture every rising edge
+ * CCPx_CAPTURE_4_RISE   Capture every 4th rising edge
+ * CCPx_CAPTURE_16_RISE  Capture every 16th rising edge
  * 
  * @param timer_prescale Is ratio to set to Timer's prescaler.
  * 
- *        CCPx_TIMER_PRESCALE_1 1:1 Prescale
- *        CCPx_TIMER_PRESCALE_2 1:2 Prescale
- *        CCPx_TIMER_PRESCALE_4 1:4 Prescale
- *        CCPx_TIMER_PRESCALE_8 1:8 Prescale
+ * @note
+ * CCPx_TIMER_PRESCALE_1 1:1 Prescale
+ * CCPx_TIMER_PRESCALE_2 1:2 Prescale
+ * CCPx_TIMER_PRESCALE_4 1:4 Prescale
+ * CCPx_TIMER_PRESCALE_8 1:8 Prescale
  *
  * @return void
  * 
@@ -95,7 +97,7 @@ Timer1 is the capture/compare clock source for CCP1
 #endif
 
  /**
- * Configuration of T1CON for use with CCP1
+ * @brief Configuration of T1CON for use with CCP1
  *
  * @param void
  *
@@ -105,14 +107,15 @@ Timer1 is the capture/compare clock source for CCP1
  void Timer1_config (uint8_t prescaler_value);
  
 /**
- * Configuration of T3CON for use with CCP2
+ * @brief Configuration of T3CON for use with CCP2
  *
  * @param timer_prescale Is ratio to set to Timer's prescaler.
  * 
- *        CCPx_TIMER_PRESCALE_1 1:1 Prescale
- *        CCPx_TIMER_PRESCALE_2 1:2 Prescale
- *        CCPx_TIMER_PRESCALE_4 1:4 Prescale
- *        CCPx_TIMER_PRESCALE_8 1:8 Prescale
+ * @note
+ * CCPx_TIMER_PRESCALE_1 1:1 Prescale
+ * CCPx_TIMER_PRESCALE_2 1:2 Prescale
+ * CCPx_TIMER_PRESCALE_4 1:4 Prescale
+ * CCPx_TIMER_PRESCALE_8 1:8 Prescale
  *
  * @return void
  * 
@@ -120,18 +123,20 @@ Timer1 is the capture/compare clock source for CCP1
  void Timer3_config (uint8_t prescaler_value);
  
  /**
- * Preliminary configuration of T3CON for CCPX
+ * @brief Preliminary configuration of T3CON for CCPX
  * 
+ * @note
  * Fixes the T3CCP2:T3CCP1: Timer3 and Timer1 to CCPx Enable bits as
  * Timer3 is the capture/compare clock source for CCP2
  * Timer1 is the capture/compare clock source for CCP1
  *
  * @param timer_prescale Is ratio to set to Timer's prescaler.
  * 
- *        CCPx_TIMER_PRESCALE_1 1:1 Prescale
- *        CCPx_TIMER_PRESCALE_2 1:2 Prescale
- *        CCPx_TIMER_PRESCALE_4 1:4 Prescale
- *        CCPx_TIMER_PRESCALE_8 1:8 Prescale
+ * @note
+ * CCPx_TIMER_PRESCALE_1 1:1 Prescale
+ * CCPx_TIMER_PRESCALE_2 1:2 Prescale
+ * CCPx_TIMER_PRESCALE_4 1:4 Prescale
+ * CCPx_TIMER_PRESCALE_8 1:8 Prescale
  *
  * @return void
  * 

@@ -262,9 +262,15 @@ void LCD44780_MCP23S08_lcd_init_SPI1 (uint8_t device_address) {
     
     // Set CS state in select state
     LCD44780_MCP23S08_CS_LINE_PORT = 0x0;
-    // Set configuration
-    // All disable except for hardware address, polarity active-high
-    MCP23S08_Write_Register_SPI1(MCP23S08_Address, MCP23S08_IOCON, 0x0A);
+    //
+    // Initialization of MCP28S03
+    //
+    // Sequential Operation mode bit disabled
+    // Slew rate enabled
+    // Enables the MCP23S08 address pins
+    // Active driver output (INTPOL bit sets the polarity).
+    // Polarity of the INT output pin Active High.
+    MCP23S08_Write_Register_SPI1(MCP23S08_Address, MCP23S08_IOCON, 0x2A);
     // Set CS state in unselect state
     LCD44780_MCP23S08_CS_LINE_PORT = 0x1;       
         

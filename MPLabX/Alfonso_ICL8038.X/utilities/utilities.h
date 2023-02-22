@@ -27,9 +27,9 @@ Such as special conversion between differents types.
 #include <xc.h>
 
 /**
- * This function converts signed integer to a string of chars.
- * The returned string is always the shortest possible one containing the value.
- * Digit 0 contains - sign if the number is negative. The sign + is not shown.
+ * @brief This function converts signed integer to a string of chars.
+ *        The returned string is always the shortest possible one containing the value.
+ *        Digit 0 contains - sign if the number is negative. The sign + is not shown.
  *
  * @param buffer Pointer to the array that will contain the string.
  *
@@ -41,8 +41,8 @@ Such as special conversion between differents types.
 int8_t conv_int16_to_string (uint8_t * buffer, int16_t value);
 
 /**
- * This function returns the string length, marked with the '\0' character
- * The \0 character is not counted.
+ * @brief This function returns the string length, marked with the '\0' character
+ *        The \0 character is not counted.
  *
  * @param buffer Pointer to the string that contains the char array ending with '\0'
  * 

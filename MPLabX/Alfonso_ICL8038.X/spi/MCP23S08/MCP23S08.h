@@ -60,7 +60,7 @@ Affect Single and Daisy-Chain transactions.
 #define MCP23S08_OLAT 0x0A              // Access to the poutput latches
 
 /**
- * This function writes to the register Port of the SPI I/O expander.
+ * @brief This function writes to the register Port of the SPI I/O expander.
  *
  * @param device_address Is the address of the MCP23S08 (2 bit Pin address)
  * 
@@ -68,9 +68,10 @@ Affect Single and Daisy-Chain transactions.
  * 
  * @param data Byte to write in the register [min: 0, max: 255]
  *
- * @return error Communication error 
- *               0: The byte has been properly written
- *               -1: Communication error
+ * @return error 
+ * Communication error 
+ * 0: The byte has been properly written
+ * -1: Communication error
  * 
  */
 int8_t MCP23S08_Write_Register_SPI1 (uint8_t device_address, uint8_t register_address, uint8_t data);
@@ -79,7 +80,7 @@ int8_t MCP23S08_Write_Register_SPI1 (uint8_t device_address, uint8_t register_ad
 #endif
 
 /**
- * This function read from the register Port of the SPI I/O expander.
+ * @brief This function read from the register Port of the SPI I/O expander.
  *
  * @param device_address Is the address of the MCP23S08 (2 bit Pin address)
  * 
@@ -87,8 +88,9 @@ int8_t MCP23S08_Write_Register_SPI1 (uint8_t device_address, uint8_t register_ad
  *
  * @param data Address where the data is written into.
  * 
- * @return status 0: The byte has been properly written
- *               -1: Communication Error
+ * @return status
+ * 0: The byte has been properly written
+ * -1: Communication Error
  * 
  * @warning The function is a blocking one. It waits for 8 bits to be sent out.
  * 
@@ -99,13 +101,14 @@ int8_t MCP23S08_Read_Register_SPI1 (uint8_t device_address, uint8_t register_add
 #endif
 
 /**
- * This function increment by one tap the Pot 0
+ * @brief This function increment by one tap the Pot 0
  *
  * @param void
  *
- * @return error Communication error 
- *               0: The byte has been properly written
- *               -1: Communication error
+ * @return error
+ * Communication error 
+ * 0: The byte has been properly written
+ * -1: Communication error
  * 
  */
 //int8_t MCP425X_Pot0_Increment_Wiper_SPI1 (void);
@@ -114,13 +117,14 @@ int8_t MCP23S08_Read_Register_SPI1 (uint8_t device_address, uint8_t register_add
 //#endif
 
 /**
- * This function decrement by one tap the Pot 0
+ * @brief This function decrement by one tap the Pot 0
  *
  * @param void
  *
- * @return error Communication error 
- *               0: The byte has been properly written
- *               -1: Communication error
+ * @return error 
+ * Communication error 
+ * 0: The byte has been properly written
+ * -1: Communication error
  * 
  */
 //int8_t MCP425X_Pot0_Decrement_Wiper_SPI1 (void);
@@ -129,13 +133,14 @@ int8_t MCP23S08_Read_Register_SPI1 (uint8_t device_address, uint8_t register_add
 //#endif
 
 /**
- * This function writes a new wiper position on Pot 1
+ * @brief This function writes a new wiper position on Pot 1
  *
  * @param newTapValue Tap to set [0..256]
  *
- * @return error Communication error 
- *               0: The byte has been properly written
- *               -1: Communication error
+ * @return error
+ * Communication error 
+ * 0: The byte has been properly written
+ * -1: Communication error
  * 
  */
 //int8_t MCP425X_Pot1_Write_Data_SPI1 (uint16_t newTapValue);
@@ -144,7 +149,7 @@ int8_t MCP23S08_Read_Register_SPI1 (uint8_t device_address, uint8_t register_add
 //#endif
 
 /**
- * This function read the current taps value from the Pot 1
+ * @brief This function read the current taps value from the Pot 1
  *
  * @param void
  *
@@ -159,13 +164,14 @@ int8_t MCP23S08_Read_Register_SPI1 (uint8_t device_address, uint8_t register_add
 //#endif
 
 /**
- * This function increment by one tap the Pot 1
+ * @brief This function increment by one tap the Pot 1
  *
  * @param void
  *
- * @return error Communication error 
- *               0: The byte has been properly written
- *               -1: Communication error
+ * @return error
+ * Communication error 
+ * 0: The byte has been properly written
+ * -1: Communication error
  * 
  */
 //int8_t MCP425X_Pot1_Increment_Wiper_SPI1 (void);
@@ -174,13 +180,14 @@ int8_t MCP23S08_Read_Register_SPI1 (uint8_t device_address, uint8_t register_add
 //#endif
 
 /**
- * This function decrement by one tap the Pot 1
+ * @brief This function decrement by one tap the Pot 1
  *
  * @param void
  *
- * @return error Communication error 
- *               0: The byte has been properly written
- *               -1: Communication error
+ * @return error
+ * Communication error 
+ * 0: The byte has been properly written
+ * -1: Communication error
  * 
  */
 ///int8_t MCP425X_Pot1_Decrement_Wiper_SPI1 (void);
