@@ -14,6 +14,7 @@
         <file>content/HarmonicsSwitchesLFO.qml</file>
         <file>content/LFOMixer.qml</file>
         <file>content/Splash.qml</file>
+        <file>resources/ITCEDSCR.TTF</file>
         <file>resources/favicon.png</file>
         <file>resources/train_digits.svg</file>
         <file>resources/GreenLight.svg</file>

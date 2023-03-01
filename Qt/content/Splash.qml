@@ -182,6 +182,9 @@ Rectangle {
         anchors.leftMargin: 20
         anchors.top: parent.bottom
         anchors.topMargin: -120
+
+        FontLoader { id: mainTitleLabelFont; source: "qrc:/resources/ITCEDSCR.TTF" }
+
         color: "goldenrod"
         text: Constants.splashMainName
         font.pixelSize: 70
@@ -190,7 +193,7 @@ Rectangle {
         style: Text.Sunken
         horizontalAlignment: Text.AlignHCenter
         verticalAlignment: Text.AlignVCenter
-        font.family: "Edwardian Script ITC"
+        font.family: mainTitleLabelFont.font
 
         Text {
             id: subTitleLabel
