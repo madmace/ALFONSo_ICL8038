@@ -24,19 +24,29 @@ Scope:
 - The use of analog IC monolith signal generators operated in BF in the 1Hz band up to 25KHz. Can be used as VCO/LFO. This first research *intentionally* uses the older, now obsolete, but well known **Intersil ICL8038**.
 - The digital control interface via USB is based on an *old and well-known* Microchip **18-series** microcontroller. The **PIC18F4550** is a widely used mC and there is a large amount of example code and tutorials available on the web.
   However, I personally always suggest having its datasheet handy and dedicating the time to understand its correct functioning.
-- Alfonso uses the USB 2.0 peripheral contained in the 18F4550 microcontroller. The firmware exposes the USB port as a CDC (USB communications device class). This allows it to be recognized by all OSes as an RS232 serial port. I originally intended to use the USB port as a Human Interface Device (HID) but due to its limitations I decided to implement it as a CDC and build a proprietary protocol on it.
+- Alfonso uses the USB 2.0 peripheral contained in the 18F4550 microcontroller. The firmware exposes the USB port as a CDC (USB communications device class). This allows it to be recognized by all OSes as an RS232 serial port.
+  I originally intended to use the USB port as a Human Interface Device (HID) but due to its limitations I decided to implement it as a CDC and build a proprietary protocol on it.
   
 ## Basics
 
 The ICL8038 waveform generator is a monolithic integrated circuit capable of producing high accuracy sine, square, triangular, sawtooth and pulse waveforms. The frequency (or repetition rate) can be selected externally from 0.001Hz to more than 300kHz.
 In used configuration, the frequency has been fixed in the audio frequency range 1Hz to 20KHz. Integrators via comparators create the primary triangle which is then flip-flopped to obtain the square and a smoothing network based on multiple transistors stages to obtain the sine.
-The sweep is modulated via a dc voltage to pin 8. The relative frequency range depends on the capacitor applied to pin 10.
+The sweep is modulated via a DC voltage to pin 8. The relative frequency range depends on the capacitor applied to pin 10.
 Four different meshes with different values are needed to get good linearity. This especially applies to operation as an LFO. Four different selectable operating modes have been selected.
 
 - **HVCO**
 - **VCO**
 - **LFO**
 - **VLFO**
+
+The PIC18F4550 has only one MSSP *(Master Synchronous Serial Port)*. While it can be dynamically reset, the open-drain nature of the I2C *(Inter Integrated Circuit)* protocol makes it incompatible with SPI (Serial Peripheral Interface).
+So I chose to use only SPI peripherals even with the expenditure of lines for the various CSs *(Chip Select)*.
+
+SPI ICs used :
+
+**MCP23S08** High-speed SPI 8-Bit I/O Expander from Microchip
+A very convenient prerogative of this series of SPI I/O Expanders is that it has the possibility of setting additional hardware addresses which allow you to select the peripheral with the same CS line.
+In the case of the MCP23S08 it has two address pins wired for a total of four I/O expanders per CS.
 
 ## Early implementation
 
