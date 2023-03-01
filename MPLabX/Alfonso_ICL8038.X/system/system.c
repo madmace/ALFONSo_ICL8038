@@ -27,6 +27,7 @@ of main application.
 #include <MCP42XXX.h>
 #include <MCP425X.h>
 #include <MCP23S08.h>
+#include <MCP23S17.h>
 #include <LCD44780_MCP23S08.h>
 
 // I2C libraries
@@ -163,10 +164,10 @@ void ConfigSystemState(SYSTEM_STATE state)
 // Apply the initial ports configuration
 void StartUpIOPortsConfig(void) {
     
-    // Disable ADC
-    ADCON0bits.ADON = 0x0;
+    // Disable A/D converter module
+    ADCON0 = 0x00;
     // Set All possible ports/line AN0 to AN12 to digital
-    ADCON1bits.PCFG = 0xF;
+    ADCON1 = 0xFF;
     
 	// Set USB LED activity to output and put low
  	LED_STATUS_USB_TRIS = 0x0;
@@ -186,9 +187,9 @@ void StartUpIOPortsConfig(void) {
     MCP425X_CS_LINE_TRIS = 0x0;         // Output
     MCP425X_CS_LINE_PORT = 0x1;         // CS Disabled
     
-    // CS for MCP23S08s GPIO Expander
-    MCP23S08_CS_LINE_TRIS = 0x0;        // Output
-    MCP23S08_CS_LINE_PORT = 0x1;        // CS Disabled
+    // CS for MCP23S17s GPIO Expander
+    MCP23S17_CS_LINE_TRIS = 0x0;        // Output
+    MCP23S17_CS_LINE_PORT = 0x1;        // CS Disabled
 }
 
 // Setup of SPI configuration of MSSP
@@ -235,33 +236,35 @@ void StartUpSPI16x2LCD(void) {
 // GPIO Extender
 void StartUpSPIGPIOExtender(void) {
     //
-    // Initialization of MCP28S03 at hardware address 0x00
+    // Initialization of First MCP28S17 I/O Extender at hardware address 0x00
     //
-    // Sequential Operation mode bit disabled
-    // Slew rate enabled
-    // Enables the MCP23S08 address pins
-    // Active driver output (INTPOL bit sets the polarity).
-    // Polarity of the INT output pin Active High.
-    MCP23S08_CS_LINE_PORT = 0x0;
-    MCP23S08_Write_Register_SPI1(0x00, MCP23S08_IOCON, 0x2A);
+    
+    // Select Extender device
+    MCP23S17_CS_LINE_PORT = 0x0;
+    // Initialization Extender device
+    MCP23S17_init_SPI1(MCP23S17_EXP_1_ADDRESS, MCP23S17_16BIT);
     // Deselect Extender device
-    MCP23S08_CS_LINE_PORT = 0x1;
+    MCP23S17_CS_LINE_PORT = 0x1;
         
     __delay_us(50);
         
     // Select Extender device
-    MCP23S08_CS_LINE_PORT = 0x0;
-    MCP23S08_Write_Register_SPI1(0x00, MCP23S08_IODIR, 0x00);
+    MCP23S17_CS_LINE_PORT = 0x0;
+    // Set sll 16 port as outputs
+    MCP23S17_Write_Word_Register_SPI1(MCP23S17_EXP_1_ADDRESS, MCP23S17_IODIRA_16, 0x0000);
     // Deselect Extender device
-    MCP23S08_CS_LINE_PORT = 0x1;
+    MCP23S17_CS_LINE_PORT = 0x1;
 
     __delay_us(50);
 
     // Select Extender device
-    MCP23S08_CS_LINE_PORT = 0x0;
-    MCP23S08_Write_Register_SPI1(0x00, MCP23S08_OLAT, 0x00);
+    MCP23S17_CS_LINE_PORT = 0x0;
+    // Set all 16 port to low
+    MCP23S17_Write_Word_Register_SPI1(MCP23S17_EXP_1_ADDRESS, MCP23S17_GPIOA_16, 0x0000);
     // Deselect Extender device
-    MCP23S08_CS_LINE_PORT = 0x1;
+    MCP23S17_CS_LINE_PORT = 0x1;
+    
+    __delay_us(50);
 }
 
 // Update the system by current USB status
@@ -468,7 +471,7 @@ void MainSystemTasks(void) {
                 // ************************************************
                 // Synchronization command
                 
-                // Resquest all ALFONSo State
+                // Request all ALFONSo State
                 case SYNC_REQ_ALL:
                     
                     // Control if right size
@@ -593,12 +596,14 @@ void MainSystemTasks(void) {
                         // To do ....
                         
                         // TEST !!!!
-                        byAux = (uint8_t)(byValue << 4);
-                        // Select first IO EXP device
-                        MCP23S08_CS_LINE_PORT = 0x0;
-                        MCP23S08_Write_Register_SPI1(MCP23S08_EXP_1_ADDRESS, MCP23S08_GPIO, byAux);
-                        // Deselect first IO EXP device
-                        MCP23S08_CS_LINE_PORT = 0x1;
+                        //byAux = (uint8_t)(byValue << 4);
+                        byAux = (uint8_t)(byValue & 0x01);
+                        // Select Extender device
+                        MCP23S17_CS_LINE_PORT = 0x0;
+                        // Set all 16 port to low
+                        MCP23S17_Write_Word_Register_SPI1(MCP23S17_EXP_1_ADDRESS, MCP23S17_GPIOA_16, (uint16_t)byAux);
+                        // Deselect Extender device
+                        MCP23S17_CS_LINE_PORT = 0x1;
                         
                         // ****
                         

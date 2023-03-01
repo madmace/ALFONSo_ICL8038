@@ -2,8 +2,8 @@
 
 Author : Emiliano Mazza
 Version : 1.0
-Created on Date : 01/03/2016
-Last update     : 18/03/2016
+Created on Date : 15/18/2020
+Last update     : 31/01/2023
 
 CopyRight 2006-2015 all rights are reserved
 
@@ -15,8 +15,11 @@ IN ANY CIRCUMSTANCES, BE LIABLE FOR SPECIAL, INCIDENTAL OR
 CONSEQUENTIAL DAMAGES, FOR ANY REASON WHATSOEVER.
 
 This source contains SPI Library functions implementations for
-Dual Digital Potentiometer series
-MCP425X
+control an LCD based on Hitachi 44780 controller via
+8-Bit I/O Expander MCP23S08.
+ 
+The Hitachi 44780 controller will be set on 4-Bit Interface mode.
+It's the only mode supported for use with MCP23S08.
 
 *******************************************************************************/
 
@@ -269,8 +272,8 @@ void LCD44780_MCP23S08_lcd_init_SPI1 (uint8_t device_address) {
     // Slew rate enabled
     // Enables the MCP23S08 address pins
     // Active driver output (INTPOL bit sets the polarity).
-    // Polarity of the INT output pin Active High.
-    MCP23S08_Write_Register_SPI1(MCP23S08_Address, MCP23S08_IOCON, 0x2A);
+    // Polarity of the INT output pin Active Low.
+    MCP23S08_Write_Register_SPI1(MCP23S08_Address, MCP23S08_IOCON, 0x28);
     // Set CS state in unselect state
     LCD44780_MCP23S08_CS_LINE_PORT = 0x1;       
         

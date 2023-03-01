@@ -15,7 +15,7 @@ IN ANY CIRCUMSTANCES, BE LIABLE FOR SPECIAL, INCIDENTAL OR
 CONSEQUENTIAL DAMAGES, FOR ANY REASON WHATSOEVER.
 
 This Header contains SPI Library functions for
-control an LDC based on Hitachi 44780 controller via
+control an LCD based on Hitachi 44780 controller via
 8-Bit I/O Expander MCP23S08.
  
 The Hitachi 44780 controller will be set on 4-Bit Interface mode.

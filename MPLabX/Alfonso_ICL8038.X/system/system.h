@@ -69,9 +69,9 @@ of main application.
 #define MCP425X_CS_LINE_TRIS TRISAbits.RA0
 #define MCP425X_CS_LINE_PORT LATAbits.LATA0
 
-// CS for MCP23S08s GPIO Expander
-#define MCP23S08_CS_LINE_TRIS TRISAbits.RA2
-#define MCP23S08_CS_LINE_PORT LATAbits.LATA2
+// CS for MCP23S17s GPIO Expander
+#define MCP23S17_CS_LINE_TRIS TRISAbits.RA2
+#define MCP23S17_CS_LINE_PORT LATAbits.LATA2
 
 // CS Line for MCP23S08 driving Hitachi 44780 LDC
 #define LCD44780_MCP23S08_CS_LINE_TRIS TRISAbits.RA1
@@ -80,10 +80,10 @@ of main application.
 // Address for MCP23S08 driving Hitachi 44780 LDC
 #define LCD44780_MCP23S08_ADDRESS 0x00
 
-// Address for first MCP23S08 GPIO Expander
-#define MCP23S08_EXP_1_ADDRESS 0x00
-// Address for seconf MCP23S08 GPIO Expander
-#define MCP23S08_EXP_2_ADDRESS 0x01
+// Address for first MCP23S17 GPIO Expander
+#define MCP23S17_EXP_1_ADDRESS 0x00
+// Address for second MCP23S17 GPIO Expander
+#define MCP23S17_EXP_2_ADDRESS 0x01
 
 // PCF8574 definitions
 #define PCF8574_INTERNAL_ADDRESS USED_DEVICE_PCF8574

@@ -40,20 +40,20 @@ This Header contains definitions for serial protocol
  * 
  ******************************/
 
-// Resquest all ALFONSo State
+// Request all ALFONSo State
 #define SYNC_REQ_ALL 0xFFFF
-// Lenght for SYNC_REQ_ALL request
-#define SYNC_REQ_ALL_LEN 30
+// Length for SYNC_REQ_ALL request
+#define SYNC_REQ_ALL_LEN 34
 
-// Resquest VCO 1 State
+// Request VCO 1 State
 #define SYNC_REQ_VCO_1 0xFFE0
-// Resquest VCO 2 State 
+// Request VCO 2 State 
 #define SYNC_REQ_VCO_2 0xFFE1
-// Resquest VCO 3 State
+// Request VCO 3 State
 #define SYNC_REQ_VCO_3 0xFFE2
-// Resquest VCO 4 State
+// Request VCO 4 State
 #define SYNC_REQ_VCO_4 0xFFE3
-// Lenght for SYNC_REQ_VCO_X request
+// Length for SYNC_REQ_VCO_X request
 #define SYNC_REQ_VCO_LEN 3
 
 /*****************************
@@ -70,18 +70,18 @@ This Header contains definitions for serial protocol
 #define VCO_3_REQ_ENABLE 0x0003
 // Request for enable/disable VCO 4
 #define VCO_4_REQ_ENABLE 0x0004
-// Lenght for VCO_X_REQ_ENABLE request
+// Length for VCO_X_REQ_ENABLE request
 #define VCO_REQ_ENABLE_LEN 3
 
-// Resquest for set VCO 1 frequency Range
+// Request for set VCO 1 frequency Range
 #define VCO_1_REQ_FREQ_SELECTOR 0x0010
-// Resquest for set VCO 2 frequency Range
+// Request for set VCO 2 frequency Range
 #define VCO_2_REQ_FREQ_SELECTOR 0x0011
-// Resquest for set VCO 3 frequency Range
+// Request for set VCO 3 frequency Range
 #define VCO_3_REQ_FREQ_SELECTOR 0x0012
-// Resquest for set VCO 4 frequency Range
+// Request for set VCO 4 frequency Range
 #define VCO_4_REQ_FREQ_SELECTOR 0x0013
-// Lenght for VCO_X_REQ_FREQ_SELECTOR request
+// Length for VCO_X_REQ_FREQ_SELECTOR request
 #define VCO_REQ_FREQ_SELECTOR_LEN 3
         
 // Request for set VCO 1 frequency
@@ -92,7 +92,7 @@ This Header contains definitions for serial protocol
 #define VCO_3_REQ_FREQUENCY 0x0022
 // Request for set VCO 4 frequency
 #define VCO_4_REQ_FREQUENCY 0x0023
-// Lenght for VCO_X_REQ_FREQUENCY request
+// Length for VCO_X_REQ_FREQUENCY request
 #define VCO_REQ_FREQUENCY_LEN 3
 
 // Request for set VCO 1 Duty cycle
@@ -103,7 +103,7 @@ This Header contains definitions for serial protocol
 #define VCO_3_REQ_DUTY_CYCLE 0x0032
 // Request for set VCO 4 Duty cycle
 #define VCO_4_REQ_DUTY_CYCLE 0x0033
-// Lenght for VCO_X_REQ_DUTY_CYCLE request
+// Length for VCO_X_REQ_DUTY_CYCLE request
 #define VCO_REQ_DUTY_CYCLE_LEN 3
 
 // Request for enable VCO 1 Sine line
@@ -114,7 +114,7 @@ This Header contains definitions for serial protocol
 #define VCO_3_REQ_ENABLE_SINE 0x0042
 // Request for enable VCO 4 Sine line
 #define VCO_4_REQ_ENABLE_SINE 0x0043
-// Lenght for VCO_X_REQ_ENABLE_SINE request
+// Length for VCO_X_REQ_ENABLE_SINE request
 #define VCO_REQ_ENABLE_SINE_LEN 3
 
 // Request for enable VCO 1 Square line
@@ -125,7 +125,7 @@ This Header contains definitions for serial protocol
 #define VCO_3_REQ_ENABLE_SQUARE 0x0052
 // Request for enable VCO 4 Square line
 #define VCO_4_REQ_ENABLE_SQUARE 0x0053
-// Lenght for VCO_X_REQ_ENABLE_SQUARE request
+// Length for VCO_X_REQ_ENABLE_SQUARE request
 #define VCO_REQ_ENABLE_SQUARE_LEN 3
 
 // Request for enable VCO 1 Triangle line
@@ -136,7 +136,7 @@ This Header contains definitions for serial protocol
 #define VCO_3_REQ_ENABLE_TRIANGLE 0x0062
 // Request for enable VCO 4 Triangle line
 #define VCO_4_REQ_ENABLE_TRIANGLE 0x0063
-// Lenght for VCO_X_REQ_ENABLE_TRIANGLE request
+// Length for VCO_X_REQ_ENABLE_TRIANGLE request
 #define VCO_REQ_ENABLE_TRIANGLE_LEN 3
 
 /*****************************
