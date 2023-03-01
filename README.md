@@ -7,7 +7,11 @@ ALFONSo stands for :
 **F**requency 
 **O**scillator 
 **N**olinear 
-**S**equencer 
+**S**equencer
+
+<p align="right">
+    <img align="right" src="https://user-images.githubusercontent.com/122873753/222143982-1a5c145b-e075-451e-8f5f-8aa5fb78d0a5.png">
+</p>
 
 In this implementation MK-ICL8038.
 
@@ -44,7 +48,7 @@ So I chose to use only SPI peripherals even with the expenditure of lines for th
 
 SPI ICs used :
 
-**MCP23S08** High-speed SPI 8-Bit I/O Expander from Microchip
+**MCP23S08** High-speed SPI 8-Bit I/O Expander from Microchip<BR>
 A very convenient prerogative of this series of SPI I/O Expanders is that it has the possibility of setting additional hardware addresses which allow you to select the peripheral with the same CS line.
 In the case of the MCP23S08 it has two address pins wired for a total of four I/O expanders per CS.
 
@@ -53,8 +57,8 @@ In the case of the MCP23S08 it has two address pins wired for a total of four I/
 This first implementation is oriented to develop and test all the HW functionalities of the VCOs/LFOs and the core SW libraries for their command.
 For this, a first mixer with the basic functions was developed.
 
-![FrontPanel2](https://user-images.githubusercontent.com/122873753/219691139-56ebe908-0478-47ee-9727-a8250ba0d4af.png)
-![MixPanel2](https://user-images.githubusercontent.com/122873753/219691177-673d9b65-abc1-4e9c-ae17-913530f8a1f3.png)
+![Front Panel](https://user-images.githubusercontent.com/122873753/222146686-99d1909f-2db3-43aa-8f50-f5286ce944ac.png)
+![Mixer Panel](https://user-images.githubusercontent.com/122873753/222147808-f85e7260-d6f0-4ed8-a101-276cef76ffd2.png)
 
 Both the control logic section and the analog section with the VCO and the mixers are still being prototyped via breadboard.
 Once the functionality is stabilized, I will create a welded version for better signal quality. Obviously the air links are not optimal.
