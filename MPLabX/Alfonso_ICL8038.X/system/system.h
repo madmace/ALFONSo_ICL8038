@@ -85,6 +85,43 @@ of main application.
 // Address for second MCP23S17 GPIO Expander
 #define MCP23S17_EXP_2_ADDRESS 0x01
 
+// MCP23S17 GPIO Expander VCO control ports
+#define HIGH_VCO_SEL_VLFO 0x8000                // VLFO Selector for High VCO (GPB7 on MCP23S17)
+#define HIGH_VCO_SEL_LFO 0x4000                 // LFO Selector for High VCO (GPB6 on MCP23S17)
+#define HIGH_VCO_SEL_VCO 0x2000                 // VCO Selector for High VCO (GPB5 on MCP23S17)
+#define HIGH_VCO_SEL_HVCO 0x1000                // HVCO Selector for High VCO (GPB4 on MCP23S17)
+#define LOW_VCO_SEL_VLFO 0x800                  // VLFO Selector for Low VCO (GPB3 on MCP23S17)
+#define LOW_VCO_SEL_LFO 0x400                   // LFO Selector for Low VCO (GPB2 on MCP23S17)
+#define LOW_VCO_SEL_VCO 0x200                   // VCO Selector for Low VCO (GPB1 on MCP23S17)
+#define LOW_VCO_SEL_HVCO 0x100                  // HVCO Selector for Low VCO (GPB0 on MCP23S17)
+#define HIGH_VCO_SEL_SQR_EN 0x80                // Square Enable for High VCO (GPA7 on MCP23S17)
+#define HIGH_VCO_SEL_SIN_EN 0x40                // Sine Enable for High VCO (GPA6 on MCP23S17)
+#define HIGH_VCO_SEL_TRG_EN 0x20                // Triangle Enable for High VCO (GPA5 on MCP23S17)
+#define HIGH_VCO_SEL_ENABLE 0x10                // Enable for High VCO (GPA4 on MCP23S17)
+#define LOW_VCO_SEL_SQR_EN 0x08                 // Square Enable for Low VCO (GPA3 on MCP23S17)
+#define LOW_VCO_SEL_SIN_EN 0x04                 // Sine Enable for Low VCO (GPA2 on MCP23S17)
+#define LOW_VCO_SEL_TRG_EN 0x02                 // Triangle Enable for Low VCO (GPA1 on MCP23S17)
+#define LOW_VCO_SEL_ENABLE 0x01                 // Enable for Low VCO (GPA0 on MCP23S17)
+
+// Default at BOR for MCP23S17 GPIO Expander VCO control ports
+// HIGH_VCO_SEL_VLFO 0x0                        // VLFO Selector for High VCO (GPB7 on MCP23S17)
+// HIGH_VCO_SEL_LFO 0x0                         // LFO Selector for High VCO (GPB6 on MCP23S17)
+// HIGH_VCO_SEL_VCO 0x1                         // VCO Selector for High VCO (GPB5 on MCP23S17)
+// HIGH_VCO_SEL_HVCO 0x0                        // HVCO Selector for High VCO (GPB4 on MCP23S17)
+// LOW_VCO_SEL_VLFO 0x0                         // VLFO Selector for Low VCO (GPB3 on MCP23S17)
+// LOW_VCO_SEL_LFO 0x0                          // LFO Selector for Low VCO (GPB2 on MCP23S17)
+// LOW_VCO_SEL_VCO 0x1                          // VCO Selector for Low VCO (GPB1 on MCP23S17)
+// LOW_VCO_SEL_HVCO 0x0                         // HVCO Selector for Low VCO (GPB0 on MCP23S17)
+// HIGH_VCO_SEL_SQR_EN 0x0                      // Square Enable for High VCO (GPA7 on MCP23S17)
+// HIGH_VCO_SEL_SIN_EN 0x0                      // Sine Enable for High VCO (GPA6 on MCP23S17)
+// HIGH_VCO_SEL_TRG_EN 0x0                      // Triangle Enable for High VCO (GPA5 on MCP23S17)
+// HIGH_VCO_SEL_ENABLE 0x0                      // Enable for High VCO (GPA4 on MCP23S17)
+// LOW_VCO_SEL_SQR_EN 0x0                       // Square Enable for Low VCO (GPA3 on MCP23S17)
+// LOW_VCO_SEL_SIN_EN 0x0                       // Sine Enable for Low VCO (GPA2 on MCP23S17)
+// LOW_VCO_SEL_TRG_EN 0x0                       // Triangle Enable for Low VCO (GPA1 on MCP23S17)
+// LOW_VCO_SEL_ENABLE 0x0                       // Enable for Low VCO (GPA0 on MCP23S17)
+#define MCP23S17_EXP_VCO_DEFAULT 0x2200
+
 // PCF8574 definitions
 #define PCF8574_INTERNAL_ADDRESS USED_DEVICE_PCF8574
 
@@ -163,6 +200,11 @@ void ClearCDCUSBDataReadBuffer (void);
  * 
  */
 void ClearAllVCOStates (void);
+
+
+void deselectAllVCORanges (uint8_t uiVCO);
+
+void selectVCORange(uint8_t uiVCO, uint8_t uiRange, bool bValue);
 
 /***************************************
  * System functions

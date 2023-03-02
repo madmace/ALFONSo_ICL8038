@@ -38,6 +38,9 @@ of main application.
 // CCP2 libraries
 #include <CCP2.h>
 
+// Utilities libraries
+#include <utilities.h>
+
 // System Informations (system model and microcode version) (Max 16 chars)
 const char* caWelcomeMessage = "  A.L.F.O.N.S.  ";
 const char* caVersionMessage = "Ver. 0.0.1 Proto";
@@ -57,6 +60,10 @@ static volatile uint16_t uiLastCaptureCCP2 = 0x0000;
 
 // States Table about VCO present
 static volatile VCOState_t aVCOInfo[NUM_VCO_PRESENT];
+
+// GPIO Register state of MCP23S17 16-bit I/O Expander
+static volatile uint16_t uiMCP23S17Expander1 = MCP23S17_EXP_VCO_DEFAULT;        //Holds settings for VCO1 and VCO2
+static volatile uint16_t uiMCP23S17Expander2 = MCP23S17_EXP_VCO_DEFAULT;        //Holds settings for VCO3 and VCO4
 
 // Interrupt function implementation for USB in High priority
 void INTERRUPT_HI SYS_InterruptHigh(void)
@@ -100,6 +107,172 @@ void ClearAllVCOStates(void) {
         aVCOInfo[idx].bTriangleWaveEnable = false;
         aVCOInfo[idx].uiAnalogFreqCCP = 0x0000;
     }
+}
+
+void deselectAllVCORanges (uint8_t uiVCO) {
+    
+    // Mask
+    uint16_t uiMask = 0x0000;
+    // Complementary Mask
+    uint16_t uicMask = 0x0000;
+    
+    // Select VCO setting 
+    switch(uiVCO) {
+        
+        case VCO1:
+        case VCO3:
+            // VCO 1 or VCO 3
+            // Mask
+            uiMask = HIGH_VCO_SEL_VLFO + HIGH_VCO_SEL_LFO + HIGH_VCO_SEL_VCO + HIGH_VCO_SEL_HVCO;
+            
+            break;
+            
+        case VCO2:
+        case VCO4:
+            // VCO 2 or VCO 4
+            // Mask
+            uiMask = LOW_VCO_SEL_VLFO + LOW_VCO_SEL_LFO + LOW_VCO_SEL_VCO + LOW_VCO_SEL_HVCO;
+            
+            break;
+    }
+    
+    // Complementary Mask
+    uicMask = ~uiMask;
+    // Clears bits
+    uiMCP23S17Expander1 &= uicMask;
+    
+    // Select Extender device
+    MCP23S17_CS_LINE_PORT = 0x0;
+    
+    // Select for VCOs
+    switch(uiVCO) {
+        
+        case VCO1:
+        case VCO2:
+            /// VCO 1 or VCO 2
+            // Set all 16 port to low
+            MCP23S17_Write_Word_Register_SPI1(MCP23S17_EXP_1_ADDRESS, MCP23S17_GPIOA_16, uiMCP23S17Expander1);
+            
+            break;
+            
+        case VCO3:
+        case VCO4:
+            /// VCO 3 or VCO 4
+            // Set all 16 port to low
+            MCP23S17_Write_Word_Register_SPI1(MCP23S17_EXP_2_ADDRESS, MCP23S17_GPIOA_16, uiMCP23S17Expander2);
+            
+            break;
+    }
+    
+    // Deselect Extender device
+    MCP23S17_CS_LINE_PORT = 0x1;
+}
+
+void selectVCORange(uint8_t uiVCO, uint8_t uiRange, bool bValue) {
+    
+    // Mask
+    uint16_t uiMask = 0x0000;
+    
+    // Select VCO setting
+    switch(uiVCO) {
+        
+        case VCO1:
+        case VCO3:
+            // VCO 1 or VCO 3
+            switch(uiRange) {
+                
+                case HVCO_REQ_FREQ_SELECTOR:
+                    // HVCO
+                    uiMask = HIGH_VCO_SEL_HVCO;
+                            
+                    break;
+                    
+                case VCO_REQ_FREQ_SELECTOR:
+                    // VCO
+                    uiMask = HIGH_VCO_SEL_VCO;
+                            
+                    break;
+                    
+                case LFO_REQ_FREQ_SELECTOR:
+                    // LFO
+                    uiMask = HIGH_VCO_SEL_LFO;
+                            
+                    break;
+                    
+                case VLFO_REQ_FREQ_SELECTOR:
+                    // VLFO
+                    uiMask = HIGH_VCO_SEL_VLFO;
+                            
+                    break;
+            }
+            
+            break;
+            
+        case VCO2:
+        case VCO4:
+            // VCO 2 or VCO 4
+            
+            switch(uiRange) {
+                
+                case HVCO_REQ_FREQ_SELECTOR:
+                    // HVCO
+                    uiMask = LOW_VCO_SEL_HVCO;
+                            
+                    break;
+                    
+                case VCO_REQ_FREQ_SELECTOR:
+                    // VCO
+                    uiMask = LOW_VCO_SEL_VCO;
+                            
+                    break;
+                    
+                case LFO_REQ_FREQ_SELECTOR:
+                    // LFO
+                    uiMask = LOW_VCO_SEL_LFO;
+                            
+                    break;
+                    
+                case VLFO_REQ_FREQ_SELECTOR:
+                    // VLFO
+                    uiMask = LOW_VCO_SEL_VLFO;
+                            
+                    break;
+            }
+            
+            break;
+    }
+    
+    // Select Extender device
+    MCP23S17_CS_LINE_PORT = 0x0;
+    
+    // Select VCO setting 
+    switch(uiVCO) {
+        
+        case VCO1:
+        case VCO2:
+            /// VCO 1 or VCO 2
+            
+            // Set single port
+            uiMCP23S17Expander1 = set_int16_by_bit_weight(uiMCP23S17Expander1, uiMask, bValue);
+            // Set all 16 port
+            MCP23S17_Write_Word_Register_SPI1(MCP23S17_EXP_1_ADDRESS, MCP23S17_GPIOA_16, uiMCP23S17Expander1);
+            
+            break;
+            
+        case VCO3:
+        case VCO4:
+            /// VCO 3 or VCO 4
+            
+            // Set single port
+            uiMCP23S17Expander2 = set_int16_by_bit_weight(uiMCP23S17Expander2, uiMask, bValue);
+            // Set all 16 port
+            MCP23S17_Write_Word_Register_SPI1(MCP23S17_EXP_2_ADDRESS, MCP23S17_GPIOA_16, uiMCP23S17Expander2);
+            
+            break;
+    }
+    
+    // Deselect Extender device
+    MCP23S17_CS_LINE_PORT = 0x1;
 }
 
 // Main system state machine function
@@ -259,12 +432,23 @@ void StartUpSPIGPIOExtender(void) {
 
     // Select Extender device
     MCP23S17_CS_LINE_PORT = 0x0;
-    // Set all 16 port to low
-    MCP23S17_Write_Word_Register_SPI1(MCP23S17_EXP_1_ADDRESS, MCP23S17_GPIOA_16, 0x0000);
+    // Set default ports for VCO 1 and VCO2
+    MCP23S17_Write_Word_Register_SPI1(MCP23S17_EXP_1_ADDRESS, MCP23S17_GPIOA_16, MCP23S17_EXP_VCO_DEFAULT);
+    // Deselect Extender device
+    MCP23S17_CS_LINE_PORT = 0x1;
+    
+    // Not presents now...
+    
+    /*
+    // Select Extender device
+    MCP23S17_CS_LINE_PORT = 0x0;
+    // Set default ports for VCO 3 and VCO4
+    MCP23S17_Write_Word_Register_SPI1(MCP23S17_EXP_2_ADDRESS, MCP23S17_GPIOA_16, MCP23S17_EXP_VCO_DEFAULT);
     // Deselect Extender device
     MCP23S17_CS_LINE_PORT = 0x1;
     
     __delay_us(50);
+    */
 }
 
 // Update the system by current USB status
@@ -495,6 +679,12 @@ void MainSystemTasks(void) {
                             // VCO Range frequency selector
                             aVCOInfo[byVCOID].byFreqSelector = readBuffer[byIndex];
                             byIndex++;
+                            
+                            // Disable all Frequency Selector for VCO                      
+                            deselectAllVCORanges(byVCOID);
+                            // Select Range  for VCO 1 
+                            selectVCORange(byVCOID, aVCOInfo[byVCOID].byFreqSelector, true);
+                        
                             // VCO Frequency
                             aVCOInfo[byVCOID].byFrequency = readBuffer[byIndex];
                             byIndex++;
@@ -617,6 +807,47 @@ void MainSystemTasks(void) {
                             // Send bytes to USB
                             putUSBUSART(writeBuffer, iNumBytesToWrite);
                         }
+                    }
+                    
+                    break;
+                    
+                // ************************************************
+                // VCO Frequency Range command
+                    
+                case VCO_1_REQ_FREQ_SELECTOR:
+                    // Control if right size
+                    if (iNumBytesRead == VCO_REQ_FREQ_SELECTOR_LEN) {
+                        #if defined(CMD_DEBUG_MODE)
+                            DebugCommandSPI16x2LCD("VCO1REQ_FQSEL", true, iNumBytesRead, byValue);
+                        #endif
+
+                        // Update VCO Frequency Range selector
+                        aVCOInfo[VCO1].byFreqSelector = byValue;
+
+                        // Disable all Frequency Selector for VCO 1                        
+                        deselectAllVCORanges(VCO1);
+                        // Select Range  for VCO 1 
+                        selectVCORange(VCO1, byValue, true);
+                        
+                    }
+                    
+                    break;
+                    
+                case VCO_2_REQ_FREQ_SELECTOR:
+                    // Control if right size
+                    if (iNumBytesRead == VCO_REQ_FREQ_SELECTOR_LEN) {
+                        #if defined(CMD_DEBUG_MODE)
+                            DebugCommandSPI16x2LCD("VCO2REQ_FQSEL", true, iNumBytesRead, byValue);
+                        #endif
+
+                        // Update VCO Frequency Range selector
+                        aVCOInfo[VCO2].byFreqSelector = byValue;
+
+                        // Disable all Frequency Selector for VCO 2                        
+                        deselectAllVCORanges(VCO2);
+                        // Select Range  for VCO 1 
+                        selectVCORange(VCO2, byValue, true);
+                        
                     }
                     
                     break;

@@ -141,6 +141,18 @@ This Header contains definitions for serial protocol
 
 /*****************************
  * 
+ * Relative Payload for command.
+ * 
+ ******************************/
+
+// Payload HVCO for set VCO 1 frequency Range
+#define HVCO_REQ_FREQ_SELECTOR 0x1
+#define VCO_REQ_FREQ_SELECTOR 0x2
+#define LFO_REQ_FREQ_SELECTOR 0x3
+#define VLFO_REQ_FREQ_SELECTOR 0x4
+
+/*****************************
+ * 
  * States Response to client.
  * 
  ******************************/

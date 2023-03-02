@@ -242,7 +242,7 @@ int8_t MCP23S17_Read_Word_Register_SPI1 (uint8_t device_address, uint8_t registe
             // Receive Second low byte
             lowbyte = SPI1_read_byte();
             // Store to word
-            *data = (highbyte << 8) + lowbyte;
+            *data = (uint8_t)(highbyte << 8) + lowbyte;
         }    
     }
     
@@ -276,7 +276,7 @@ int8_t MCP23S17_Read_Word_Register_SPI2 (uint8_t device_address, uint8_t registe
             // Receive Second low byte
             lowbyte = SPI2_read_byte();
             // Store to word
-            *data = (highbyte << 8) + lowbyte;
+            *data = (uint8_t)(highbyte << 8) + lowbyte;
         }    
     }
     

@@ -25,11 +25,13 @@ Such as special conversion between differents types.
 #define	UTILITIES_H
 
 #include <xc.h>
+#include <stdbool.h>
 
 /**
- * @brief This function converts signed integer to a string of chars.
- *        The returned string is always the shortest possible one containing the value.
- *        Digit 0 contains - sign if the number is negative. The sign + is not shown.
+ * @brief
+ * This function converts signed integer to a string of chars.
+ * The returned string is always the shortest possible one containing the value.
+ * Digit 0 contains - sign if the number is negative. The sign + is not shown.
  *
  * @param buffer Pointer to the array that will contain the string.
  *
@@ -41,8 +43,9 @@ Such as special conversion between differents types.
 int8_t conv_int16_to_string (uint8_t * buffer, int16_t value);
 
 /**
- * @brief This function returns the string length, marked with the '\0' character
- *        The \0 character is not counted.
+ * @brief 
+ * This function returns the string length, marked with the '\0' character
+ * The \0 character is not counted.
  *
  * @param buffer Pointer to the string that contains the char array ending with '\0'
  * 
@@ -50,6 +53,23 @@ int8_t conv_int16_to_string (uint8_t * buffer, int16_t value);
  *      
  */
 uint8_t get_string_length (uint8_t * buffer);
+
+/**
+ * @brief
+ * This function sets or resets a single bit in an 16bit word leaving all rest of
+ * word bits at same value.
+ *
+ * @param word the 16-bit word on set or reset bit
+ *
+ * @param weightbit Is the mask or waight. A word with set 1, the only bit to be change.
+ * (Ex 0x4000 0b0100 0000 0000 0000 will set or reset the fifteenth bit) 
+ * 
+ * @param value Is bit to set or reset
+ * 
+ * @return word altered with new bit
+ *
+ */
+uint16_t set_int16_by_bit_weight (uint16_t word, uint16_t weightbit, bool value);
 
 #endif	/* UTILITIES_H */
 
