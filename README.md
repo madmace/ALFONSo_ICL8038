@@ -51,12 +51,12 @@ SPI ICs used :
 **MCP23S08** High-speed SPI 8-Bit I/O Expander from Microchip<BR>
 A very convenient prerogative of this series of SPI I/O Expanders is that it has the possibility of setting additional hardware addresses which allow you to select the peripheral with the same CS line.
 In the case of the MCP23S08 it has two address pins wired for a total of four I/O expanders per CS.
-In the project it is used to drive via SPI the Hitachi HD44780-based LCD in 4bit mode and the related handshake and internal LED lighting signals.
+In the project it is used to drive via SPI the Hitachi HD44780-based LCD in four bit mode, the related handshake and internal LED lighting signals.
 In the microcode a specific library has been developed for the coupling of the MCP23S08 and the HD44780.
 
 **MCP23S17** High-speed SPI 16-Bit I/O Expander from Microchip<BR>
 Like its minor brother MCP23S08, the MCP23S17 has the ability to set hardware addresses switching from previous two to three addresses for eight devices on the same CS line.
-The MCP23S17 is used to drive the numerous analog bilateral switchs found in mixers. There is one for each VCO module.
+The MCP23S17 is used to drive the numerous analog bilateral switchs found in mixers. There is one for each two VCO module.
 
 ## Early implementation
 
