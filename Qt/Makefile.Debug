@@ -19,7 +19,7 @@ CXXFLAGS      = -fno-keep-inline-dllexport -g -Wall -Wextra -Wextra -fexceptions
 INCPATH       = -I. -I../../../../Working/Qt/6.2.4/mingw_64/include -I../../../../Working/Qt/6.2.4/mingw_64/include/QtQuick -I../../../../Working/Qt/6.2.4/mingw_64/include/QtOpenGL -I../../../../Working/Qt/6.2.4/mingw_64/include/QtGui -I../../../../Working/Qt/6.2.4/mingw_64/include/QtQmlModels -I../../../../Working/Qt/6.2.4/mingw_64/include/QtQml -I../../../../Working/Qt/6.2.4/mingw_64/include/QtNetwork -I../../../../Working/Qt/6.2.4/mingw_64/include/QtSerialPort -I../../../../Working/Qt/6.2.4/mingw_64/include/QtCore -Idebug -I/include -I../../../../Working/Qt/6.2.4/mingw_64/mkspecs/win32-g++ 
 LINKER      =        g++
 LFLAGS        =        -Wl,-subsystem,windows -mthreads
-LIBS        =        C:\Working\Qt\6.2.4\mingw_64\lib\libQt6Quick.a C:\Working\Qt\6.2.4\mingw_64\lib\libQt6OpenGL.a C:\Working\Qt\6.2.4\mingw_64\lib\libQt6Gui.a C:\Working\Qt\6.2.4\mingw_64\lib\libQt6QmlModels.a C:\Working\Qt\6.2.4\mingw_64\lib\libQt6Qml.a C:\Working\Qt\6.2.4\mingw_64\lib\libQt6Network.a C:\Working\Qt\6.2.4\mingw_64\lib\libQt6SerialPort.a C:\Working\Qt\6.2.4\mingw_64\lib\libQt6Core.a -lmingw32 C:\Working\Qt\6.2.4\mingw_64\lib\libQt6EntryPoint.a -lshell32  
+LIBS        =        C:\Working\Qt\6.2.4\mingw_64\lib\libQt6Quick.a C:\Working\Qt\6.2.4\mingw_64\lib\libQt6OpenGL.a C:\Working\Qt\6.2.4\mingw_64\lib\libQt6Gui.a C:\Working\Qt\6.2.4\mingw_64\lib\libQt6QmlModels.a C:\Working\Qt\6.2.4\mingw_64\lib\libQt6Qml.a C:\Working\Qt\6.2.4\mingw_64\lib\libQt6Network.a C:\Working\Qt\6.2.4\mingw_64\lib\libQt6SerialPort.a C:\Working\Qt\6.2.4\mingw_64\lib\libQt6Core.a debug\Alfonso_ICL8038_resource_res.o -lmingw32 C:\Working\Qt\6.2.4\mingw_64\lib\libQt6EntryPoint.a -lshell32  
 QMAKE         = C:\Working\Qt\6.2.4\mingw_64\bin\qmake.exe
 DEL_FILE      = del
 CHK_DIR_EXISTS= if not exist
@@ -40,7 +40,7 @@ IDC           = idc
 IDL           = midl
 ZIP           = zip -r -9
 DEF_FILE      = 
-RES_FILE      = 
+RES_FILE      = debug\Alfonso_ICL8038_resource_res.o
 SED           = $(QMAKE) -install sed
 MOVE          = move
 
@@ -134,8 +134,11 @@ DESTDIR_TARGET = debug\Alfonso_ICL8038.exe
 first: all
 all: Makefile.Debug  debug/Alfonso_ICL8038.exe
 
-debug/Alfonso_ICL8038.exe: C:/Working/Qt/6.2.4/mingw_64/lib/libQt6Quick.a C:/Working/Qt/6.2.4/mingw_64/lib/libQt6OpenGL.a C:/Working/Qt/6.2.4/mingw_64/lib/libQt6Gui.a C:/Working/Qt/6.2.4/mingw_64/lib/libQt6QmlModels.a C:/Working/Qt/6.2.4/mingw_64/lib/libQt6Qml.a C:/Working/Qt/6.2.4/mingw_64/lib/libQt6Network.a C:/Working/Qt/6.2.4/mingw_64/lib/libQt6SerialPort.a C:/Working/Qt/6.2.4/mingw_64/lib/libQt6Core.a C:/Working/Qt/6.2.4/mingw_64/lib/libQt6EntryPoint.a $(OBJECTS) 
+debug/Alfonso_ICL8038.exe: C:/Working/Qt/6.2.4/mingw_64/lib/libQt6Quick.a C:/Working/Qt/6.2.4/mingw_64/lib/libQt6OpenGL.a C:/Working/Qt/6.2.4/mingw_64/lib/libQt6Gui.a C:/Working/Qt/6.2.4/mingw_64/lib/libQt6QmlModels.a C:/Working/Qt/6.2.4/mingw_64/lib/libQt6Qml.a C:/Working/Qt/6.2.4/mingw_64/lib/libQt6Network.a C:/Working/Qt/6.2.4/mingw_64/lib/libQt6SerialPort.a C:/Working/Qt/6.2.4/mingw_64/lib/libQt6Core.a C:/Working/Qt/6.2.4/mingw_64/lib/libQt6EntryPoint.a $(OBJECTS) debug/Alfonso_ICL8038_resource_res.o
 	$(LINKER) $(LFLAGS) -o $(DESTDIR_TARGET) @object_script.Alfonso_ICL8038.Debug  $(LIBS)
+
+debug/Alfonso_ICL8038_resource_res.o: Alfonso_ICL8038_resource.rc
+	windres -i Alfonso_ICL8038_resource.rc -o debug\Alfonso_ICL8038_resource_res.o --include-dir=. $(DEFINES)
 
 qmake: FORCE
 	@$(QMAKE) -o Makefile.Debug Alfonso_ICL8038.pro -spec win32-g++ "CONFIG+=debug" "CONFIG+=qml_debug"
@@ -147,6 +150,7 @@ dist:
 
 clean: compiler_clean 
 	-$(DEL_FILE) debug\freqSelector.o debug\harmonicsSwitchesLFOModel.o debug\main.o debug\mixer.o debug\potentiometer.o debug\protocol.o debug\serialPort.o debug\serialPortController.o debug\singleUnitLFOModel.o debug\tabButton.o debug\toggleSwitch.o debug\qrc_qml.o debug\qrc_qmake_qmake_immediate.o debug\moc_freqSelector.o debug\moc_mixer.o debug\moc_potentiometer.o debug\moc_protocol.o debug\moc_serialPort.o debug\moc_serialPortController.o debug\moc_tabButton.o debug\moc_toggleSwitch.o
+	-$(DEL_FILE) debug\Alfonso_ICL8038_resource_res.o
 
 distclean: clean 
 	-$(DEL_FILE) .qmake.stash
@@ -182,17 +186,18 @@ debug/qrc_qml.cpp: qml.qrc \
 		content/PotDutyCycleLFO.qml \
 		content/SingleUnitLFO.qml \
 		content/HarmonicsSwitchesLFO.qml \
+		resources/ITCEDSCR.TTF \
 		resources/train_digits.svg \
 		resources/GreenLight.svg \
-		resources/PotGauge.svg \
+		resources/WindowIcon.ico \
 		resources/PotDutyCycleMetal.svg \
+		resources/PotGauge.svg \
 		resources/alum-texture-blue-900x900.jpg \
 		resources/RedLight.svg \
 		resources/GrayLight.svg \
 		resources/alum-texture-gray-900x900.jpg \
 		resources/SquareLabel.svg \
 		resources/TriangleLabel.svg \
-		resources/favicon.png \
 		resources/ToggleSwitch.svg \
 		resources/PotFrequencyMetal.svg \
 		resources/FreqSelectorMetalSelected.svg \
@@ -210,18 +215,18 @@ debug/qrc_qml.cpp: qml.qrc \
 debug/qrc_qmake_qmake_immediate.cpp: debug/qmake_qmake_immediate.qrc \
 		../../../../Working/Qt/6.2.4/mingw_64/bin/rcc.exe \
 		resources/SineLabel.svg \
-		resources/icon.ico \
+		resources/ITCEDSCR.TTF \
 		resources/train_digits.svg \
 		resources/GreenLight.svg \
 		resources/PotGauge.svg \
 		resources/PotDutyCycleMetal.svg \
+		resources/WindowIcon.ico \
 		resources/alum-texture-blue-900x900.jpg \
 		resources/alum-texture-gray-900x900.jpg \
 		resources/GrayLight.svg \
 		resources/RedLight.svg \
 		resources/SquareLabel.svg \
 		resources/TriangleLabel.svg \
-		resources/favicon.png \
 		resources/dial4.svg \
 		resources/FreqSelectorMetalSelected.svg \
 		resources/PotFrequencyMetal.svg \
@@ -236,7 +241,23 @@ debug/qrc_qmake_qmake_immediate.cpp: debug/qmake_qmake_immediate.qrc \
 		resources/PotFrequencyPlastic.svg \
 		resources/dial2.svg \
 		resources/PCBBackground.svg \
-		resources/PowerButtonUnselected.svg
+		resources/PowerButtonUnselected.svg \
+		resources/Icons/ico/WindowIcon64.ico \
+		resources/Icons/ico/WindowIcon32.ico \
+		resources/Icons/ico/WindowIcon128.ico \
+		resources/Icons/ico/WindowIcon48.ico \
+		resources/Icons/svg/WindowIcon.svg \
+		resources/Icons/png/WindowIcon1024.png \
+		resources/Icons/png/WindowIcon128.png \
+		resources/Icons/png/WindowIcon256.png \
+		resources/Icons/png/WindowIcon64.png \
+		resources/Icons/png/WindowIcon72.png \
+		resources/Icons/png/WindowIcon96.png \
+		resources/Icons/png/WindowIcon48.png \
+		resources/Icons/png/WindowIcon512.png \
+		resources/Icons/fav/WindowIcon16.png \
+		resources/Icons/fav/WindowIcon32.png \
+		resources/Icons/fav/WindowIcon24.png
 	C:\Working\Qt\6.2.4\mingw_64\bin\rcc.exe -name qmake_qmake_immediate debug\qmake_qmake_immediate.qrc -o debug\qrc_qmake_qmake_immediate.cpp
 
 compiler_moc_predefs_make_all: debug/moc_predefs.h

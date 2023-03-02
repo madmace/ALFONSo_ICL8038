@@ -79,11 +79,9 @@ int main(int argc, char *argv[])
     // Get instance in C++ of SerialPortController
     SerialPortController *oSerialPortController = SerialPortController::getInstance();
 
-    // Set icon
-    app.setWindowIcon(QIcon("qrc:/resources/favicon.png"));
-
     // Find MainWindow
     QObject* oMainWindowObj = engine.rootObjects().first();
+
     // Find SplashWindow
     QObject* oSplashWinObj = engine.rootObjects().first()->findChild<QObject*>("SplashWindowObject");
 

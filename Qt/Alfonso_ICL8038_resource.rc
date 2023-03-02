@@ -1,6 +1,6 @@
 #include <windows.h>
 
-IDI_ICON1	ICON	"C:\\Projects\\Alfonso\\Qt\\Alfonso_ICL8038\\qrc:\\resources\\icon.ico"
+IDI_ICON1	ICON	"resources/WindowIcon.ico"
 
 VS_VERSION_INFO VERSIONINFO
 	FILEVERSION 0,0,0,0
@@ -19,16 +19,16 @@ VS_VERSION_INFO VERSIONINFO
 		BEGIN
 			BLOCK "040904b0"
 			BEGIN
-				VALUE "CompanyName", "\0"
-				VALUE "FileDescription", "\0"
-				VALUE "FileVersion", "0.0.0.0\0"
-				VALUE "LegalCopyright", "\0"
+				VALUE "CompanyName", "Emiliano Mazza\0"
+				VALUE "FileDescription", "A.L.F.O.N.S.o Basic Mixer\0"
+				VALUE "FileVersion", "0.0.1.5\0"
+				VALUE "LegalCopyright", "Emiliano Mazza Computing\0"
 				VALUE "OriginalFilename", "Alfonso_ICL8038.exe\0"
-				VALUE "ProductName", "Alfonso_ICL8038\0"
-				VALUE "ProductVersion", "0.0.0.0\0"
+				VALUE "ProductName", "A.L.F.O.N.S.o Basic Mixer for ICL8038\0"
+				VALUE "ProductVersion", "0.0.0.1\0"
 				VALUE "InternalName", "\0"
-				VALUE "Comments", "\0"
-				VALUE "LegalTrademarks", "\0"
+				VALUE "Comments", "A.L.F.O.N.S.o Basic Mixer\0"
+				VALUE "LegalTrademarks", "Freeware\0"
 			END
 		END
 		BLOCK "VarFileInfo"

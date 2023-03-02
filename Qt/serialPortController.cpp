@@ -23,14 +23,17 @@
 // Initialize Singleton
 SerialPortController *SerialPortController::oSerialPortController = 0;
 
+// Fake serial dongle
+#ifndef __FAKE_DONGLE_USB_SERIAL__
 // ALFONSo USB Serial type
 const QString SerialPortController::usbALFONSoDesc = "Alfons CDC Proto 1";
 const quint16 SerialPortController::usbALFONSoVendID = 1240;    // 0x04D8
 const quint16 SerialPortController::usbALFONSoProdID = 10;      // 0x000A
-
-//const QString SerialPortController::usbALFONSoDesc = "Silicon Labs CP210x USB to UART Bridge";
-//const quint16 SerialPortController::usbALFONSoVendID = 4292;    // 0x10C4
-//const quint16 SerialPortController::usbALFONSoProdID = 60000;   // 0xEA60
+#else
+const QString SerialPortController::usbALFONSoDesc = "Silicon Labs CP210x USB to UART Bridge";
+const quint16 SerialPortController::usbALFONSoVendID = 4292;    // 0x10C4
+const quint16 SerialPortController::usbALFONSoProdID = 60000;   // 0xEA60
+#endif
 
 // ALFONSo USB Serial settings
 const qint32 SerialPortController::usbALFONSoBaudRate = QSerialPort::Baud115200;

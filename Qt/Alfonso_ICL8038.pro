@@ -19,6 +19,8 @@ SOURCES += \
 
 RESOURCES += resources \
              qml.qrc
+			 
+RC_FILE = Alfonso_ICL8038_resource.rc
 
 # Additional import path used to resolve QML modules in Qt Creator's code model
 QML_IMPORT_PATH =
