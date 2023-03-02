@@ -2,16 +2,16 @@
 
 ALFONSo stands for :
 
+<p align="right">
+    <img align="right" width="300px"src="https://user-images.githubusercontent.com/122873753/222533968-67c840fd-441d-4f12-a997-181fa5d1333d.png">
+</p>
+
 **A**nalog
 **L**ow 
 **F**requency 
 **O**scillator 
 **N**olinear 
 **S**equencer
-
-<p align="right">
-    <img align="right" src="https://user-images.githubusercontent.com/122873753/222143982-1a5c145b-e075-451e-8f5f-8aa5fb78d0a5.png">
-</p>
 
 In this implementation MK-ICL8038.
 
