@@ -23,6 +23,7 @@
 #include <QTimer>
 #include <QIcon>
 
+#include "main.h"
 #include "protocol.h"
 #include "serialPortController.h"
 #include "mixer.h"
@@ -33,7 +34,7 @@
 
 int main(int argc, char *argv[])
 {
-    QCoreApplication::setOrganizationName("A.L.F.O.N.So Project");
+    QCoreApplication::setOrganizationName(PROJECT_NAME);
 
 #if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);

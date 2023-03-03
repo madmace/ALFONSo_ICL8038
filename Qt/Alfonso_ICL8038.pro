@@ -36,6 +36,7 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 HEADERS += \
     freqSelector.h \
     harmonicsSwitchesLFOModel.h \
+    main.h \
     mixer.h \
     potentiometer.h \
     protocol.h \

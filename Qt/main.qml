@@ -31,7 +31,7 @@ ApplicationWindow {
     width: Constants.mainWidth
     height: Constants.mainHeight
     visible: true
-    title: qsTr("A.L.F.O.N.So Project")
+    title: Constants.mainWindowTitle
     maximumWidth: mainPanel.width
     maximumHeight: mainPanel.height
     minimumWidth: mainPanel.width
