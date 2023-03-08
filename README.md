@@ -57,6 +57,15 @@ In the microcode a specific library has been developed for the coupling of the M
 **MCP23S17** High-speed SPI 16-Bit I/O Expander from Microchip<BR>
 Like its minor brother MCP23S08, the MCP23S17 has the ability to set hardware addresses switching from previous two to three addresses for eight devices on the same CS line.
 The MCP23S17 is used to drive the numerous analog bilateral switchs found in mixers. There is one for each two VCO module.
+    
+**MCP42010** Dual Digital Potentiometer SPI
+The IC is a double potentiometer with 256 taps 8-bit for each potentiometer. The MCP42XXX series is with the internal register is volatile. So it doesn't keep the last setting. At the moment it is the software that imposes all the default levels on connection. The permanent model is also available in case of future considerations.
+The MCP42XXX series is available with the values for 10 kΩ, 50 kΩ and 100 kΩ. There is a nominal wiper resistance of 52Ω for the 10 kΩ version, 125Ω for the 50 kΩ and 100 kΩ versions. The channel-to-channel matching variation is less than 1%. The resistance between the wiper and either of the resistor endpoints varies linearly according to the value stored in the data register. At power-up or upon habilitation the RS, all data registers will automatically be loaded with the mid-scale value (80h). The Shutdown pin SHDN, if enabled, leaves the A terminal is opened and the B and W terminals are connected for all potentiometers.
+A feature of this SPI IC is the presence of SO output pin, multiple devices can be daisy-chained together.
+    
+**MCP4251**
+The IC is a double potentiometer with 257 taps 8-bit for each potentiometer. The MCP4251 also has volatile internal register loaded with the mid-scale value (80h).
+It has a nominal wiper resistance of 75Ω typical for all available values 5kΩ, 10kΩ, 50kΩ, 100 kΩ.
 
 ## Early implementation
 
