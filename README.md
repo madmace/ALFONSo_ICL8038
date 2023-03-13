@@ -38,10 +38,14 @@ In used configuration, the frequency has been fixed in the audio frequency range
 The sweep is modulated via a DC voltage to pin 8. The relative frequency range depends on the capacitor applied to pin 10.
 Four different meshes with different values are needed to get good linearity. This especially applies to operation as an LFO. Four different selectable operating modes have been selected.
 
-- **HVCO**
-- **VCO**
-- **LFO**
-- **VLFO**
+The frequency ranges are still raw and are related to the values of the capacitors used in the VCO applied to pin 10 of the ICL8038.
+
+- **HVCO** (*1.6KHz to 26KHz*)
+- **VCO** (*238Hz to 4.1KHz*)
+- **LFO** (*11Hz to 194Hz*)
+- **VLFO** (*3Hz to 67Hz*)
+
+The selection of the frequency range is set using the micro via the I/O Expander MCP23S17 and the Quad Bilateral Switch CD4066B.
 
 The PIC18F4550 has only one MSSP *(Master Synchronous Serial Port)*. While it can be dynamically reset, the open-drain nature of the I2C *(Inter Integrated Circuit)* protocol makes it incompatible with SPI (Serial Peripheral Interface).
 So I chose to use only SPI peripherals even with the expenditure of lines for the various CSs *(Chip Select)*.
