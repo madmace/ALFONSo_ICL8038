@@ -51,6 +51,8 @@ Only one of the four bilateral switches is active defining the frequency range.
 The whole VCO section is powered with a dual voltage -8V/+8V. Swing is then reduced at the outputs to the standard preamp signal of 2Vpp.
 The digital control section which includes the mC and all the SPIs is instead powered with +5V/0V.
 
+Since all CD4066Bs, which are also used to enable individual harmonics, have dual power supplies, enabling and disabling of the bilateral switches is done with the +8V/-8V control signals. Then the +5V/0V I/O Expander outputs are converted to dual levels using the Quad comparators provided by the LM339.
+
 The PIC18F4550 has only one MSSP *(Master Synchronous Serial Port)*. While it can be dynamically reset, the open-drain nature of the I2C *(Inter Integrated Circuit)* protocol makes it incompatible with SPI (Serial Peripheral Interface).
 So I chose to use only SPI peripherals even with the expenditure of lines for the various CSs *(Chip Select)*.
 
