@@ -38,6 +38,14 @@ In used configuration, the frequency has been fixed in the audio frequency range
 The sweep is modulated via a DC voltage to pin 8. The relative frequency range depends on the capacitor applied to pin 10.
 Four different meshes with different values are needed to get good linearity. This especially applies to operation as an LFO. Four different selectable operating modes have been selected.
 
+***Power supply***
+
+The whole VCO section is powered with a dual voltage -8V/+8V. Swing is then reduced at the final outputs to the standard preamp signal of 2Vpp.
+The digital control section which includes the mC and all the SPIs is instead powered with +5V/0V.
+An EMC/EMI differential-mode (DM) filter is used on the mains power line.
+
+***Frequency ranges***
+
 The frequency ranges are still raw and are related to the values of the capacitors used in the VCO applied to pin 10 of the ICL8038.
 
 - **HVCO** (*1.6KHz to 26KHz*)
@@ -48,10 +56,9 @@ The frequency ranges are still raw and are related to the values of the capacito
 The selection of the frequency range is set using the micro via the I/O Expander MCP23S17 and the Quad Bilateral Switch CD4066B.
 Only one of the four bilateral switches is active defining the frequency range.
 
-The whole VCO section is powered with a dual voltage -8V/+8V. Swing is then reduced at the outputs to the standard preamp signal of 2Vpp.
-The digital control section which includes the mC and all the SPIs is instead powered with +5V/0V.
-
 Since all CD4066Bs, which are also used to enable individual harmonics, have dual power supplies, enabling and disabling of the bilateral switches is done with the +8V/-8V control signals. Then the +5V/0V I/O Expander outputs are converted to dual levels using the Quad comparators provided by the LM339.
+
+***SPI Devices***
 
 The PIC18F4550 has only one MSSP *(Master Synchronous Serial Port)*. While it can be dynamically reset, the open-drain nature of the I2C *(Inter Integrated Circuit)* protocol makes it incompatible with SPI (Serial Peripheral Interface).
 So I chose to use only SPI peripherals even with the expenditure of lines for the various CSs *(Chip Select)*.
