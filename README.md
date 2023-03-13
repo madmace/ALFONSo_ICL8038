@@ -42,7 +42,7 @@ Four different meshes with different values are needed to get good linearity. Th
 
 The whole VCO section is powered with a dual voltage -8V/+8V. Swing is then reduced at the final outputs to the standard preamp signal of 2Vpp.
 The digital control section which includes the mC and all the SPIs is instead powered with +5V/0V.
-An EMC/EMI differential-mode (DM) filter is used on the mains power line.
+An EMC/EMI differential-mode (DM) filter is used on the mains power line and no switching technology is used.
 
 ***Frequency ranges***
 
@@ -57,6 +57,15 @@ The selection of the frequency range is set using the micro via the I/O Expander
 Only one of the four bilateral switches is active defining the frequency range.
 
 Since all CD4066Bs, which are also used to enable individual harmonics, have dual power supplies, enabling and disabling of the bilateral switches is done with the +8V/-8V control signals. Then the +5V/0V I/O Expander outputs are converted to dual levels using the Quad comparators provided by the LM339.
+
+ICs used in VCO & Mixer :
+
+**ICL8038** Precision Waveform Generator/Voltage Controlled Oscillator<BR>
+**TL084** High-speed JFET input, quad operational amplifiers<BR>
+**LM339** Quad Comparators<BR>
+**LM393** Dual Comparators<BR>
+**CD4066B** CMOS Quad Bilateral Switch<BR>
+
 
 ***SPI Devices***
 
