@@ -204,20 +204,6 @@
     )
     (package "SOIC127P1030X26528N"
       (units THOU)
-      (layer TSLK
-        (graphic
-          (stroke 7.87)
-          (circle (pt -260.04 348.62) (pt -252.17 348.62))
-        )
-        (graphic
-          (stroke 5.0)
-          (path (pt -147.64 352.36) (pt 147.64 352.36))
-        )
-        (graphic
-          (stroke 5.0)
-          (path (pt -147.64 -352.36) (pt 147.64 -352.36))
-        )
-      )
       (layer OCCA
         (graphic
           (stroke 1.97)
@@ -256,6 +242,20 @@
         (graphic
           (stroke 5.0)
           (path (pt 147.64 352.36) (pt 147.64 -352.36))
+        )
+      )
+      (layer TSLK
+        (graphic
+          (stroke 7.87)
+          (circle (pt -260.04 348.62) (pt -252.17 348.62))
+        )
+        (graphic
+          (stroke 5.0)
+          (path (pt -147.64 352.36) (pt 147.64 352.36))
+        )
+        (graphic
+          (stroke 5.0)
+          (path (pt -147.64 -352.36) (pt 147.64 -352.36))
         )
       )
       (leg 1 (pt -181.3 325) (padstack 1))
