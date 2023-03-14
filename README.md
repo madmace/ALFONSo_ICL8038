@@ -48,10 +48,10 @@ An EMC/EMI differential-mode (DM) filter is used on the mains power line and no 
 
 The frequency ranges are still raw and are related to the values of the capacitors used in the VCO applied to pin 10 of the ICL8038.
 
-- **HVCO** (*1.6KHz to 26KHz*)
-- **VCO** (*238Hz to 4.1KHz*)
-- **LFO** (*11Hz to 194Hz*)
-- **VLFO** (*3Hz to 67Hz*)
+- **HVCO** (*1.6KHz to 26KHz used capacity 1uF*)
+- **VCO** (*238Hz to 4.1KHz used capacity 100nF*)
+- **LFO** (*11Hz to 194Hz used capacity 22nF*)
+- **VLFO** (*3Hz to 67Hz used capacity 2nF*)
 
 The selection of the frequency range is set using the micro via the I/O Expander MCP23S17 and the Quad Bilateral Switch CD4066B.
 Only one of the four bilateral switches is active defining the frequency range.
@@ -61,11 +61,22 @@ Since all CD4066Bs, which are also used to enable individual harmonics, have dua
 ICs used in VCO & Mixer :
 
 **ICL8038** Precision Waveform Generator/Voltage Controlled Oscillator<BR>
+An problem with this generators is strong distortion on sine wave output pin 2, so most of the solutions based on this chip has a limited frequency.
+Another is that the square wave output from pin 9 is an open collector that needs to be pulled up to the power supply. In some way the quality of other waveforms is dependent on the load on this pin. I excluded the 15M potentiometer indicated in the datasheet on page 7, squeezes the top of the upper half of the signal.
+As mentioned, square output pin 9 with open collector, normally would never be able to give a good square wave at these frequencies. Rising edge depends only on the pull-up resistor and its growing very slowly. If we give too strong pull-up resistor, in turn, the trailing edge will be weak because the internal transistor is too heavily loaded. 
+Here, i fixed the square wave with a comparator so that the slope is pretty steep, steep as applied comparator can give. Shown in the schematic LM393 has 1.3μs response time but it would be good to use even faster model of comparator.
+The amplitude of the signal, unfortunately, is not the same for each function, tests have shown that trying to match it with the usual R/R signal dividers will give very distorted waveforms as rounded square and triangle, so i resigned from such divisors.
+
+Sine output on pin 2 as ratio 0.22~ * Vcc
+Triangle output on pin 3 as ratio 0.33~ * Vcc
+Square output on pin 9 as ratio 0.9~ * Vcc
+
+This however was not a problem since I use the Quad OpAmps TL084 as a mixer anyway. What I cannot avoid at this point is the use of trimmers for signal calibration at 2Vpp.
+
 **TL084** High-speed JFET input, quad operational amplifiers<BR>
 **LM339** Quad Comparators<BR>
 **LM393** Dual Comparators<BR>
 **CD4066B** CMOS Quad Bilateral Switch<BR>
-
 
 ***SPI Devices***
 
