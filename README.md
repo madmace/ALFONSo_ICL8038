@@ -67,9 +67,9 @@ As mentioned, square output pin 9 with open collector, normally would never be a
 Here, i fixed the square wave with a comparator so that the slope is pretty steep, steep as applied comparator can give. Shown in the schematic LM393 has 1.3μs response time but it would be good to use even faster model of comparator.
 The amplitude of the signal, unfortunately, is not the same for each function, tests have shown that trying to match it with the usual R/R signal dividers will give very distorted waveforms as rounded square and triangle, so i resigned from such divisors.
 
-Sine output on pin 2 as ratio 0.22~ * Vcc
-Triangle output on pin 3 as ratio 0.33~ * Vcc
-Square output on pin 9 as ratio 0.9~ * Vcc
+Sine output on pin 2 as ratio 0.22~ * Vcc<BR>
+Triangle output on pin 3 as ratio 0.33~ * Vcc<BR>
+Square output on pin 9 as ratio 0.9~ * Vcc<BR>
 
 This however was not a problem since I use the Quad OpAmps TL084 as a mixer anyway. What I cannot avoid at this point is the use of trimmers for signal calibration at 2Vpp.
 
