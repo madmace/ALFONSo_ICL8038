@@ -73,6 +73,10 @@ Square output on pin 9 as ratio 0.9~ * Vcc<BR>
 
 This however was not a problem since I use the Quad OpAmps TL084 as a mixer anyway. What I cannot avoid at this point is the use of trimmers for signal calibration at 2Vpp.
 
+The physical potentiometers for sweep and duty are respectfully replaced, by the 10KΩ MCP42010 for sweep and the 5KΩ MCP4251 for duty.
+
+For each VCO both potentiometers of the MCP42010 are used. So there's a MCP42010 for VCO. One is used as the main one and the other is in series for fine tuning. The fine-tuning potentiometer is paralleled with a 1.1KΩ 1% E96 precision resistor to obtain a final 991Ω. Only a single MCP4251 for duty is used.
+
 **TL084** High-speed JFET input, quad operational amplifiers<BR>
 **LM339** Quad Comparators<BR>
 **LM393** Dual Comparators<BR>
