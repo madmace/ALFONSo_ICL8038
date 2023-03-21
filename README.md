@@ -113,8 +113,8 @@ It has a nominal wiper resistance of 75Ω typical for all available values 5kΩ,
 This first implementation is oriented to develop and test all the HW functionalities of the VCOs/LFOs and the core SW libraries for their command.
 For this, a first mixer with the basic functions was developed.
 
-![Front Panel](https://user-images.githubusercontent.com/122873753/222146686-99d1909f-2db3-43aa-8f50-f5286ce944ac.png)
-![Mixer Panel](https://user-images.githubusercontent.com/122873753/222147808-f85e7260-d6f0-4ed8-a101-276cef76ffd2.png)
+![Front Panel](https://user-images.githubusercontent.com/122873753/226573256-fed9c808-4e0c-47b5-81cf-c3ab95d98092.png)
+![Mixer Panel](https://user-images.githubusercontent.com/122873753/226573380-3f527885-a70a-4488-9e40-b10083d6392b.png)
 
 Both the control logic section and the analog section with the VCO and the mixers are still being prototyped via breadboard.
 Once the functionality is stabilized, I will create a welded version for better signal quality. Obviously the air links are not optimal.
