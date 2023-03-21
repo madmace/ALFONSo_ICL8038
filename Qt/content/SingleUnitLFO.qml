@@ -27,6 +27,8 @@ Rectangle {
     border.color: "#33c2ff"
     border.width: 1
 
+    FontLoader { id: singleUnitLabelFont; source: "qrc:/resources/arial.ttf" }
+
     Image { source: "qrc:/resources/alum-texture-blue-900x900.jpg"; fillMode: Image.Tile; anchors.fill: parent;  opacity: 0.3 }
 
     property int singleUnitLFOID
@@ -48,7 +50,7 @@ Rectangle {
         y: 10
         color: "#ffffff"
         font.pixelSize: 14
-        font.family: "Abel"
+        font.family: singleUnitLabelFont.font
         font.weight: Font.Normal
     }
 
@@ -62,29 +64,73 @@ Rectangle {
     FreqSelectorLFO {
         id: freqSelectorLFO
         anchors.left: parent.left
-        anchors.leftMargin: 10
-        y: 40
+        anchors.leftMargin: 30
+        y: 60
         freqSelectorLFOID: singleUnitLFO.singleUnitLFOID
+    }
+
+    Text {
+        id: potFrequencyLFOLabel
+        anchors.horizontalCenter: potFrequencyLFO.horizontalCenter
+        anchors.top: potFrequencyLFO.top
+        anchors.topMargin: -50
+        color: "black"
+        font.pixelSize: 13
+        font.family: singleUnitLabelFont.font
+        font.weight: Font.Normal
+        text: qsTr("COARSE")
     }
 
     PotFrequencyLFO {
         id: potFrequencyLFO
-        x: 155
-        y: 70
+        x: 200
+        y: 90
         potFrequencyLFOID: singleUnitLFO.singleUnitLFOID
+    }
+
+    Text {
+        id: potFreqFineLFOLabel
+        anchors.horizontalCenter: potFreqFineLFO.horizontalCenter
+        anchors.top: potFreqFineLFO.top
+        anchors.topMargin: -50
+        color: "black"
+        font.pixelSize: 13
+        font.family: singleUnitLabelFont.font
+        font.weight: Font.Normal
+        text: qsTr("FINE")
+    }
+
+    PotFreqFineLFO {
+        id: potFreqFineLFO
+        x: 185
+        y: 280
+        potFreqFineLFOID: singleUnitLFO.singleUnitLFOID
+    }
+
+    Text {
+        id: potDutyCycleLFOLabel
+        anchors.horizontalCenter: potDutyCycleLFO.horizontalCenter
+        anchors.top: potDutyCycleLFO.top
+        anchors.topMargin: -50
+        color: "black"
+        font.pixelSize: 13
+        font.family: singleUnitLabelFont.font
+        font.weight: Font.Normal
+        text: qsTr("DUTY")
     }
 
     PotDutyCycleLFO {
         id: potDutyCycleLFO
-        x: 190
-        y: 220
+        x: 320
+        y: 270
         potDutyCycleLFOID: singleUnitLFO.singleUnitLFOID
     }
 
     HarmonicsSwitchesLFO {
         id: harmonicsSwitchesLFO
-        x: 20
-        y: 210
+        anchors.left: parent.left
+        anchors.leftMargin: 25
+        y: 260
         harmonicsSwitchesLFOID: singleUnitLFO.singleUnitLFOID
     }
 }

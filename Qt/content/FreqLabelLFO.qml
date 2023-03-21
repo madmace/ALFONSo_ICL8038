@@ -12,6 +12,8 @@ Item {
     height: 22
     state: "state_normal"
 
+    FontLoader { id: freqLabelLFOLabelFont; source: "qrc:/resources/arial.ttf" }
+
     Rectangle {
         id: freqLabelBackground
         x: 0
@@ -36,7 +38,7 @@ Item {
         horizontalAlignment: Text.AlignHCenter
         verticalAlignment: Text.AlignVCenter
         wrapMode: Text.Wrap
-        font.family: "Abel"
+        font.family: freqLabelLFOLabelFont.font
         font.weight: Font.Normal
     }
 }

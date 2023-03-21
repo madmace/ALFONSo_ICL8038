@@ -67,7 +67,7 @@ void Mixer::sendRequestSyncAllVCO() {
     while (i.hasNext()) {
         i.next();
 
-        qDebug("Mixer::sendRequestSyncAllVCO Assemply Mixer ID -> %d", i.key());
+        qDebug("Mixer::sendRequestSyncAllVCO Adds Mixer ID -> %d", i.key());
 
         // Adds VCO settings
 
@@ -77,8 +77,10 @@ void Mixer::sendRequestSyncAllVCO() {
         byBuffer.append(i.value()->getTabButtonLFOSelected());
         // VCO Selector
         byBuffer.append(i.value()->getFreqSelectorLFOValue());
-        // VCO Frequency
+        // VCO Frequency Coarse
         byBuffer.append(i.value()->getPotFrequencyLFOValue());
+        // VCO Frequency Fine
+        byBuffer.append(i.value()->getPotFreqFineLFOValue());
         // VCO Duty Cycle
         byBuffer.append(i.value()->getPotDutyCycleLFOValue());
         // VCO Harmonic Sine output
@@ -144,6 +146,13 @@ void Mixer::updateMixerModel(quint8 byID, quint8 byType, quint8 byValue) {
 
             // PotFrequencyLFO
             pVCOModel->setPotFrequencyLFOValue(byValue);
+
+            break;
+
+        case Protocol::freqFinePotTypeValue:
+
+            // PotFreqFineLFO
+            pVCOModel->setPotFreqFineLFOValue(byValue);
 
             break;
 

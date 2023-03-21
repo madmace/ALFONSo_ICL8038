@@ -38,6 +38,11 @@ int Protocol::frequencyPotType()
     return Protocol::frequencyPotTypeValue;
 }
 
+int Protocol::freqFinePotType()
+{
+    return Protocol::freqFinePotTypeValue;
+}
+
 int Protocol::dutyCyclePotType()
 {
     return Protocol::dutyCyclePotTypeValue;

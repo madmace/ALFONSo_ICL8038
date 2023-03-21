@@ -46,6 +46,7 @@ class Protocol : public QObject
     Q_PROPERTY(int tabButtonType READ tabButtonType CONSTANT)
     Q_PROPERTY(int freqSelectorType READ freqSelectorType CONSTANT)
     Q_PROPERTY(int frequencyPotType READ frequencyPotType CONSTANT)
+    Q_PROPERTY(int freqFinePotType READ freqFinePotType CONSTANT)
     Q_PROPERTY(int dutyCyclePotType READ dutyCyclePotType CONSTANT)
     Q_PROPERTY(int toggleSwitchSineType READ toggleSwitchSineType CONSTANT)
     Q_PROPERTY(int toggleSwitchSquareType READ toggleSwitchSquareType CONSTANT)
@@ -72,6 +73,7 @@ public:
     int tabButtonType();
     int freqSelectorType();
     int frequencyPotType();
+    int freqFinePotType();
     int dutyCyclePotType();
     int toggleSwitchSineType();
     int toggleSwitchSquareType();
@@ -87,11 +89,12 @@ public:
 
     static const int tabButtonTypeValue = 1;                // Main Tab Enabler VCO/LFO
     static const int freqSelectorTypeValue = 2;             // Frequency Range selector VCO/LFO
-    static const int frequencyPotTypeValue = 3;             // Frequency Potentiometer VCO/LFO
-    static const int dutyCyclePotTypeValue = 4;             // Duty Cycle Potentiometer VCO/LFO
-    static const int toggleSwitchSineTypeValue = 5;         // Switch Sine VCO/LFO Signal
-    static const int toggleSwitchSquareTypeValue = 6;       // Switch Square VCO/LFO Signal
-    static const int toggleSwitchTriangleTypeValue = 7;     // Switch Triangle VCO/LFO Signal
+    static const int frequencyPotTypeValue = 3;             // Frequency Coarse Potentiometer VCO/LFO
+    static const int freqFinePotTypeValue = 4;              // Frequency Fine Potentiometer VCO/LFO
+    static const int dutyCyclePotTypeValue = 5;             // Duty Cycle Potentiometer VCO/LFO
+    static const int toggleSwitchSineTypeValue = 6;         // Switch Sine VCO/LFO Signal
+    static const int toggleSwitchSquareTypeValue = 7;       // Switch Square VCO/LFO Signal
+    static const int toggleSwitchTriangleTypeValue = 8;     // Switch Triangle VCO/LFO Signal
 
     /*****************************
      *
@@ -138,50 +141,59 @@ public:
     // Resquest for set VCO 4 frequency Range
     static const quint16 VCO_4_REQ_FREQ_SELECTOR = 0x0013;
 
-    // Resquest for set VCO 1 frequency
+    // Resquest for set VCO 1 coarse frequency
     static const quint16 VCO_1_REQ_FREQUENCY = 0x0020;
-    // Resquest for set VCO 2 frequency
+    // Resquest for set VCO 2 coarsefrequency
     static const quint16 VCO_2_REQ_FREQUENCY = 0x0021;
-    // Resquest for set VCO 3 frequency
+    // Resquest for set VCO 3 coarse frequency
     static const quint16 VCO_3_REQ_FREQUENCY = 0x0022;
-    // Resquest for set VCO 4 frequency
+    // Resquest for set VCO 4 coarse frequency
     static const quint16 VCO_4_REQ_FREQUENCY = 0x0023;
 
+    // Resquest for set VCO 1 fine frequency
+    static const quint16 VCO_1_REQ_FREQFINE = 0x0030;
+    // Resquest for set VCO 2 fine frequency
+    static const quint16 VCO_2_REQ_FREQFINE = 0x0031;
+    // Resquest for set VCO 3 fine frequency
+    static const quint16 VCO_3_REQ_FREQFINE = 0x0032;
+    // Resquest for set VCO 4 fine frequency
+    static const quint16 VCO_4_REQ_FREQFINE = 0x0033;
+
     // Resquest for set VCO 1 Duty cycle
-    static const quint16 VCO_1_REQ_DUTY_CYCLE = 0x0030;
+    static const quint16 VCO_1_REQ_DUTY_CYCLE = 0x0040;
     // Resquest for set VCO 2 Duty cycle
-    static const quint16 VCO_2_REQ_DUTY_CYCLE = 0x0031;
+    static const quint16 VCO_2_REQ_DUTY_CYCLE = 0x0041;
     // Resquest for set VCO 3 Duty cycle
-    static const quint16 VCO_3_REQ_DUTY_CYCLE = 0x0032;
+    static const quint16 VCO_3_REQ_DUTY_CYCLE = 0x0042;
     // Resquest for set VCO 4 Duty cycle
-    static const quint16 VCO_4_REQ_DUTY_CYCLE = 0x0033;
+    static const quint16 VCO_4_REQ_DUTY_CYCLE = 0x0043;
 
     // Resquest for enable VCO 1 Sine line
-    static const quint16 VCO_1_REQ_ENABLE_SINE = 0x0040;
+    static const quint16 VCO_1_REQ_ENABLE_SINE = 0x0050;
     // Resquest for enable VCO 2 Sine line
-    static const quint16 VCO_2_REQ_ENABLE_SINE = 0x0041;
+    static const quint16 VCO_2_REQ_ENABLE_SINE = 0x0051;
     // Resquest for enable VCO 3 Sine line
-    static const quint16 VCO_3_REQ_ENABLE_SINE = 0x0042;
+    static const quint16 VCO_3_REQ_ENABLE_SINE = 0x0052;
     // Resquest for enable VCO 4 Sine line
-    static const quint16 VCO_4_REQ_ENABLE_SINE = 0x0043;
+    static const quint16 VCO_4_REQ_ENABLE_SINE = 0x0053;
 
     // Resquest for enable VCO 1 Square line
-    static const quint16 VCO_1_REQ_ENABLE_SQUARE = 0x0050;
+    static const quint16 VCO_1_REQ_ENABLE_SQUARE = 0x0060;
     // Resquest for enable VCO 2 Square line
-    static const quint16 VCO_2_REQ_ENABLE_SQUARE = 0x0051;
+    static const quint16 VCO_2_REQ_ENABLE_SQUARE = 0x0061;
     // Resquest for enable VCO 3 Square line
-    static const quint16 VCO_3_REQ_ENABLE_SQUARE = 0x0052;
+    static const quint16 VCO_3_REQ_ENABLE_SQUARE = 0x0062;
     // Resquest for enable VCO 4 Square line
-    static const quint16 VCO_4_REQ_ENABLE_SQUARE = 0x0053;
+    static const quint16 VCO_4_REQ_ENABLE_SQUARE = 0x0063;
 
     // Resquest for enable VCO 1 Triangle line
-    static const quint16 VCO_1_REQ_ENABLE_TRIANGLE = 0x0060;
+    static const quint16 VCO_1_REQ_ENABLE_TRIANGLE = 0x0070;
     // Resquest for enable VCO 2 Triangle line
-    static const quint16 VCO_2_REQ_ENABLE_TRIANGLE = 0x0061;
+    static const quint16 VCO_2_REQ_ENABLE_TRIANGLE = 0x0071;
     // Resquest for enable VCO 3 Triangle line
-    static const quint16 VCO_3_REQ_ENABLE_TRIANGLE = 0x0062;
+    static const quint16 VCO_3_REQ_ENABLE_TRIANGLE = 0x0072;
     // Resquest for enable VCO 4 Triangle line
-    static const quint16 VCO_4_REQ_ENABLE_TRIANGLE = 0x0063;
+    static const quint16 VCO_4_REQ_ENABLE_TRIANGLE = 0x0073;
 
     /*****************************
      *

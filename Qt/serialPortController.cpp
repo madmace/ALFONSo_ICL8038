@@ -189,6 +189,28 @@ void SerialPortController::requestSendWidgetCommand(quint8 byID, quint8 byType, 
 
             break;
 
+        case Protocol::freqFinePotTypeValue:
+
+            switch (byID) {
+                case 1:
+                    Protocol::append2Bytes(byBuffer, Protocol::VCO_1_REQ_FREQFINE);
+                    break;
+                case 2:
+                    Protocol::append2Bytes(byBuffer, Protocol::VCO_2_REQ_FREQFINE);
+                    break;
+                case 3:
+                    Protocol::append2Bytes(byBuffer, Protocol::VCO_3_REQ_FREQFINE);
+                    break;
+                case 4:
+                    Protocol::append2Bytes(byBuffer, Protocol::VCO_4_REQ_FREQFINE);
+                    break;
+            }
+
+            // Adds byte value
+            byBuffer.append(byValue);
+
+            break;
+
         case Protocol::dutyCyclePotTypeValue:
 
             switch (byID) {

@@ -67,10 +67,10 @@ Item {
 
     Rectangle {
         id: panelBottomBar
-        x: 0
-        y: 404
         width: parent.width
         height: 46
+        x: 0
+        y: Constants.mainHeight - height
         color: "#38383f"
         border.color: "#33c2ff"
         border.width: 1

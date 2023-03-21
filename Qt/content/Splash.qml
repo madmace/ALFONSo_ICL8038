@@ -33,6 +33,10 @@ Rectangle {
     border.color: "#33c2ff"
     border.width: 1
 
+    FontLoader { id: mainTitleLabelFont; source: "qrc:/resources/ITCEDSCR.TTF" }
+    FontLoader { id: mainTitle2LabelFont; source: "qrc:/resources/FRABK.TTF" }
+    FontLoader { id: splashWindowLabelFont; source: "qrc:/resources/arial.ttf" }
+
     signal isALFONSoUSBPresent()
 
     Image { source: "qrc:/resources/alum-texture-blue-900x900.jpg"; fillMode: Image.Tile; anchors.fill: parent }
@@ -182,9 +186,6 @@ Rectangle {
         anchors.leftMargin: 20
         anchors.top: parent.bottom
         anchors.topMargin: -120
-
-        FontLoader { id: mainTitleLabelFont; source: "qrc:/resources/ITCEDSCR.TTF" }
-
         color: "goldenrod"
         text: Constants.splashMainName
         font.pixelSize: 70
@@ -207,7 +208,7 @@ Rectangle {
             font.weight: Font.Normal
             horizontalAlignment: Text.AlignHCenter
             verticalAlignment: Text.AlignVCenter
-            font.family: "Franklin Gothic Book"
+            font.family: mainTitle2LabelFont.font
         }
     }
 
@@ -223,7 +224,7 @@ Rectangle {
         font.weight: Font.Normal
         horizontalAlignment: Text.AlignHCenter
         verticalAlignment: Text.AlignVCenter
-        font.family: "Franklin Gothic Book"
+        font.family: mainTitle2LabelFont.font
     }
 
     Rectangle {
@@ -275,7 +276,7 @@ Rectangle {
             text: qsTr(Constants.splashUSBPowerButton)
             font.pixelSize: 15
             font.weight: Font.Normal
-            font.family: "Arial"
+            font.family: splashWindowLabelFont.font
         }
     }
 
@@ -314,7 +315,7 @@ Rectangle {
             text: qsTr(Constants.splashUSBDeviceNotConnected)
             font.pixelSize: 13
             font.weight: Font.Normal
-            font.family: "Arial"
+            font.family: splashWindowLabelFont.font
         }
     }
 

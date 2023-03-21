@@ -5,6 +5,7 @@
         <file>content/ViewPanelLFO.qml</file>
         <file>content/TabButtonLFO.qml</file>
         <file>content/PotFrequencyLFO.qml</file>
+        <file>content/PotFreqFineLFO.qml</file>
         <file>content/PotDutyCycleLFO.qml</file>
         <file>content/FreqLabelLFO.qml</file>
         <file>content/FreqSelectorLFO.qml</file>
@@ -15,6 +16,17 @@
         <file>content/LFOMixer.qml</file>
         <file>content/Splash.qml</file>
         <file>resources/ITCEDSCR.TTF</file>
+        <file>resources/arial.ttf</file>
+        <file>resources/ariblk.ttf</file>
+        <file>resources/ARIALNBI.TTF</file>
+        <file>resources/ARIALNI.TTF</file>
+        <file>resources/ARIALN.TTF</file>
+        <file>resources/arialbd.ttf</file>
+        <file>resources/arialbi.ttf</file>
+        <file>resources/ariali.ttf</file>
+        <file>resources/ARIALNB.TTF</file>
+        <file>resources/FRABK.TTF</file>
+        <file>resources/FRABKIT.TTF</file>
         <file>resources/WindowIcon.ico</file>
         <file>resources/train_digits.svg</file>
         <file>resources/GreenLight.svg</file>

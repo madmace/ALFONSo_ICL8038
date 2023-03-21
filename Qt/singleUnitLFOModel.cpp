@@ -29,6 +29,7 @@ SingleUnitLFOModel::SingleUnitLFOModel()
     m_tabButtonLFOSelected = false;
     m_freqSelectorLFOValue = 0;
     m_potFrequencyLFOValue = 0;
+    m_potFreqFineLFOValue = 0;
     m_potDutyCycleLFOValue = 0;
 }
 
@@ -44,6 +45,10 @@ quint8 SingleUnitLFOModel::getFreqSelectorLFOValue() {
 
 quint8 SingleUnitLFOModel::getPotFrequencyLFOValue() {
     return m_potFrequencyLFOValue;
+}
+
+quint8 SingleUnitLFOModel::getPotFreqFineLFOValue() {
+    return m_potFreqFineLFOValue;
 }
 
 quint8 SingleUnitLFOModel::getPotDutyCycleLFOValue() {
@@ -64,6 +69,10 @@ void SingleUnitLFOModel::setFreqSelectorLFOValue(quint8 newValue) {
 
 void SingleUnitLFOModel::setPotFrequencyLFOValue(quint8 newValue) {
     m_potFrequencyLFOValue = newValue;
+}
+
+void SingleUnitLFOModel::setPotFreqFineLFOValue(quint8 newValue) {
+    m_potFreqFineLFOValue = newValue;
 }
 
 void SingleUnitLFOModel::setPotDutyCycleLFOValue(quint8 newValue) {

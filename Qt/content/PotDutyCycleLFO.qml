@@ -32,6 +32,8 @@ Item {
     property alias potDutyCycleLFOID: potDutyCycleObj.potID
     property alias potDutyCycleLFOValue: potDutyCycleObj.potValue
 
+    FontLoader { id: potDutyCycleLabelFont; source: "qrc:/resources/arial.ttf" }
+
     Component.onCompleted: {
         // Force first Potentiometer value
         Mixer.setMixerValue(potDutyCycleObj.potID, potDutyCycleObj.potType, potDutyCycleObj.potValue);
@@ -53,7 +55,7 @@ Item {
             color: "#ffffff"
             text: qsTr("1%")
             font.pixelSize: 12
-            font.family: "Abel"
+            font.family: potDutyCycleLabelFont.font
             font.weight: Font.Normal
         }
 
@@ -64,7 +66,7 @@ Item {
             color: "#ffffff"
             text: qsTr("99%")
             font.pixelSize: 12
-            font.family: "Abel"
+            font.family: potDutyCycleLabelFont.font
             font.weight: Font.Normal
         }
 
@@ -75,7 +77,7 @@ Item {
             color: "#ffffff"
             text: qsTr("50%")
             font.pixelSize: 12
-            font.family: "Abel"
+            font.family: potDutyCycleLabelFont.font
             font.weight: Font.Normal
         }
     }

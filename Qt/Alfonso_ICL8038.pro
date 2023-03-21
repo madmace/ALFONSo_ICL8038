@@ -52,6 +52,7 @@ DISTFILES += \
     content/FreqSelectorLFO.qml \
     content/PotDutyCycleLFO.qml \
     content/PotFrequencyLFO.qml \
+    content/PotFreqFineLFO.qml \
     content/FreqLabelLFO.qml \
     content/TabButtonLFO.qml \
     content/ToggleSwitchLFO.qml \

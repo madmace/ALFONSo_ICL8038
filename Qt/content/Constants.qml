@@ -30,20 +30,17 @@ QtObject {
     readonly property alias fontFamily: fontLoader.name
     */
 
-    readonly property string swVersion: "0.0.1"
-    readonly property int splashHeight: 450
-
-    readonly property int mainWidth: 1330
-    readonly property int mainHeight: 450
-
-
-    //readonly property color backgroundColor: "#443224"
-    //readonly property int defaultMargin: 8
-
     /*
     * Constant GUI Titles
     */
 
+    readonly property string mainWindowTitle: "A.L.F.O.N.S.o Basic Mixer for ICL8038"
+
+    readonly property int mainWidth: 1850
+    readonly property int mainHeight: 500
+
+    readonly property string swVersion: "0.0.1"
+    readonly property int splashHeight: mainHeight
     readonly property string splashMainName: "Alfonso"
     readonly property string splashMainSlogan: "Analog Low Frequency Oscillator No linear Sequencer"
 

@@ -27,6 +27,9 @@ Item {
     id: lFOMixer
     rotation: 0
 
+    readonly property int lFOMixerWidth: 450
+    readonly property int lFOMixerHeight: 405
+
     property alias singleUnitLFO: singleUnitLFO1
 
     ViewPanelLFO {
@@ -45,8 +48,8 @@ Item {
         anchors.left: parent.left
         anchors.leftMargin: 10
         y: 40
-        width: 320
-        height: 350
+        width: lFOMixerWidth
+        height: lFOMixerHeight
         singleUnitLFOText: "VCO/LFO 1"
         singleUnitLFOLabelText: "MIX MODULE 1"
         singleUnitLFOID: 1
@@ -57,8 +60,8 @@ Item {
         anchors.left: singleUnitLFO1.right
         anchors.leftMargin: 10
         y: 40
-        width: 320
-        height: 350
+        width: lFOMixerWidth
+        height: lFOMixerHeight
         singleUnitLFOText: "VCO/LFO 2"
         singleUnitLFOLabelText: "MIX MODULE 2"
         singleUnitLFOID: 2
@@ -69,8 +72,8 @@ Item {
         anchors.left: singleUnitLFO2.right
         anchors.leftMargin: 10
         y: 40
-        width: 320
-        height: 350
+        width: lFOMixerWidth
+        height: lFOMixerHeight
         singleUnitLFOText: "VCO/LFO 3"
         singleUnitLFOLabelText: "MIX MODULE 3"
         singleUnitLFOID: 3
@@ -81,8 +84,8 @@ Item {
         anchors.left: singleUnitLFO3.right
         anchors.leftMargin: 10
         y: 40
-        width: 320
-        height: 350
+        width: lFOMixerWidth
+        height: lFOMixerHeight
         singleUnitLFOText: "VCO/LFO 4"
         singleUnitLFOLabelText: "MIX MODULE 4"
         singleUnitLFOID: 4
