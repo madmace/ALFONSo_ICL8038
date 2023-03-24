@@ -118,9 +118,11 @@ For this, a first mixer with the basic functions was developed.
 
 Both the control logic section and the analog section with the VCO and the mixers are still being prototyped via breadboard.
 Once the functionality is stabilized, I will create a welded version for better signal quality. Obviously the air links are not optimal.
-
-![AlfonsoPrev1](https://user-images.githubusercontent.com/122873753/214313627-f87d06cf-55e3-4104-a56d-350e2fd5c412.jpg)
-![AlfonsoPrev2](https://user-images.githubusercontent.com/122873753/214313670-8de575b0-895b-4a02-b9fe-d2fca62c175e.jpg)
+    
+![AlfonsoPrev1](https://user-images.githubusercontent.com/122873753/227480448-d9f88da3-b6e7-4724-b1cf-c95f1440d193.jpg)
+![AlfonsoPrev2](https://user-images.githubusercontent.com/122873753/227480695-c834970d-64e1-446c-83c7-bf464703e895.jpg)
+![AlfonsoPrev3](https://user-images.githubusercontent.com/122873753/227480808-3e7da815-fb0a-47a2-801a-90feb77df93e.jpg)
+![AlfonsoPrev4](https://user-images.githubusercontent.com/122873753/214313670-8de575b0-895b-4a02-b9fe-d2fca62c175e.jpg)
 
 ## Upcoming implementations
 
