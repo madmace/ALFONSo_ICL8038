@@ -101,14 +101,17 @@ void ClearAllVCOStates(void) {
         aVCOInfo[idx].bVCOEnable = false;
         aVCOInfo[idx].byFreqSelector = 0x00;
         aVCOInfo[idx].byFrequency = 0x00;
+        aVCOInfo[idx].byFreqFine = 0x00;
         aVCOInfo[idx].byDutyCycle = 0x00;
         aVCOInfo[idx].bSineWaveEnable = false;
         aVCOInfo[idx].bSquareWaveEnable = false;
         aVCOInfo[idx].bTriangleWaveEnable = false;
+        aVCOInfo[idx].bInvalideAnalogFreq = false;
         aVCOInfo[idx].uiAnalogFreqCCP = 0x0000;
     }
 }
 
+// Deselect All VCO Frequencies Ranges
 void deselectAllVCORanges (uint8_t uiVCO) {
     
     // Mask
@@ -168,6 +171,7 @@ void deselectAllVCORanges (uint8_t uiVCO) {
     MCP23S17_CS_LINE_PORT = 0x1;
 }
 
+// Select or Deselect a VCO frequency range
 void selectVCORange(uint8_t uiVCO, uint8_t uiRange, bool bValue) {
     
     // Mask
@@ -241,6 +245,97 @@ void selectVCORange(uint8_t uiVCO, uint8_t uiRange, bool bValue) {
             
             break;
     }
+    
+    // Sets the single bit determined by the input mask
+    setSingleBitToMCP23S17Expander(uiVCO, uiMask, bValue);
+}
+
+// Enable or Disable a VCO Harmonics
+void selectVCOHarmonics(uint8_t uiVCO, uint8_t uiHarmonics, bool bValue) {
+    
+    // Mask
+    uint16_t uiMask = 0x0000;
+    
+    // Select VCO Harmonics setting
+    // VCO 1 or VCO 3
+    switch(uiHarmonics) {
+        
+        case VCO_1_REQ_ENABLE_SQUARE:
+        case VCO_3_REQ_ENABLE_SQUARE:
+            // Square
+            uiMask = HIGH_VCO_SEL_SQR_EN;
+
+            break;
+            
+        case VCO_1_REQ_ENABLE_SINE:
+        case VCO_3_REQ_ENABLE_SINE:
+            // Sine
+            uiMask = HIGH_VCO_SEL_SIN_EN;
+
+            break;
+            
+        case VCO_1_REQ_ENABLE_TRIANGLE:
+        case VCO_3_REQ_ENABLE_TRIANGLE:
+            // Triangle
+            uiMask = HIGH_VCO_SEL_TRG_EN;
+
+            break;
+            
+        case VCO_2_REQ_ENABLE_SQUARE:
+        case VCO_4_REQ_ENABLE_SQUARE:
+            // Square
+            uiMask = LOW_VCO_SEL_SQR_EN;
+
+            break;
+            
+        case VCO_2_REQ_ENABLE_SINE:
+        case VCO_4_REQ_ENABLE_SINE:
+            // Sine
+            uiMask = LOW_VCO_SEL_SIN_EN;
+
+            break;
+            
+        case VCO_2_REQ_ENABLE_TRIANGLE:
+        case VCO_4_REQ_ENABLE_TRIANGLE:
+            // Triangle
+            uiMask = LOW_VCO_SEL_TRG_EN;
+
+            break;
+    }
+    
+    // Sets the single bit determined by the input mask
+    setSingleBitToMCP23S17Expander(uiVCO, uiMask, bValue);
+}
+
+// Enable or Disable a VCO
+void enableVCO(uint8_t uiVCO, bool bValue) {
+    
+    // Mask
+    uint16_t uiMask = 0x0000;
+    
+    // Enable VCO
+    // VCO 1 or VCO 3
+    switch(uiVCO) {
+        
+        case VCO1:
+        case VCO3:
+            uiMask = HIGH_VCO_SEL_ENABLE;
+
+            break;
+            
+        case VCO2:
+        case VCO4:
+            uiMask = LOW_VCO_SEL_ENABLE;
+
+            break;
+    }
+    
+    // Sets the single bit determined by the input mask
+    setSingleBitToMCP23S17Expander(uiVCO, uiMask, bValue);
+}
+
+// Sets the single bit determined by the input mask
+void setSingleBitToMCP23S17Expander(uint8_t uiVCO, uint16_t uiMask, bool bValue) {
     
     // Select Extender device
     MCP23S17_CS_LINE_PORT = 0x0;
@@ -628,11 +723,10 @@ void MainSystemTasks(void) {
     if(USBUSARTIsTxTrfReady() == true)
     {
         uint16_t uiIDCommand = 0x00;                // Request Command received
-        uint8_t byVCOID = 0;                        // Working VCO ID 
         uint8_t byIndex = 0;                        // Pointer Index to received buffer
         uint8_t byValue = 0;                        // First byte Value received
         uint8_t iNumBytesRead = 0;                  // Number of bytes read
-        uint8_t iNumBytesToWrite = 0;               // Number of bytes written
+        uint8_t iNumBytesToWrite = 0;               // Number of bytes written        
         uint8_t byCounter = 0;                      // Simple counter
         uint8_t byAux = 0;                          // Temporary byte variable
         
@@ -670,53 +764,47 @@ void MainSystemTasks(void) {
                         for(byCounter = 0; byCounter < NUM_VCO_PRESENT; byCounter++) {
                             
                             // Get VCO ID
-                            byVCOID = readBuffer[byIndex];
+                            aVCOInfo[byCounter].byVCOID = readBuffer[byIndex];
                             byIndex++;
                             
                             // VCO Enable 
-                            aVCOInfo[byVCOID].bVCOEnable = (bool)readBuffer[byIndex];
+                            aVCOInfo[byCounter].bVCOEnable = (bool)readBuffer[byIndex];
                             byIndex++;
+                            
+                            // Enable or Disable the VCO
+                            enableVCO(byCounter, aVCOInfo[byCounter].bVCOEnable);
+                            
                             // VCO Range frequency selector
-                            aVCOInfo[byVCOID].byFreqSelector = readBuffer[byIndex];
+                            aVCOInfo[byCounter].byFreqSelector = readBuffer[byIndex];
                             byIndex++;
                             
                             // Disable all Frequency Selector for VCO                      
-                            deselectAllVCORanges(byVCOID);
-                            // Select Range  for VCO 1 
-                            selectVCORange(byVCOID, aVCOInfo[byVCOID].byFreqSelector, true);
+                            deselectAllVCORanges(byCounter);
+                            // Select Range for VCO
+                            selectVCORange(byCounter, aVCOInfo[byCounter].byFreqSelector, true);
                         
-                            // VCO Frequency
-                            aVCOInfo[byVCOID].byFrequency = readBuffer[byIndex];
+                            // VCO Frequency Coarse
+                            aVCOInfo[byCounter].byFrequency = readBuffer[byIndex];
+                            byIndex++;
+                            // VCO Frequency Fine
+                            aVCOInfo[byCounter].byFreqFine = readBuffer[byIndex];
                             byIndex++;
                             // VCO Duty Cycle
-                            aVCOInfo[byVCOID].byDutyCycle = readBuffer[byIndex];
+                            aVCOInfo[byCounter].byDutyCycle = readBuffer[byIndex];
                             byIndex++;
                             // VCO Harmonic Sine
-                            aVCOInfo[byVCOID].bSineWaveEnable = (bool)readBuffer[byIndex];
+                            aVCOInfo[byCounter].bSineWaveEnable = (bool)readBuffer[byIndex];
                             byIndex++;
                             // VCO Harmonic Square
-                            aVCOInfo[byVCOID].bSquareWaveEnable = (bool)readBuffer[byIndex];
+                            aVCOInfo[byCounter].bSquareWaveEnable = (bool)readBuffer[byIndex];
                             byIndex++;
                             // VCO Harmonic Triangle
-                            aVCOInfo[byVCOID].bTriangleWaveEnable = (bool)readBuffer[byIndex];
-                            byIndex++;                            
-                        }
-                        
-                        // To do ....
-                        // ADJUST 
-                        // !!!
-                        // !!!
-                        
-                        // Takes the current Frequency captured for VCO1
-                        if (updateCCPCapture(&aVCOInfo[VCO1].uiAnalogFreqCCP)) {
-                        
-                            // Blink LED
-                            BlinkLEDGP2();
-                            // Packs the value
-                            iNumBytesToWrite = packResponseFrequency(writeBuffer, aVCOInfo[VCO1].uiAnalogFreqCCP, VCO1);
-                            // Send bytes to USB
-                            putUSBUSART(writeBuffer, iNumBytesToWrite);
-                        }                    
+                            aVCOInfo[byCounter].bTriangleWaveEnable = (bool)readBuffer[byIndex];
+                            byIndex++;
+                            
+                            // Force to take new measure of frequency from CCP
+                            aVCOInfo[byCounter].bInvalideAnalogFreq = true;
+                        }                   
                     }
                     
                     break;
@@ -783,30 +871,12 @@ void MainSystemTasks(void) {
                         // Update VCO Enable 
                         aVCOInfo[VCO1].bVCOEnable = (bool)byValue;
                             
-                        // To do ....
+                        // Enable or Disable the VCO
+                        enableVCO(VCO1, byValue);
                         
-                        // TEST !!!!
-                        //byAux = (uint8_t)(byValue << 4);
-                        byAux = (uint8_t)(byValue & 0x01);
-                        // Select Extender device
-                        MCP23S17_CS_LINE_PORT = 0x0;
-                        // Set all 16 port to low
-                        MCP23S17_Write_Word_Register_SPI1(MCP23S17_EXP_1_ADDRESS, MCP23S17_GPIOA_16, (uint16_t)byAux);
-                        // Deselect Extender device
-                        MCP23S17_CS_LINE_PORT = 0x1;
+                        // Force to take new measure of frequency from CCP
+                        aVCOInfo[VCO1].bInvalideAnalogFreq = true;
                         
-                        // ****
-                        
-                        // Takes the current Frequency captured for VCO1
-                        if (updateCCPCapture(&aVCOInfo[VCO1].uiAnalogFreqCCP)) {
-
-                            // Blink LED
-                            BlinkLEDGP2();
-                            // Packs the value
-                            iNumBytesToWrite = packResponseFrequency(writeBuffer, aVCOInfo[VCO1].uiAnalogFreqCCP, VCO1);
-                            // Send bytes to USB
-                            putUSBUSART(writeBuffer, iNumBytesToWrite);
-                        }
                     }
                     
                     break;
@@ -853,7 +923,7 @@ void MainSystemTasks(void) {
                     break;
                     
                 // ************************************************
-                // VCO Frequency command
+                // VCO Frequency Coarse command
                 
                 case VCO_1_REQ_FREQUENCY:
                     // Control if right size
@@ -862,8 +932,32 @@ void MainSystemTasks(void) {
                             DebugCommandSPI16x2LCD("VCO1REQ_FREQ", true, iNumBytesRead, byValue);
                         #endif
 
-                        // Update VCO Frequency 
+                        // Update VCO Frequency Coarse
                         aVCOInfo[VCO1].byFrequency = byValue;
+
+                        // Select Pot device
+                        MCP42XXX_CS_LINE_PORT = 0x0;
+                        
+                        MCP42XXX_Pot0_Write_Data_SPI1(byValue);
+            
+                        // Deselect Pot device
+                        MCP42XXX_CS_LINE_PORT = 0x1;
+                    }
+                    
+                    break;
+                    
+                // ************************************************
+                // VCO Frequency Fine command
+                
+                case VCO_1_REQ_FREQFINE:
+                    // Control if right size
+                    if (iNumBytesRead == VCO_REQ_FREQFINE_LEN) {
+                        #if defined(CMD_DEBUG_MODE)
+                            DebugCommandSPI16x2LCD("VCO1REQ_FRQFN", true, iNumBytesRead, byValue);
+                        #endif
+
+                        // Update VCO Frequency Fine
+                        aVCOInfo[VCO1].byFreqFine = byValue;
 
                         // To do ....
                     }
@@ -901,7 +995,8 @@ void MainSystemTasks(void) {
                         // Update VCO Sine Harmonic
                         aVCOInfo[VCO1].bSineWaveEnable = (bool)byValue;
 
-                        // To do ....
+                        // Enable or Disable a VCO Harmonics
+                        selectVCOHarmonics(VCO1, VCO_1_REQ_ENABLE_SINE, byValue);
                     }
                     
                     break;
@@ -919,7 +1014,8 @@ void MainSystemTasks(void) {
                         // Update VCO Square Harmonic
                         aVCOInfo[VCO1].bSquareWaveEnable = (bool)byValue;
                         
-                        // To do ....
+                        // Enable or Disable a VCO Harmonics
+                        selectVCOHarmonics(VCO1, VCO_1_REQ_ENABLE_SQUARE, byValue);
                     }
                     
                     break;
@@ -937,11 +1033,31 @@ void MainSystemTasks(void) {
                         // Update VCO Triangle Harmonic
                         aVCOInfo[VCO1].bTriangleWaveEnable = (bool)byValue;
                         
-                        // To do ....
+                        // Enable or Disable a VCO Harmonics
+                        selectVCOHarmonics(VCO1, VCO_1_REQ_ENABLE_TRIANGLE, byValue);
                     }
                     
                     break;
                     
+            }
+            
+            // Should be equal to all VCOs available
+            for(byCounter = 0; byCounter <= NUM_VCO_PRESENT; byCounter++) {
+                // Controls if force new measure of frequency from CCP
+                if (aVCOInfo[byCounter].bInvalideAnalogFreq) {
+                    // Takes the current Frequency captured for VCO
+                    if (updateCCPCapture(&aVCOInfo[byCounter].uiAnalogFreqCCP)) {
+
+                        // Blink LED
+                        BlinkLEDGP2();
+                        // Packs the value
+                        iNumBytesToWrite = packResponseFrequency(writeBuffer, aVCOInfo[byCounter].uiAnalogFreqCCP, byCounter);
+                        // Send bytes to USB
+                        putUSBUSART(writeBuffer, iNumBytesToWrite);
+                    }
+                    // Reset force flag
+                    aVCOInfo[byCounter].bInvalideAnalogFreq = false;
+                }
             }
         }
     }

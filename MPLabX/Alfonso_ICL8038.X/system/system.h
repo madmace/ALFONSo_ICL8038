@@ -61,21 +61,21 @@ of main application.
 
 // CS Lines (not included in SPI Library)
 
-// CS for MCP42XXX Digital Potentiometer
-#define MCP42XXX_CS_LINE_TRIS TRISAbits.RA5
-#define MCP42XXX_CS_LINE_PORT LATAbits.LATA5
-
-// CS for MCP425X Digital Potentiometer
-#define MCP425X_CS_LINE_TRIS TRISAbits.RA0
-#define MCP425X_CS_LINE_PORT LATAbits.LATA0
+// CS Line for MCP23S08 driving Hitachi 44780 LDC
+#define LCD44780_MCP23S08_CS_LINE_TRIS TRISAbits.RA1
+#define LCD44780_MCP23S08_CS_LINE_PORT LATAbits.LATA1
 
 // CS for MCP23S17s GPIO Expander
 #define MCP23S17_CS_LINE_TRIS TRISAbits.RA2
 #define MCP23S17_CS_LINE_PORT LATAbits.LATA2
 
-// CS Line for MCP23S08 driving Hitachi 44780 LDC
-#define LCD44780_MCP23S08_CS_LINE_TRIS TRISAbits.RA1
-#define LCD44780_MCP23S08_CS_LINE_PORT LATAbits.LATA1
+// CS for MCP42XXX Digital Potentiometer
+#define MCP42XXX_CS_LINE_TRIS TRISAbits.RA3
+#define MCP42XXX_CS_LINE_PORT LATAbits.LATA3
+
+// CS for MCP425X Digital Potentiometer
+#define MCP425X_CS_LINE_TRIS TRISAbits.RA4
+#define MCP425X_CS_LINE_PORT LATAbits.LATA4
 
 // Address for MCP23S08 driving Hitachi 44780 LDC
 #define LCD44780_MCP23S08_ADDRESS 0x00
@@ -86,6 +86,7 @@ of main application.
 #define MCP23S17_EXP_2_ADDRESS 0x01
 
 // MCP23S17 GPIO Expander VCO control ports
+// A single MCP23S17 commands two VCO (High and Low)
 #define HIGH_VCO_SEL_VLFO 0x8000                // VLFO Selector for High VCO (GPB7 on MCP23S17)
 #define HIGH_VCO_SEL_LFO 0x4000                 // LFO Selector for High VCO (GPB6 on MCP23S17)
 #define HIGH_VCO_SEL_VCO 0x2000                 // VCO Selector for High VCO (GPB5 on MCP23S17)
@@ -142,13 +143,17 @@ typedef enum
 
 // Structure for state of all VCO
 typedef struct {
+        uint8_t byVCOID;                    // VCO ID
         bool    bVCOEnable;                 // VCO Enabled
         uint8_t byFreqSelector;             // VCO Range frequency selector
-        uint8_t byFrequency;                // VCO Steps frequency
+        uint8_t byFrequency;                // VCO Steps frequency coarse
+        uint8_t byFreqFine;                 // VCO Steps frequency fine
         uint8_t byDutyCycle;                // VCO Steps Duty Cycle
         bool    bSineWaveEnable;            // VCO Sine wave Enable
         bool    bSquareWaveEnable;          // VCO Square wave Enable
         bool    bTriangleWaveEnable;        // VCO Triangle wave Enable
+        bool    bInvalideAnalogFreq;        // If true signals the requet to take new measure
+                                            // of frequency from CCP
         uint16_t uiAnalogFreqCCP;           // VCO Real frequency from CCP
 } VCOState_t;
 
@@ -191,6 +196,20 @@ void ClearCDCUSBDataWriteBuffer (void);
  */
 void ClearCDCUSBDataReadBuffer (void);
 
+// Sets the single bit determined by the input mask
+/**
+ * @brief Internal service function.
+ * Sets the single bit determined by the input mask
+ *
+ * @param uiVCO VCO ID where set or reset bit
+ * @param uiMask Mask for selecting single bit
+ * @param bValue Bit value to set
+ *
+ * @return void
+ * 
+ */
+void setSingleBitToMCP23S17Expander(uint8_t uiVCO, uint16_t uiMask, bool bValue);
+
 /**
  * @brief Clear all the VCO States
  *
@@ -201,10 +220,59 @@ void ClearCDCUSBDataReadBuffer (void);
  */
 void ClearAllVCOStates (void);
 
+/**
+ * @brief Enable or Disable a VCO
+ *
+ * @param uiVCO VCO ID of VCO to enable or disable
+ * @param bValue If true enable the VCO, false disable it
+ *
+ * @return void
+ * 
+ */
+void enableVCO(uint8_t uiVCO, bool bValue);
 
+/**
+ * @brief Deselect All VCO Frequencies Ranges
+ *
+ * @param uiVCO VCO ID where deselect all ranges
+ *
+ * @return void
+ * 
+ */
 void deselectAllVCORanges (uint8_t uiVCO);
 
+/**
+ * @brief Select or Deselect a VCO frequency range
+ *
+ * @param uiVCO VCO ID where select or deselect specific range
+ * @param uiRange Range to select or deselect
+ *        Takes this constants :
+ *        HVCO_REQ_FREQ_SELECTOR is High VCO
+ *        VCO_REQ_FREQ_SELECTOR is Low VCO
+ *        LFO_REQ_FREQ_SELECTOR is high LFO
+ *        VLFO_REQ_FREQ_SELECTOR is low LFO
+ * @param bValue If true select the range, false deselect it
+ *
+ * @return void
+ * 
+ */
 void selectVCORange(uint8_t uiVCO, uint8_t uiRange, bool bValue);
+
+/**
+ * @brief Enable or Disable a VCO Harmonics
+ *
+ * @param uiVCO VCO ID where enable or disable specific harmonic
+ * @param uiHarmonics Harmonic to enable or disable
+ *        Takes this constants :
+ *        VCO_X_REQ_ENABLE_SINE
+ *        VCO_X_REQ_ENABLE_SQUARE
+ *        VCO_X_REQ_ENABLE_TRIANGLE
+ * @param bValue If true enable the harmonic, false disable it
+ *
+ * @return void
+ * 
+ */
+void selectVCOHarmonics(uint8_t uiVCO, uint8_t uiHarmonics, bool bValue);
 
 /***************************************
  * System functions
