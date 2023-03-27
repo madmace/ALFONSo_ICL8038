@@ -121,8 +121,9 @@ Once the functionality is stabilized, I will create a welded version for better 
     
 ![AlfonsoPrev1](https://user-images.githubusercontent.com/122873753/227480448-d9f88da3-b6e7-4724-b1cf-c95f1440d193.jpg)
 ![AlfonsoPrev2](https://user-images.githubusercontent.com/122873753/227480695-c834970d-64e1-446c-83c7-bf464703e895.jpg)
-![AlfonsoPrev3](https://user-images.githubusercontent.com/122873753/227480808-3e7da815-fb0a-47a2-801a-90feb77df93e.jpg)
-![AlfonsoPrev4](https://user-images.githubusercontent.com/122873753/214313670-8de575b0-895b-4a02-b9fe-d2fca62c175e.jpg)
+![AlfonsoPrev3](https://user-images.githubusercontent.com/122873753/227881345-979ef7f8-7705-488d-afa9-8d4fd5c0fcca.jpg)
+![AlfonsoPrev4](https://user-images.githubusercontent.com/122873753/227881365-9eacd5d9-6c7d-4a65-a6d9-9520cd45d24c.jpg)
+
 
 ## Upcoming implementations
 
