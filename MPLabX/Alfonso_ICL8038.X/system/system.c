@@ -141,8 +141,6 @@ void deselectAllVCORanges (uint8_t uiVCO) {
     
     // Complementary Mask
     uicMask = ~uiMask;
-    // Clears bits
-    uiMCP23S17Expander1 &= uicMask;
     
     // Select Extender device
     MCP23S17_CS_LINE_PORT = 0x0;
@@ -153,6 +151,8 @@ void deselectAllVCORanges (uint8_t uiVCO) {
         case VCO1:
         case VCO2:
             /// VCO 1 or VCO 2
+            // Clears bits
+            uiMCP23S17Expander1 &= uicMask;
             // Set all 16 port to low
             MCP23S17_Write_Word_Register_SPI1(MCP23S17_EXP_1_ADDRESS, MCP23S17_GPIOA_16, uiMCP23S17Expander1);
             
@@ -161,6 +161,8 @@ void deselectAllVCORanges (uint8_t uiVCO) {
         case VCO3:
         case VCO4:
             /// VCO 3 or VCO 4
+            // Clears bits
+            uiMCP23S17Expander2 &= uicMask;
             // Set all 16 port to low
             MCP23S17_Write_Word_Register_SPI1(MCP23S17_EXP_2_ADDRESS, MCP23S17_GPIOA_16, uiMCP23S17Expander2);
             
@@ -348,7 +350,7 @@ void setSingleBitToMCP23S17Expander(uint8_t uiVCO, uint16_t uiMask, bool bValue)
             /// VCO 1 or VCO 2
             
             // Set single port
-            uiMCP23S17Expander1 = set_int16_by_bit_weight(uiMCP23S17Expander1, uiMask, bValue);
+            set_int16_by_bit_weight(&uiMCP23S17Expander1, uiMask, bValue);
             // Set all 16 port
             MCP23S17_Write_Word_Register_SPI1(MCP23S17_EXP_1_ADDRESS, MCP23S17_GPIOA_16, uiMCP23S17Expander1);
             
@@ -359,9 +361,9 @@ void setSingleBitToMCP23S17Expander(uint8_t uiVCO, uint16_t uiMask, bool bValue)
             /// VCO 3 or VCO 4
             
             // Set single port
-            uiMCP23S17Expander2 = set_int16_by_bit_weight(uiMCP23S17Expander2, uiMask, bValue);
+            set_int16_by_bit_weight(&uiMCP23S17Expander2, uiMask, bValue);
             // Set all 16 port
-            MCP23S17_Write_Word_Register_SPI1(MCP23S17_EXP_2_ADDRESS, MCP23S17_GPIOA_16, uiMCP23S17Expander2);
+            //MCP23S17_Write_Word_Register_SPI1(MCP23S17_EXP_2_ADDRESS, MCP23S17_GPIOA_16, uiMCP23S17Expander2);
             
             break;
     }
@@ -726,7 +728,8 @@ void MainSystemTasks(void) {
         uint8_t byIndex = 0;                        // Pointer Index to received buffer
         uint8_t byValue = 0;                        // First byte Value received
         uint8_t iNumBytesRead = 0;                  // Number of bytes read
-        uint8_t iNumBytesToWrite = 0;               // Number of bytes written        
+        uint8_t iNumBytesToWrite = 0;               // Number of bytes written
+        uint8_t byVCOID = 0;                        // Working VCO ID
         uint8_t byCounter = 0;                      // Simple counter
         uint8_t byAux = 0;                          // Temporary byte variable
         
@@ -761,49 +764,51 @@ void MainSystemTasks(void) {
                         // Set index at start of payload buffer
                         byIndex = START_REQ_PAYLOAD;
                         // Should be equal to all VCOs available
-                        for(byCounter = 0; byCounter < NUM_VCO_PRESENT; byCounter++) {
+                        for(byVCOID = 0; byVCOID < NUM_VCO_PRESENT; byVCOID++) {
                             
                             // Get VCO ID
-                            aVCOInfo[byCounter].byVCOID = readBuffer[byIndex];
+                            aVCOInfo[byVCOID].byVCOID = readBuffer[byIndex];
                             byIndex++;
-                            
                             // VCO Enable 
-                            aVCOInfo[byCounter].bVCOEnable = (bool)readBuffer[byIndex];
+                            aVCOInfo[byVCOID].bVCOEnable = (bool)readBuffer[byIndex];
                             byIndex++;
-                            
-                            // Enable or Disable the VCO
-                            enableVCO(byCounter, aVCOInfo[byCounter].bVCOEnable);
-                            
                             // VCO Range frequency selector
-                            aVCOInfo[byCounter].byFreqSelector = readBuffer[byIndex];
+                            aVCOInfo[byVCOID].byFreqSelector = readBuffer[byIndex];
                             byIndex++;
-                            
-                            // Disable all Frequency Selector for VCO                      
-                            deselectAllVCORanges(byCounter);
-                            // Select Range for VCO
-                            selectVCORange(byCounter, aVCOInfo[byCounter].byFreqSelector, true);
-                        
                             // VCO Frequency Coarse
-                            aVCOInfo[byCounter].byFrequency = readBuffer[byIndex];
+                            aVCOInfo[byVCOID].byFrequency = readBuffer[byIndex];
                             byIndex++;
                             // VCO Frequency Fine
-                            aVCOInfo[byCounter].byFreqFine = readBuffer[byIndex];
+                            aVCOInfo[byVCOID].byFreqFine = readBuffer[byIndex];
                             byIndex++;
                             // VCO Duty Cycle
-                            aVCOInfo[byCounter].byDutyCycle = readBuffer[byIndex];
+                            aVCOInfo[byVCOID].byDutyCycle = readBuffer[byIndex];
                             byIndex++;
                             // VCO Harmonic Sine
-                            aVCOInfo[byCounter].bSineWaveEnable = (bool)readBuffer[byIndex];
+                            aVCOInfo[byVCOID].bSineWaveEnable = (bool)readBuffer[byIndex];
                             byIndex++;
                             // VCO Harmonic Square
-                            aVCOInfo[byCounter].bSquareWaveEnable = (bool)readBuffer[byIndex];
+                            aVCOInfo[byVCOID].bSquareWaveEnable = (bool)readBuffer[byIndex];
                             byIndex++;
                             // VCO Harmonic Triangle
-                            aVCOInfo[byCounter].bTriangleWaveEnable = (bool)readBuffer[byIndex];
+                            aVCOInfo[byVCOID].bTriangleWaveEnable = (bool)readBuffer[byIndex];
                             byIndex++;
                             
                             // Force to take new measure of frequency from CCP
-                            aVCOInfo[byCounter].bInvalideAnalogFreq = true;
+                            aVCOInfo[byVCOID].bInvalideAnalogFreq = true;
+                            
+                            
+                            // Synchronizing VCO
+                            
+                            // Disable all Frequency Selector for VCO                      
+                            deselectAllVCORanges(byVCOID);
+                            // Select Range for VCO
+                            selectVCORange(byVCOID, aVCOInfo[byVCOID].byFreqSelector, true);
+                            // Enable or Disable the VCO
+                            enableVCO(byVCOID, aVCOInfo[byVCOID].bVCOEnable);
+                            
+                            
+                        
                         }                   
                     }
                     
