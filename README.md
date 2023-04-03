@@ -44,20 +44,6 @@ The whole VCO section is powered with a dual voltage -8V/+8V. Swing is then redu
 The digital control section which includes the mC and all the SPIs is instead powered with +5V/0V.
 An EMC/EMI differential-mode (DM) filter is used on the mains power line and no switching technology is used.
 
-***Frequency ranges***
-
-The frequency ranges are still raw and are related to the values of the capacitors used in the VCO applied to pin 10 of the ICL8038.
-
-- **HVCO** (*1.6KHz to 26KHz used capacity 1uF*)
-- **VCO** (*238Hz to 4.1KHz used capacity 100nF*)
-- **LFO** (*11Hz to 194Hz used capacity 22nF*)
-- **VLFO** (*3Hz to 67Hz used capacity 2nF*)
-
-The selection of the frequency range is set using the micro via the I/O Expander MCP23S17 and the Quad Bilateral Switch CD4066B.
-Only one of the four bilateral switches is active defining the frequency range.
-
-Since all CD4066Bs, which are also used to enable individual harmonics, have dual power supplies, enabling and disabling of the bilateral switches is done with the +8V/-8V control signals. Then the +5V/0V I/O Expander outputs are converted to dual levels using the Quad comparators provided by the LM339.
-
 ICs used in VCO & Mixer :
 
 **ICL8038** Precision Waveform Generator/Voltage Controlled Oscillator<BR>
@@ -73,14 +59,45 @@ Square output on pin 9 as ratio 0.9~ * Vcc<BR>
 
 This however was not a problem since I use the Quad OpAmps TL084 as a mixer anyway. What I cannot avoid at this point is the use of trimmers for signal calibration at 2Vpp.
 
-The physical potentiometers for sweep and duty are respectfully replaced, by the 10KΩ MCP42010 for sweep and the 5KΩ MCP4251 for duty.
+The physical potentiometers for frequency sweep and duty cycle are respectfully replaced, by the 10KΩ MCP42010 and the 5KΩ MCP4251.
 
 For each VCO both potentiometers of the MCP42010 are used. So there's a MCP42010 for VCO. One is used as the main one and the other is in series for fine tuning. The fine-tuning potentiometer is paralleled with a 1.1KΩ 1% E96 precision resistor to obtain a final 991Ω of maximum range. Only a single one MCP4251 potentiometer for duty is used. Half for VCO.
 
+***Frequency ranges***
+
+The frequency ranges are still raw and are related to the values of the capacitors used in the VCO applied to pin 10 of the ICL8038.
+
+- **HVCO** (*1.6KHz to 26KHz used capacity 1uF*)
+- **VCO** (*238Hz to 4.1KHz used capacity 100nF*)
+- **LFO** (*11Hz to 194Hz used capacity 22nF*)
+- **VLFO** (*3Hz to 67Hz used capacity 2nF*)
+
+The selection of the frequency range is set using the micro via the I/O Expander MCP23S17 and the Quad Bilateral Switch CD4066B.
+Only one of the four bilateral switches is active defining the frequency range.
+
+***Frequency Modulation and Sweeping***
+The frequency of the waveform generator is a direct function of the DC voltage at Terminal 8 (measured from V+). By altering this voltage, frequency modulation is performed. For small deviations (e.g. ±10%) the modulating signal can be applied directly to pin 8, merely providing DC decoupling with a capacitor.
+An external resistor between pins 7 and 8 is not necessary, but it can be used to increase input impedance from about 8kΩ (pins 7 and 8 connected together), to about (R + 8kΩ).
+For larger FM deviations or for frequency sweeping, the modulating signal is applied between the positive supply voltage and pin 8.
+
+The potential on Pin 8 may be swept down from V+ by (1/3 VSUPPLY - 2V). Then for ALFONSo from +8V (Low Freq) to +3.33V (High Freq).
+
 **TL084** High-speed JFET input, quad operational amplifiers<BR>
+The TL084 is high speed J–FET input quad operational amplifiers. The devices feature high slew rates, low input bias and offset currents, and low offset voltage temperature coefficient.
+The TL084 is used to make the harmonics mixer. For each harmonic there is the relative gain adjustment trimmer which allows it to be brought into line with 2vpp.
 **LM339** Quad Comparators<BR>
+This quad comparator is used extensively to make CD4066B control lines compatible. The CD4066Bs are used to switch the frequency range, to enable individual harmonics and enable the singles VCO.
+The CD4066 must have a dual power supply to fully support the signals produced, and in this mode enabling and disabling of the bilateral switches is done with the +8V/-8V control signals.
+Then the +5V/0V MCP23S17 I/O Expander outputs are converted to dual levels using the Quad comparators provided by the LM339.
+Currently each VCO needs 8 control GPIOs. For a total of two LM339 per VCO dedicated to this purpose.
+The LM339 is also used to purify the square wave output which is suboptimal due to the value of the pull-up resistor. In this case one is used for VCO.
 **LM393** Dual Comparators<BR>
+The LM393 is a dual comparator used primarily to produce a +5V/0 signal, derived from the square wave, compatible with the CCP input of the controller.
+This allows the controller to calculate the current frequency of the selected VCO.
 **CD4066B** CMOS Quad Bilateral Switch<BR>
+The CD4066B is a quad bilateral switch intended for the transmission or multiplexing of analog or digital signals.
+The CD4066B consists of four bilateral switches, each with independent controls. Both the p and the n devices in a given switch are biased on or off simultaneously by the control signal. As shown in Figure 1, the well of the n-channel device on each switch is tied to either the input (when the switch is on) or to VSS (when the switch 
+is off). This configuration eliminates the variation of the switch-transistor threshold voltage with input signal and, thus, keeps the on-state resistance low over the full operating-signal range.
 
 ***SPI Devices***
 
