@@ -76,6 +76,7 @@ The selection of the frequency range is set using the micro via the I/O Expander
 Only one of the four bilateral switches is active defining the frequency range.
 
 ***Frequency Modulation and Sweeping***
+
 The frequency of the waveform generator is a direct function of the DC voltage at Terminal 8 (measured from V+). By altering this voltage, frequency modulation is performed. For small deviations (e.g. ±10%) the modulating signal can be applied directly to pin 8, merely providing DC decoupling with a capacitor.
 An external resistor between pins 7 and 8 is not necessary, but it can be used to increase input impedance from about 8kΩ (pins 7 and 8 connected together), to about (R + 8kΩ).
 For larger FM deviations or for frequency sweeping, the modulating signal is applied between the positive supply voltage and pin 8.
@@ -85,15 +86,18 @@ The potential on Pin 8 may be swept down from V+ by (1/3 VSUPPLY - 2V). Then for
 **TL084** High-speed JFET input, quad operational amplifiers<BR>
 The TL084 is high speed J–FET input quad operational amplifiers. The devices feature high slew rates, low input bias and offset currents, and low offset voltage temperature coefficient.
 The TL084 is used to make the harmonics mixer. For each harmonic there is the relative gain adjustment trimmer which allows it to be brought into line with 2vpp.
+
 **LM339** Quad Comparators<BR>
 This quad comparator is used extensively to make CD4066B control lines compatible. The CD4066Bs are used to switch the frequency range, to enable individual harmonics and enable the singles VCO.
 The CD4066 must have a dual power supply to fully support the signals produced, and in this mode enabling and disabling of the bilateral switches is done with the +8V/-8V control signals.
 Then the +5V/0V MCP23S17 I/O Expander outputs are converted to dual levels using the Quad comparators provided by the LM339.
 Currently each VCO needs 8 control GPIOs. For a total of two LM339 per VCO dedicated to this purpose.
 The LM339 is also used to purify the square wave output which is suboptimal due to the value of the pull-up resistor. In this case one is used for VCO.
+
 **LM393** Dual Comparators<BR>
 The LM393 is a dual comparator used primarily to produce a +5V/0 signal, derived from the square wave, compatible with the CCP input of the controller.
 This allows the controller to calculate the current frequency of the selected VCO.
+
 **CD4066B** CMOS Quad Bilateral Switch<BR>
 The CD4066B is a quad bilateral switch intended for the transmission or multiplexing of analog or digital signals.
 The CD4066B consists of four bilateral switches, each with independent controls. Both the p and the n devices in a given switch are biased on or off simultaneously by the control signal. As shown in Figure 1, the well of the n-channel device on each switch is tied to either the input (when the switch is on) or to VSS (when the switch 
