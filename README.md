@@ -100,7 +100,7 @@ This allows the controller to calculate the current frequency of the selected VC
 
 **CD4066B** CMOS Quad Bilateral Switch<BR>
 The CD4066B is a quad bilateral switch intended for the transmission or multiplexing of analog or digital signals.
-The CD4066B consists of four bilateral switches, each with independent controls. Both the p and the n devices in a given switch are biased on or off simultaneously by the control signal. As shown in Figure 1, the well of the n-channel device on each switch is tied to either the input (when the switch is on) or to VSS (when the switch 
+The CD4066B consists of four bilateral switches, each with independent controls. Both the p and the n devices in a given switch are biased on or off simultaneously by the control signal. The well of the n-channel device on each switch is tied to either the input (when the switch is on) or to VSS (when the switch 
 is off). This configuration eliminates the variation of the switch-transistor threshold voltage with input signal and, thus, keeps the on-state resistance low over the full operating-signal range.
 
 ***SPI Devices***
