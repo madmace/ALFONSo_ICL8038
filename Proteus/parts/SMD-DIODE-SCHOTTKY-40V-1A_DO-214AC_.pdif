@@ -1,0 +1,110 @@
+;Proteus Design Interchange Format
+
+(PDIF
+  (vendor "Labcenter Electronics")
+  (version 1 0)
+  (library
+    (part "SMDDIODESCHOTTKY40V1ADO214AC"
+      (family "DIO")
+      (package "DO214AC")
+      (description "304020027")
+      (attribute "PKG_TYPE" "DO214AC")
+      (attribute "MPN" "1N5819")
+      (attribute "VALUE" "40V-1A")
+      (gate
+        (swap 1)
+        (symbol "DIODE1")
+        (pin "+" 1 (type PS))
+        (pin "-" 2 (type PS))
+      )
+    )
+    (symbol "DIODE1"
+      (units THOU)
+      (graphic
+        (stroke 10.0)
+        (path (pt -50.0 -100.0) (pt -50.0 100.0))
+      )
+      (graphic
+        (stroke 10.0)
+        (path (pt -50.0 -100.0) (pt 50.0 0.0))
+      )
+      (graphic
+        (stroke 10.0)
+        (path (pt -50.0 100.0) (pt 50.0 0.0))
+      )
+      (graphic
+        (stroke 10.0)
+        (path (pt 50.0 100.0) (pt 50.0 -100.0))
+      )
+      (terminal
+        (body (symbol "PIN_R0_U_L100") (pt -150.0 0.0) (rot 0) (mir 0) (visible true))
+        (name (pt 139.37 0.0) (rot 0) (just MIDDLE LEFT) (visible false))
+        (number (pt -39.37 0.0) (rot 0) (just MIDDLE LEFT) (visible false))
+      )
+      (terminal
+        (body (symbol "PIN_R180_U_L100") (pt 150.0 0.0) (rot 0) (mir 0) (visible true))
+        (name (pt -139.37 0.0) (rot 0) (just MIDDLE RIGHT) (visible false))
+        (number (pt -39.37 0.0) (rot 0) (just MIDDLE RIGHT) (visible false))
+      )
+    )
+    (symbol "PIN_R0_U_L100"
+      (units THOU)
+      (graphic
+        (stroke 6.5)
+        (path (pt 0.0 0.0) (pt 100.0 0.0))
+      )
+    )
+    (symbol "PIN_R180_U_L100"
+      (units THOU)
+      (graphic
+        (stroke 6.5)
+        (path (pt 0.0 0.0) (pt -100.0 0.0))
+      )
+    )
+    (package "DO214AC"
+      (units THOU)
+      (layer TASM
+        (graphic
+          (stroke 5.0)
+          (path (pt 84.45 53.15) (pt 84.45 -53.15))
+        )
+        (graphic
+          (stroke 5.0)
+          (path (pt -84.45 -53.15) (pt -84.45 53.15))
+        )
+      )
+      (layer TSLK
+        (graphic
+          (stroke 5.0)
+          (path (pt -84.45 53.15) (pt 84.45 53.15))
+        )
+        (graphic
+          (stroke 5.0)
+          (path (pt 84.45 -53.15) (pt -84.45 -53.15))
+        )
+      )
+      (layer OCCA
+        (graphic
+          (stroke 1)
+          (path (pt -85.05 50) (pt 85 50) (pt 85 -50.03) (pt -85.05 -50.03) (pt -85.05 50) (closed))
+        )
+      )
+      (leg 1 (pt -80.39 0) (padstack 1))
+      (leg 2 (pt 80.39 0) (padstack 2))
+      (padstack 1
+        (pad (layer TCOP) (rectf 69.69 70.87 0 0.0 0.00999999999999))
+        (pad (layer TRES) (rectf 69.69 70.87 0 0.0 0.00999999999999))
+        (pad (layer TPST) (rectf 69.69 70.87 0 0.0 0.00999999999999))
+      )
+      (padstack 2
+        (pad (layer TCOP) (rectf 69.69 70.87 0 0.0 0.00999999999999))
+        (pad (layer TRES) (rectf 69.69 70.87 0 0.0 0.00999999999999))
+        (pad (layer TPST) (rectf 69.69 70.87 0 0.0 0.00999999999999))
+      )
+      (model SMD-DIODE-SCHOTTKY-40V-1A_DO-214AC_.step
+        (euler 0 0 0)
+        (offset 0 0 0)
+      )
+    )
+  )
+)
