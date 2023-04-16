@@ -50,7 +50,7 @@ ICs used in VCO & Mixer :
 An problem with this generators is strong distortion on sine wave output pin 2, so most of the solutions based on this chip has a limited frequency.
 Another is that the square wave output from pin 9 is an open collector that needs to be pulled up to the power supply. In some way the quality of other waveforms is dependent on the load on this pin. I excluded the 15M potentiometer indicated in the datasheet on page 7, squeezes the top of the upper half of the signal.
 As mentioned, square output pin 9 with open collector, normally would never be able to give a good square wave at these frequencies. Rising edge depends only on the pull-up resistor and its growing very slowly. If we give too strong pull-up resistor, in turn, the trailing edge will be weak because the internal transistor is too heavily loaded. 
-Here, i fixed the square wave with a comparator so that the slope is pretty steep, steep as applied comparator can give. Shown in the schematic LM393 has 1.3μs response time but it would be good to use even faster model of comparator.
+Here, i fixed the square wave with a comparator so that the slope is pretty steep, steep as applied comparator can give. Shown in the schematic LM339 has 1.3μs response time but it would be good to use even faster model of comparator.
 The amplitude of the signal, unfortunately, is not the same for each function, tests have shown that trying to match it with the usual R/R signal dividers will give very distorted waveforms as rounded square and triangle, so i resigned from such divisors.
 
 Sine output on pin 2 as ratio 0.22~ * Vcc<BR>
@@ -61,7 +61,8 @@ This however was not a problem since I use the Quad OpAmps TL084 as a mixer anyw
 
 The physical potentiometers for frequency sweep and duty cycle are respectfully replaced, by the 10KΩ MCP42010 and the 5KΩ MCP4251.
 
-For each VCO both potentiometers of the MCP42010 are used. So there's a MCP42010 for VCO. One is used as the main one and the other is in series for fine tuning. The fine-tuning potentiometer is paralleled with a 1.1KΩ 1% E96 precision resistor to obtain a final 991Ω of maximum range. Only a single one MCP4251 potentiometer for duty is used. Half for VCO.
+For each VCO both potentiometers of the MCP42010 are used. So there's a MCP42010 for VCO. One is used as the main one and the other is in series for fine tuning.
+Only a single one MCP4251 potentiometer for duty is used. Half for VCO.
 
 ***Frequency ranges***
 
