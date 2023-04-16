@@ -252,53 +252,80 @@ void selectVCORange(uint8_t uiVCO, uint8_t uiRange, bool bValue) {
     setSingleBitToMCP23S17Expander(uiVCO, uiMask, bValue);
 }
 
-// Enable or Disable a VCO Harmonics
-void selectVCOHarmonics(uint8_t uiVCO, uint8_t uiHarmonics, bool bValue) {
+// Enable or Disable a VCO Sine Harmonics
+void selectVCOSineHarmonic(uint8_t uiVCO, bool bValue) {
     
     // Mask
     uint16_t uiMask = 0x0000;
     
     // Select VCO Harmonics setting
-    // VCO 1 or VCO 3
-    switch(uiHarmonics) {
+    switch(uiVCO) {
         
-        case VCO_1_REQ_ENABLE_SQUARE:
-        case VCO_3_REQ_ENABLE_SQUARE:
-            // Square
-            uiMask = HIGH_VCO_SEL_SQR_EN;
-
-            break;
-            
-        case VCO_1_REQ_ENABLE_SINE:
-        case VCO_3_REQ_ENABLE_SINE:
+        case VCO1:
+        case VCO3:
             // Sine
             uiMask = HIGH_VCO_SEL_SIN_EN;
 
             break;
             
-        case VCO_1_REQ_ENABLE_TRIANGLE:
-        case VCO_3_REQ_ENABLE_TRIANGLE:
+        case VCO2:
+        case VCO4:
+            // Sine
+            uiMask = LOW_VCO_SEL_SIN_EN;
+
+            break;
+    }
+    
+    // Sets the single bit determined by the input mask
+    setSingleBitToMCP23S17Expander(uiVCO, uiMask, bValue);
+}
+
+// Enable or Disable a VCO Square Harmonics
+void selectVCOSquareHarmonic(uint8_t uiVCO, bool bValue) {
+    
+    // Mask
+    uint16_t uiMask = 0x0000;
+    
+    // Select VCO Harmonics setting
+    switch(uiVCO) {
+        
+        case VCO1:
+        case VCO3:
+            // Square
+            uiMask = HIGH_VCO_SEL_SQR_EN;
+
+            break;
+            
+        case VCO2:
+        case VCO4:
+            // Square
+            uiMask = LOW_VCO_SEL_SQR_EN;
+
+            break;
+    }
+    
+    // Sets the single bit determined by the input mask
+    setSingleBitToMCP23S17Expander(uiVCO, uiMask, bValue);
+}
+
+// Enable or Disable a VCO Triangle Harmonics
+void selectVCOTriangleHarmonic(uint8_t uiVCO, bool bValue) {
+    
+    // Mask
+    uint16_t uiMask = 0x0000;
+    
+    // Select VCO Harmonics setting
+    switch(uiVCO) {
+            
+        case VCO1:
+        case VCO3:
             // Triangle
             uiMask = HIGH_VCO_SEL_TRG_EN;
 
             break;
             
-        case VCO_2_REQ_ENABLE_SQUARE:
-        case VCO_4_REQ_ENABLE_SQUARE:
-            // Square
-            uiMask = LOW_VCO_SEL_SQR_EN;
-
-            break;
-            
-        case VCO_2_REQ_ENABLE_SINE:
-        case VCO_4_REQ_ENABLE_SINE:
-            // Sine
-            uiMask = LOW_VCO_SEL_SIN_EN;
-
-            break;
-            
-        case VCO_2_REQ_ENABLE_TRIANGLE:
-        case VCO_4_REQ_ENABLE_TRIANGLE:
+        case VCO2:
+        case VCO4:
             // Triangle
             uiMask = LOW_VCO_SEL_TRG_EN;
 
@@ -308,6 +335,110 @@ void selectVCOHarmonics(uint8_t uiVCO, uint8_t uiHarmonics, bool bValue) {
     // Sets the single bit determined by the input mask
     setSingleBitToMCP23S17Expander(uiVCO, uiMask, bValue);
 }
+
+// Set coarse Frequency for a VCO
+void setVCOFrequencyCoarse(uint8_t uiVCO, uint8_t uiValue) {
+    
+    // Select VCO Frequency settings
+    switch(uiVCO) {
+        
+        case VCO1:
+            
+            // Select Pot VCO 1
+            MCP42XXX_VCO1_CS_LINE_PORT = 0x0;
+            // Set Byte to Pot for coarse tune
+            MCP42XXX_Pot0_Write_Data_SPI1(uiValue);        
+            // Deselect Pot VCO 1
+            MCP42XXX_VCO1_CS_LINE_PORT = 0x1;
+            
+            break;
+            
+        case VCO2:
+        case VCO3:
+        case VCO4:
+            
+            // Select Pot VCO 2
+            MCP42XXX_VCO2_CS_LINE_PORT = 0x0;
+            // Set Byte to Pot for coarse tune
+            MCP42XXX_Pot0_Write_Data_SPI1(uiValue);        
+            // Deselect Pot VCO 2
+            MCP42XXX_VCO2_CS_LINE_PORT = 0x1;
+            
+            break;
+    }
+}
+
+// Set fine Frequency for a VCO
+void setVCOFrequencyFine(uint8_t uiVCO, uint8_t uiValue) {
+    
+    // Select VCO Frequency settings
+    switch(uiVCO) {
+        
+        case VCO1:
+            
+            // Select Pot VCO 1
+            MCP42XXX_VCO1_CS_LINE_PORT = 0x0;
+            // Set Byte to Pot for fine tune
+            MCP42XXX_Pot1_Write_Data_SPI1(uiValue);        
+            // Deselect Pot VCO 1
+            MCP42XXX_VCO1_CS_LINE_PORT = 0x1;
+            
+            break;
+            
+        case VCO2:
+            
+            // Select Pot VCO 2
+            MCP42XXX_VCO2_CS_LINE_PORT = 0x0;
+            // Set Byte to Pot for fine tune
+            MCP42XXX_Pot1_Write_Data_SPI1(uiValue);        
+            // Deselect Pot VCO 1
+            MCP42XXX_VCO2_CS_LINE_PORT = 0x1;
+            
+            break;
+            
+        case VCO3:
+        case VCO4:
+            
+            break;
+            
+    }
+}
+
+// Set duty cycle Frequency for a VCO
+void setVCODutyCycle(uint8_t uiVCO, uint8_t uiValue) {
+    
+    // Select VCO Frequency settings
+    switch(uiVCO) {
+        
+        case VCO1:
+            
+            // Select Duty Pot VCO 1
+            MCP425X_VCO12_CS_LINE_PORT = 0x0;
+            // Set Byte to Pot for duty cycle
+            MCP425X_Pot0_Write_Data_SPI1(uiValue);        
+            // Deselect Pot VCO 1
+            MCP425X_VCO12_CS_LINE_PORT = 0x1;
+            
+            break;
+            
+        case VCO2:
+            
+            // Select Duty Pot VCO 1
+            MCP425X_VCO12_CS_LINE_PORT = 0x0;
+            // Set Byte to Pot for duty cycle
+            MCP425X_Pot1_Write_Data_SPI1(uiValue);        
+            // Deselect Pot VCO 1
+            MCP425X_VCO12_CS_LINE_PORT = 0x1;
+            
+            break;
+            
+        case VCO3:
+        case VCO4:
+            
+            break;
+    }
+}
+
 
 // Enable or Disable a VCO
 void enableVCO(uint8_t uiVCO, bool bValue) {
@@ -449,17 +580,21 @@ void StartUpIOPortsConfig(void) {
     LED_GP2_TRIS = 0x0;
     LED_GP2_PORT = 0x0;
     
-    // CS for MCP42XXX Digital Potentiometer
-    MCP42XXX_CS_LINE_TRIS = 0x0;        // Output
-    MCP42XXX_CS_LINE_PORT = 0x1;        // CS Disabled
+    // CS for MCP42XXX Digital Potentiometer VCO 1
+    MCP42XXX_VCO1_CS_LINE_TRIS = 0x0;       // Output
+    MCP42XXX_VCO1_CS_LINE_PORT = 0x1;       // CS Disabled
     
-    // CS for MCP425X Digital Potentiometer
-    MCP425X_CS_LINE_TRIS = 0x0;         // Output
-    MCP425X_CS_LINE_PORT = 0x1;         // CS Disabled
+    // CS for MCP42XXX Digital Potentiometer VCO 2
+    MCP42XXX_VCO2_CS_LINE_TRIS = 0x0;       // Output
+    MCP42XXX_VCO2_CS_LINE_PORT = 0x1;       // CS Disabled
+    
+    // CS for MCP425X Digital Potentiometer VCO 1 & 2
+    MCP425X_VCO12_CS_LINE_TRIS = 0x0;       // Output
+    MCP425X_VCO12_CS_LINE_PORT = 0x1;       // CS Disabled
     
     // CS for MCP23S17s GPIO Expander
-    MCP23S17_CS_LINE_TRIS = 0x0;        // Output
-    MCP23S17_CS_LINE_PORT = 0x1;        // CS Disabled
+    MCP23S17_CS_LINE_TRIS = 0x0;            // Output
+    MCP23S17_CS_LINE_PORT = 0x1;            // CS Disabled
 }
 
 // Setup of SPI configuration of MSSP
@@ -800,6 +935,14 @@ void MainSystemTasks(void) {
                             
                             // Synchronizing VCO
                             
+                            // Set VCO Harmonics
+                            selectVCOSineHarmonic(byVCOID, aVCOInfo[byVCOID].bSineWaveEnable);
+                            selectVCOSquareHarmonic(byVCOID, aVCOInfo[byVCOID].bSquareWaveEnable);
+                            selectVCOTriangleHarmonic(byVCOID, aVCOInfo[byVCOID].bTriangleWaveEnable);
+                            // Set Frequency coarse for VCO
+                            setVCOFrequencyCoarse(byVCOID, aVCOInfo[byVCOID].byFrequency);
+                            // Set Frequency fine for VCO
+                            setVCOFrequencyFine(byVCOID, aVCOInfo[byVCOID].byFreqFine);
                             // Disable all Frequency Selector for VCO                      
                             deselectAllVCORanges(byVCOID);
                             // Select Range for VCO
@@ -940,13 +1083,8 @@ void MainSystemTasks(void) {
                         // Update VCO Frequency Coarse
                         aVCOInfo[VCO1].byFrequency = byValue;
 
-                        // Select Pot device
-                        MCP42XXX_CS_LINE_PORT = 0x0;
-                        
-                        MCP42XXX_Pot0_Write_Data_SPI1(byValue);
-            
-                        // Deselect Pot device
-                        MCP42XXX_CS_LINE_PORT = 0x1;
+                        // Set coarse frequency for VCO 1
+                        setVCOFrequencyCoarse(VCO1, byValue);
                     }
                     
                     break;
@@ -964,7 +1102,8 @@ void MainSystemTasks(void) {
                         // Update VCO Frequency Fine
                         aVCOInfo[VCO1].byFreqFine = byValue;
 
-                        // To do ....
+                        // Set fine frequency for VCO 1
+                        setVCOFrequencyFine(VCO1, byValue);
                     }
                     
                     break;
@@ -982,7 +1121,9 @@ void MainSystemTasks(void) {
                         // Update VCO Duty Cycle 
                         aVCOInfo[VCO1].byDutyCycle = byValue;
 
-                        // To do ....
+                        // Set duty cycle frequency for VCO 1
+                        setVCODutyCycle(VCO1, byValue);
+                        
                     }
                     
                     break;
@@ -1000,8 +1141,8 @@ void MainSystemTasks(void) {
                         // Update VCO Sine Harmonic
                         aVCOInfo[VCO1].bSineWaveEnable = (bool)byValue;
 
-                        // Enable or Disable a VCO Harmonics
-                        selectVCOHarmonics(VCO1, VCO_1_REQ_ENABLE_SINE, byValue);
+                        // Enable or Disable a VCO Harmonic
+                        selectVCOSineHarmonic(VCO1, byValue);
                     }
                     
                     break;
@@ -1019,8 +1160,8 @@ void MainSystemTasks(void) {
                         // Update VCO Square Harmonic
                         aVCOInfo[VCO1].bSquareWaveEnable = (bool)byValue;
                         
-                        // Enable or Disable a VCO Harmonics
-                        selectVCOHarmonics(VCO1, VCO_1_REQ_ENABLE_SQUARE, byValue);
+                        // Enable or Disable a VCO Harmonic
+                        selectVCOSquareHarmonic(VCO1, byValue);
                     }
                     
                     break;
@@ -1038,8 +1179,8 @@ void MainSystemTasks(void) {
                         // Update VCO Triangle Harmonic
                         aVCOInfo[VCO1].bTriangleWaveEnable = (bool)byValue;
                         
-                        // Enable or Disable a VCO Harmonics
-                        selectVCOHarmonics(VCO1, VCO_1_REQ_ENABLE_TRIANGLE, byValue);
+                        // Enable or Disable a VCO Harmonic
+                        selectVCOTriangleHarmonic(VCO1, byValue);
                     }
                     
                     break;

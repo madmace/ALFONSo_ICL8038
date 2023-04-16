@@ -69,13 +69,17 @@ of main application.
 #define MCP23S17_CS_LINE_TRIS TRISAbits.RA2
 #define MCP23S17_CS_LINE_PORT LATAbits.LATA2
 
-// CS for MCP42XXX Digital Potentiometer
-#define MCP42XXX_CS_LINE_TRIS TRISAbits.RA3
-#define MCP42XXX_CS_LINE_PORT LATAbits.LATA3
+// CS for MCP42XXX Digital Potentiometer VCO 1
+#define MCP42XXX_VCO1_CS_LINE_TRIS TRISAbits.RA3
+#define MCP42XXX_VCO1_CS_LINE_PORT LATAbits.LATA3
 
-// CS for MCP425X Digital Potentiometer
-#define MCP425X_CS_LINE_TRIS TRISAbits.RA4
-#define MCP425X_CS_LINE_PORT LATAbits.LATA4
+// CS for MCP42XXX Digital Potentiometer VCO 2
+#define MCP42XXX_VCO2_CS_LINE_TRIS TRISAbits.RA4
+#define MCP42XXX_VCO2_CS_LINE_PORT LATAbits.LATA4
+
+// CS for MCP425X Digital Potentiometer VCO 1 & 2
+#define MCP425X_VCO12_CS_LINE_TRIS TRISAbits.RA5
+#define MCP425X_VCO12_CS_LINE_PORT LATAbits.LATA5
 
 // Address for MCP23S08 driving Hitachi 44780 LDC
 #define LCD44780_MCP23S08_ADDRESS 0x00
@@ -259,20 +263,70 @@ void deselectAllVCORanges (uint8_t uiVCO);
 void selectVCORange(uint8_t uiVCO, uint8_t uiRange, bool bValue);
 
 /**
- * @brief Enable or Disable a VCO Harmonics
+ * @brief Enable or Disable a VCO Sine Harmonic
  *
- * @param uiVCO VCO ID where enable or disable specific harmonic
- * @param uiHarmonics Harmonic to enable or disable
- *        Takes this constants :
- *        VCO_X_REQ_ENABLE_SINE
- *        VCO_X_REQ_ENABLE_SQUARE
- *        VCO_X_REQ_ENABLE_TRIANGLE
+ * @param uiVCO VCO ID where enable or disable harmonic
  * @param bValue If true enable the harmonic, false disable it
  *
  * @return void
  * 
  */
-void selectVCOHarmonics(uint8_t uiVCO, uint8_t uiHarmonics, bool bValue);
+void selectVCOSineHarmonic(uint8_t uiVCO, bool bValue);
+
+/**
+ * @brief Enable or Disable a VCO Square Harmonic
+ *
+ * @param uiVCO VCO ID where enable or disable harmonic
+ * @param bValue If true enable the harmonic, false disable it
+ *
+ * @return void
+ * 
+ */
+void selectVCOSquareHarmonic(uint8_t uiVCO, bool bValue);
+
+/**
+ * @brief Enable or Disable a VCO Triangle Harmonic
+ *
+ * @param uiVCO VCO ID where enable or disable harmonic
+ * @param bValue If true enable the harmonic, false disable it
+ *
+ * @return void
+ * 
+ */
+void selectVCOTriangleHarmonic(uint8_t uiVCO, bool bValue);
+
+/**
+ * @brief Set coarse Frequency for a VCO
+ *
+ * @param uiVCO VCO ID where set frequency
+ * @param uiValue Frequency value to set to coarse pot
+ *
+ * @return void
+ * 
+ */
+void setVCOFrequencyCoarse(uint8_t uiVCO, uint8_t uiValue);
+
+/**
+ * @brief Set fine Frequency for a VCO
+ *
+ * @param uiVCO VCO ID where set frequency
+ * @param uiValue Frequency value to set to fine pot
+ *
+ * @return void
+ * 
+ */
+void setVCOFrequencyFine(uint8_t uiVCO, uint8_t uiValue);
+
+/**
+ * @brief Set duty cycle Frequency for a VCO
+ *
+ * @param uiVCO VCO ID where set duty cycle
+ * @param uiValue duty cycle value to set
+ *
+ * @return void
+ * 
+ */
+void setVCODutyCycle(uint8_t uiVCO, uint8_t uiValue);
 
 /***************************************
  * System functions

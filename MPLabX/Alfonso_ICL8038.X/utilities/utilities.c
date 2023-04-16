@@ -96,17 +96,15 @@ uint8_t get_string_length (uint8_t * buffer){
 }
 
 // set_int16_by_bit_weight Implementation
-uint16_t set_int16_by_bit_weight (uint16_t word, uint16_t weightbit, bool value) {
+void set_int16_by_bit_weight (volatile uint16_t * word, uint16_t weightbit, bool value) {
     
     // Invert mask
     uint16_t uiMask = ~weightbit;
     // Isolate weight bit
-    word &= uiMask;
+    *word &= uiMask;
     
     if (value) {
         // Set bit
-        word |= weightbit;
+        *word |= weightbit;
     }
-    
-    return word;
 }

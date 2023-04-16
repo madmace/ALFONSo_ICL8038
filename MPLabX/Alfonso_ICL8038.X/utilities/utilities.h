@@ -59,17 +59,17 @@ uint8_t get_string_length (uint8_t * buffer);
  * This function sets or resets a single bit in an 16bit word leaving all rest of
  * word bits at same value.
  *
- * @param word the 16-bit word on set or reset bit
+ * @param word the 16-bit word to set or reset bit
  *
  * @param weightbit Is the mask or waight. A word with set 1, the only bit to be change.
  * (Ex 0x4000 0b0100 0000 0000 0000 will set or reset the fifteenth bit) 
  * 
  * @param value Is bit to set or reset
  * 
- * @return word altered with new bit
+ * @return void
  *
  */
-uint16_t set_int16_by_bit_weight (uint16_t word, uint16_t weightbit, bool value);
+void set_int16_by_bit_weight (volatile uint16_t * word, uint16_t weightbit, bool value);
 
 #endif	/* UTILITIES_H */
 
