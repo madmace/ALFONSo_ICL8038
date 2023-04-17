@@ -16,7 +16,7 @@ ALFONSo stands for :
 In this implementation MK-ICL8038.
 
 - [Meta](#meta)
-- [Basics](#basics)
+- [Basics](Basics.md)
 - [Early implementation](#early-implementation)
 - [Upcoming implementations](#upcoming-implementations)
 
@@ -25,19 +25,12 @@ In this implementation MK-ICL8038.
 Scope:
 
 - The project from my passion of analog synthesizers and the love of the patterns, rhythms and mats that colored the majority of the 70s and 80s classics. In particular the analog sequencers and LFOs.
-- The use of analog IC monolith signal generators operated in BF in the 1Hz band up to 25KHz. Can be used as VCO/LFO. This first research *intentionally* uses the older, now obsolete, but well known **Intersil ICL8038**.
+- The use of analog IC monolith signal generators operated in BF in the 1Hz band up to 25KHz. Can be used as VCO/LFO. This first research *intentionally* uses the older, now obsolete, but *well known* **Intersil ICL8038**.
 - The digital control interface via USB is based on an *old and well-known* Microchip **18-series** microcontroller. The **PIC18F4550** is a widely used mC and there is a large amount of example code and tutorials available on the web.
   However, I personally always suggest having its datasheet handy and dedicating the time to understand its correct functioning.
 - Alfonso uses the USB 2.0 peripheral contained in the 18F4550 microcontroller. The firmware exposes the USB port as a CDC (USB communications device class). This allows it to be recognized by all OSes as an RS232 serial port.
   I originally intended to use the USB port as a Human Interface Device (HID) but due to its limitations I decided to implement it as a CDC and build a proprietary protocol on it.
-  
-## Basics
-
-The ICL8038 waveform generator is a monolithic integrated circuit capable of producing high accuracy sine, square, triangular, sawtooth and pulse waveforms. The frequency (or repetition rate) can be selected externally from 0.001Hz to more than 300kHz.
-In used configuration, the frequency has been fixed in the audio frequency range 1Hz to 20KHz. Integrators via comparators create the primary triangle which is then flip-flopped to obtain the square and a smoothing network based on multiple transistors stages to obtain the sine.
-The sweep is modulated via a DC voltage to pin 8. The relative frequency range depends on the capacitor applied to pin 10.
-Four different meshes with different values are needed to get good linearity. This especially applies to operation as an LFO. Four different selectable operating modes have been selected.
-
+ 
 ***Power supply***
 
 The whole VCO section is powered with a dual voltage -8V/+8V. Swing is then reduced at the final outputs to the standard preamp signal of 2Vpp.
