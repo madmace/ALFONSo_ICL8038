@@ -1,6 +1,7 @@
 ## Power supply
 
 ***Initial choice***
+
 As an initial choice I thought that the dual power supply for the linear/analog section should be greater than the positive voltage used by the digital section.
 I thought this thing would bring me more room for work. 
 For this the whole VCO section was powered with a dual voltage -8V/+8V and digital control section which includes the mC and all the SPIs is instead powered with +5V/0V.
