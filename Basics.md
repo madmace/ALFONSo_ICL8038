@@ -27,4 +27,4 @@ Only one of the four bilateral switches is active defining the frequency range.
 The capacitor values and frequency range are still being refined, so the correct values will only be released upon completion of the design of the VCOs module.
 
 
-Return to index. [README.md](README.md)
+[Return to index.](README.md)
