@@ -55,6 +55,9 @@ of main application.
 #define LED_GP2_TRIS TRISDbits.RD2
 #define LED_GP2_PORT LATDbits.LATD2
 
+// LEDs USB functions
+#define BlinkLEDUSB() { LED_STATUS_USB_PORT = 0x1; __delay_ms(100); LED_STATUS_USB_PORT = 0x0; }
+
 // LEDs General Purpose functions
 #define BlinkLEDGP1() { LED_GP1_PORT = 0x1; __delay_ms(100); LED_GP1_PORT = 0x0; }
 #define BlinkLEDGP2() { LED_GP2_PORT = 0x1; __delay_ms(100); LED_GP2_PORT = 0x0; }
@@ -78,8 +81,8 @@ of main application.
 #define MCP42XXX_VCO2_CS_LINE_PORT LATAbits.LATA4
 
 // CS for MCP425X Digital Potentiometer VCO 1 & 2
-#define MCP425X_VCO12_CS_LINE_TRIS TRISAbits.RA5
-#define MCP425X_VCO12_CS_LINE_PORT LATAbits.LATA5
+#define MCP425X_VCO12_CS_LINE_TRIS TRISEbits.RE0
+#define MCP425X_VCO12_CS_LINE_PORT LATEbits.LATE0
 
 // Address for MCP23S08 driving Hitachi 44780 LDC
 #define LCD44780_MCP23S08_ADDRESS 0x00

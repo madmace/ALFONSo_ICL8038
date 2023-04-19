@@ -595,6 +595,11 @@ void StartUpIOPortsConfig(void) {
     // CS for MCP23S17s GPIO Expander
     MCP23S17_CS_LINE_TRIS = 0x0;            // Output
     MCP23S17_CS_LINE_PORT = 0x1;            // CS Disabled
+    
+    // Alive LEDs !
+    BlinkLEDUSB();
+    BlinkLEDGP1();
+    BlinkLEDGP2();
 }
 
 // Setup of SPI configuration of MSSP
@@ -1115,7 +1120,7 @@ void MainSystemTasks(void) {
                     // Control if right size
                     if (iNumBytesRead == VCO_REQ_DUTY_CYCLE_LEN) {
                         #if defined(CMD_DEBUG_MODE)
-                            DebugCommandSPI16x2LCD("VCO1REQ_DTY_CY", true, iNumBytesRead, byValue);
+                            DebugCommandSPI16x2LCD("VCO1REQ_DTY_C", true, iNumBytesRead, byValue);
                         #endif
 
                         // Update VCO Duty Cycle 
