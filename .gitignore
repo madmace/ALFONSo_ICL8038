@@ -30,3 +30,6 @@
 *.exe
 *.out
 *.app
+
+# MPLabX
+MPLabX\Alfonso_ICL8038.X\nbproject\private\*
