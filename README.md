@@ -3,7 +3,7 @@
 ALFONSo stands for :
 
 <p align="right">
-    <img align="right" width="300px"src="https://user-images.githubusercontent.com/122873753/222533968-67c840fd-441d-4f12-a997-181fa5d1333d.png">
+    <img align="right" width="300px"src="https://github.com/madmace/ALFONSo_ICL8038/blob/main/Images/Logo/AlfonsoTabbyCat2.png">
 </p>
 
 **A**nalog
@@ -20,6 +20,7 @@ In this implementation MK-ICL8038.
 - [Power Supply](Power.md)
 - [ICs used in VCO & Mixer](ICs.md)
 - [Early implementation](#early-implementation)
+- [Development pictures](Images.md)
 - [Upcoming implementations](#upcoming-implementations)
 
 ## Meta
@@ -39,12 +40,12 @@ This first implementation is oriented to develop and test all the HW functionali
 For this, a first mixer with the basic functions was developed.
 
 ![Front Panel](https://github.com/madmace/ALFONSo_ICL8038/blob/main/Images/Early_Single_VCO/FrontPanel.png?raw=true)
-![Mixer Panel](https://github.com/madmace/ALFONSo_ICL8038/blob/main/Images/Early_Single_VCO/MixerPanel.pngraw=true)
+![Mixer Panel](https://github.com/madmace/ALFONSo_ICL8038/blob/main/Images/Early_Single_VCO/MixerPanel.png?raw=true)
 
 Both the control logic section and the analog section with the VCO and the mixers are still being prototyped via breadboard.
 Once the functionality is stabilized, I will create a welded version for better signal quality. Obviously the air links are not optimal.
     
-![AlfonsoPrev1](https://user-images.githubusercontent.com/122873753/227480448-d9f88da3-b6e7-4724-b1cf-c95f1440d193.jpg)
+![AlfonsoProto](https://github.com/madmace/ALFONSo_ICL8038/blob/main/Images/Early_Single_VCO/1681889760702.jpg?raw=true)
 
 ## Upcoming implementations
 
