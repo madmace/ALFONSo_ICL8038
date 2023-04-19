@@ -38,7 +38,7 @@ Scope:
 This first implementation is oriented to develop and test all the HW functionalities of the VCOs/LFOs and the core SW libraries for their command.
 For this, a first mixer with the basic functions was developed.
 
-![Front Panel](images/FrontPanel.png)
+[Front Panel](images/FrontPanel.png)
 ![Mixer Panel](https://user-images.githubusercontent.com/122873753/226573380-3f527885-a70a-4488-9e40-b10083d6392b.png)
 
 Both the control logic section and the analog section with the VCO and the mixers are still being prototyped via breadboard.
