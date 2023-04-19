@@ -21,6 +21,7 @@ In this implementation MK-ICL8038.
 - [ICs used in VCO & Mixer](ICs.md)
 - [Early implementation](#early-implementation)
 - [Development pictures](Images.md)
+- [Current wiring diagram](Schema.md)
 - [Upcoming implementations](#upcoming-implementations)
 
 ## Meta
