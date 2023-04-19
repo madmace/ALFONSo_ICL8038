@@ -39,16 +39,12 @@ This first implementation is oriented to develop and test all the HW functionali
 For this, a first mixer with the basic functions was developed.
 
 ![Front Panel](https://github.com/madmace/ALFONSo_ICL8038/blob/main/Images/Early_Single_VCO/FrontPanel.png?raw=true)
-![Mixer Panel](https://user-images.githubusercontent.com/122873753/226573380-3f527885-a70a-4488-9e40-b10083d6392b.png)
+![Mixer Panel](https://github.com/madmace/ALFONSo_ICL8038/blob/main/Images/Early_Single_VCO/MixerPanel.pngraw=true)
 
 Both the control logic section and the analog section with the VCO and the mixers are still being prototyped via breadboard.
 Once the functionality is stabilized, I will create a welded version for better signal quality. Obviously the air links are not optimal.
     
 ![AlfonsoPrev1](https://user-images.githubusercontent.com/122873753/227480448-d9f88da3-b6e7-4724-b1cf-c95f1440d193.jpg)
-![AlfonsoPrev2](https://user-images.githubusercontent.com/122873753/227480695-c834970d-64e1-446c-83c7-bf464703e895.jpg)
-![AlfonsoPrev3](https://user-images.githubusercontent.com/122873753/227881345-979ef7f8-7705-488d-afa9-8d4fd5c0fcca.jpg)
-![AlfonsoPrev4](https://user-images.githubusercontent.com/122873753/227881365-9eacd5d9-6c7d-4a65-a6d9-9520cd45d24c.jpg)
-
 
 ## Upcoming implementations
 
