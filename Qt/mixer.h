@@ -34,7 +34,7 @@ private:
     static Mixer *oMixer;
 
     // Main Mixer Data Model
-    QHash<int, SingleUnitLFOModel*> *m_hsLFOMixerModel;
+    QMap<int, SingleUnitLFOModel*> *m_mapLFOMixerModel;
 
     // Constructor
     explicit Mixer(QObject *parent = nullptr);
@@ -43,6 +43,10 @@ private:
 
     // Save data into the model
     void updateMixerModel(quint8 byID, quint8 byType, quint8 byValue);
+    // Make config JSON File from model
+    void writeJSONConfig(QString sConfigJSONFile);
+    // Read config JSON File to model
+    void readJSONConfig(const QJsonObject ojsConfRoot);
 
 public:
 
@@ -50,7 +54,7 @@ public:
     static Mixer* getInstance();
 
     // Properties
-    QHash<int, SingleUnitLFOModel*>* getLFOMixerModel();
+    QMap<int, SingleUnitLFOModel*>* getLFOMixerModel();
 
     // QML singleton type provider function (callback).
     // Second, define the singleton type provider function (callback).
@@ -58,6 +62,8 @@ public:
 
 signals:
 
+    // Signal for update frequency info text
+    void updateFrequencyText(quint8 byID, QString sFreqText);
     // Signal for update botton panel info text
     void updateBottomInfoText(QString sInfoText);
 
@@ -66,8 +72,13 @@ public slots:
     // Store the status of the single control
     void setMixerValue(int iID, int iType, int iValue);
 
+    // Load last configuration from JSON
+    void loadJSONConfig(QString sConfigJSONFile);
+
     // Send Request for Sync All command to serial port
     void sendRequestSyncAllVCO();
+    // Calcs and update VCOs frequencies
+    void handleVCOFrequency(quint8 byID, quint16 uiValue);
 
 
 };

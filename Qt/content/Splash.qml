@@ -121,8 +121,14 @@ Rectangle {
 
             // Set LFOMixer visible
             setALFONSoUSBMixerVisible(bResult);
-            // Send request about state of all VCO
-            Mixer.sendRequestSyncAllVCO();
+
+            // Control if ALFONSo USB Serial found
+            if (bResult) {
+                // Load last configuration from JSON
+                Mixer.loadJSONConfig(Constants.lastConfigJSONFile)
+                // Send request about state of all VCO
+                Mixer.sendRequestSyncAllVCO();
+            }
 
 
             //console.log("POT -> " + panelLFOMixer.singleUnitLFO.potDutyCycleLFOValue);

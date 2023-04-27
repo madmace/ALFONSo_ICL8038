@@ -80,8 +80,11 @@ signals:
     void availablePorts(QList<QSerialPortInfo> lPorts);
     // Signal if ALFONSo device is present
     void isALFONSoUSBPresent(bool bResult);
+
     // Signal for update botton panel info text
     void updateBottomInfoText(QString sInfoText);
+    // Signal for update VCOs frequencies
+    void receivedVCOFrequency(quint8 byID, quint16 uiValue);
 
     /*******************************
      *

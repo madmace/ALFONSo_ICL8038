@@ -54,18 +54,15 @@ SerialPortController::SerialPortController(QObject *parent): QObject{parent}
 
     // Delete connection
     connect(oWorkerThread, &QThread::finished, oSerialPort, &QObject::deleteLater);
-    // Inbound connections
+    // Outbound connections
     connect(this, SIGNAL(availablePortsController()), oSerialPort, SLOT(handleAvailablePortsWorker()));
     connect(this, SIGNAL(isALFONSoUSBPresentController()), oSerialPort, SLOT(handleIsALFONSoUSBPresentWorker()));
     connect(this, SIGNAL(ALFONSoUnderClosing()), oSerialPort, SLOT(handleALFONSoUnderClosingWorker()));
     connect(this, SIGNAL(sendBytes(QByteArray)), oSerialPort, SLOT(handleSendBytesWorker(QByteArray)));
-    // Outbound connections
+    // Inbound connections
     connect(oSerialPort, SIGNAL(availablePortsWorker(QList<QSerialPortInfo>)), this, SLOT(handleAvailablePorts(QList<QSerialPortInfo>)));
     connect(oSerialPort, SIGNAL(isALFONSoUSBPresentWorker(bool)), this, SLOT(handleALFONSoUSBPresent(bool)));
     connect(oSerialPort, SIGNAL(receivedBytesWorker(QByteArray)), this, SLOT(receivedBytes(QByteArray)));
-
-    // Signal for receive data from serial port
-    //void ;
 
     // Start Worker
     oWorkerThread->start();
@@ -343,14 +340,10 @@ void SerialPortController::receivedBytes(const QByteArray &data) {
     quint16 uiIDCommand = 0;            // Response command
     quint16 uiValue = 0;                // Response value
 
-
-
     // Convert to bytes array
     //const char *byBuffer = qbaData.data();
 
-
-    qDebug() << data.toHex();
-
+    //qDebug() << data.toHex();
 
     // Reading 2 byte command
     uiIDCommand = (quint8)data[1] << 8;
@@ -363,13 +356,11 @@ void SerialPortController::receivedBytes(const QByteArray &data) {
         case  Protocol::VCO_1_RSP_FREQUENCY:
         {
 
+            /*
             double dTcap;
             double dTosc;
             double dTVCO;
             double dFVCO;
-
-
-            qDebug() << "SerialPortController::receivedBytes() fired. VCO_1_RSP_FREQUENCY : " << uiValue;
 
             dTcap = (double)uiValue * 8;
             dTosc = (double)1 / 12000000;
@@ -377,16 +368,39 @@ void SerialPortController::receivedBytes(const QByteArray &data) {
             dFVCO = (double)1 / dTVCO;
 
             qDebug() << "SerialPortController::receivedBytes() VCO Freq : " << dFVCO;
+            */
+
+            qDebug() << "SerialPortController::receivedBytes() fired. VCO_1_RSP_FREQUENCY : " << uiValue;
+
+            // Post signal for update VCOs frequencies to external
+            emit receivedVCOFrequency(1, uiValue);
 
             break;
         }
         case Protocol::VCO_2_RSP_FREQUENCY:
 
-            break;
-        case Protocol::VCO_3_RSP_FREQUENCY:
+            qDebug() << "SerialPortController::receivedBytes() fired. VCO_2_RSP_FREQUENCY : " << uiValue;
+
+            // Post signal for update VCOs frequencies to external
+            emit receivedVCOFrequency(2, uiValue);
 
             break;
+
+        case Protocol::VCO_3_RSP_FREQUENCY:
+
+            qDebug() << "SerialPortController::receivedBytes() fired. VCO_3_RSP_FREQUENCY : " << uiValue;
+
+            // Post signal for update VCOs frequencies to external
+            emit receivedVCOFrequency(3, uiValue);
+
+            break;
+
         case Protocol::VCO_4_RSP_FREQUENCY:
+
+            qDebug() << "SerialPortController::receivedBytes() fired. VCO_4_RSP_FREQUENCY : " << uiValue;
+
+            // Post signal for update VCOs frequencies to external
+            emit receivedVCOFrequency(4, uiValue);
 
             break;
     }

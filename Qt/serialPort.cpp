@@ -26,6 +26,11 @@ SerialPort::SerialPort(QObject *parent) : QObject{parent}
     m_sSerialPortName = "";
     // Serial Port not open
     m_bSerialPortOpen = false;
+
+    // Creates timer for check if Serial Port present
+    m_oCheckSerialTimer = new QTimer(this);
+    // Connects timer to check function
+    connect(m_oCheckSerialTimer, SIGNAL(timeout()), this, SLOT(handleIsAvailableALFONSoUSB()));
 }
 
 bool SerialPort::isSerialPortOpen()
@@ -38,7 +43,7 @@ void SerialPort::handleAvailablePortsWorker() {
     emit availablePortsWorker(QSerialPortInfo::availablePorts());
 }
 
-// Return to the USB Serial ALFONSo if is presen
+// Return to the USB Serial ALFONSo if is present
 QString SerialPort::getALFONSoUSB() {
 
     QString sSerialPortName = "";
@@ -62,6 +67,21 @@ QString SerialPort::getALFONSoUSB() {
     }
 
     return sSerialPortName;
+}
+
+// Check if the USB Serial ALFONSo if is available
+void SerialPort::handleIsAvailableALFONSoUSB() {
+
+    // Find ALFONSo USB Serial port
+    QString sSerialPortName = getALFONSoUSB();
+    // Control if found
+    if (sSerialPortName.isEmpty()) {
+
+        // Acts as under shutdown
+        handleALFONSoUnderClosingWorker();
+
+        emit isALFONSoUSBPresentWorker(false);
+    }
 }
 
 // Return to the USB Serial ALFONSo if is present
@@ -98,6 +118,9 @@ void SerialPort::handleIsALFONSoUSBPresentWorker() {
             // Found
             bFound = true;
 
+            // Starts timer with 5s interval
+            m_oCheckSerialTimer->start(5000);
+
             qDebug() << "ALFONSo USB Serial Port " << m_oSerial->portName() << " open.";
 
         } else {
@@ -123,6 +146,9 @@ void SerialPort::handleALFONSoUnderClosingWorker() {
         // Serial Port Name empty
         m_sSerialPortName = "";
 
+        // Stop timer for check if Serial Port present
+        m_oCheckSerialTimer->stop();
+
         qDebug() << "ALFONSo USB Serial Port closed.";
     }
 }
@@ -146,7 +172,9 @@ void SerialPort::handleReceiveBytesWorker() {
     if (m_bSerialPortOpen && m_oSerial->isOpen()) {
         // Receive serial port
         data.append(m_oSerial->readAll());
-
-        emit receivedBytesWorker(data);
+        // Controls if not empty
+        if (!data.isEmpty()) {
+            emit receivedBytesWorker(data);
+        }
     }
 }

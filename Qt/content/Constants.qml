@@ -31,7 +31,7 @@ QtObject {
     */
 
     /*
-    * Constant GUI Titles
+    * Constants GUI Titles
     */
 
     readonly property string mainWindowTitle: "A.L.F.O.N.S.o Basic Mixer for ICL8038"
@@ -45,7 +45,7 @@ QtObject {
     readonly property string splashMainSlogan: "Analog Low Frequency Oscillator No linear Sequencer"
 
     /*
-    * Constant GUI Messages
+    * Constants GUI Messages
     */
 
     readonly property string splashSeachingUSBDevice: "Searching ALFONSo USB device..."
@@ -53,5 +53,11 @@ QtObject {
     readonly property string splashUSBDeviceNotFound: "ALFONSo USB device not found."
     readonly property string splashUSBDeviceFound: "ALFONSo USB device found."
     readonly property string splashUSBPowerButton: "CONNECT"
+
+    /*
+    * Constants JSON last configuration
+    */
+
+    readonly property string lastConfigJSONFile: "./ALFONSo.json"
 
 }

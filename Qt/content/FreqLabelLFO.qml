@@ -14,6 +14,8 @@ Item {
 
     FontLoader { id: freqLabelLFOLabelFont; source: "qrc:/resources/arial.ttf" }
 
+    property alias freqLabelLFOText : freqLabelText.text
+
     Rectangle {
         id: freqLabelBackground
         x: 0

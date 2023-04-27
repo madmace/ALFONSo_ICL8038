@@ -30,7 +30,10 @@ Mixer *Mixer::oMixer = 0;
 Mixer::Mixer(QObject *parent) : QObject{parent}
 {
     // Create Main Mixer Data Model
-    m_hsLFOMixerModel = new QHash<int, SingleUnitLFOModel*>;
+    m_mapLFOMixerModel = new QMap<int, SingleUnitLFOModel*>;
+
+    // Inbound connections
+    connect(SerialPortController::getInstance(), SIGNAL(receivedVCOFrequency(quint8,quint16)), this, SLOT(handleVCOFrequency(quint8,quint16)));
 }
 
 // Mixer Destructor
@@ -49,9 +52,9 @@ Mixer* Mixer::getInstance() {
 }
 
 // Properties
-QHash<int, SingleUnitLFOModel*>* Mixer::getLFOMixerModel()
+QMap<int, SingleUnitLFOModel*>* Mixer::getLFOMixerModel()
 {
-    return m_hsLFOMixerModel;
+    return m_mapLFOMixerModel;
 }
 
 // Send Request for Sync All command to serial port
@@ -63,7 +66,7 @@ void Mixer::sendRequestSyncAllVCO() {
     Protocol::append2Bytes(byBuffer, Protocol::SYNC_REQ_ALL);
 
     // VCOs model iterator
-    QHashIterator<int, SingleUnitLFOModel*> i(*m_hsLFOMixerModel);
+    QMapIterator<int, SingleUnitLFOModel*> i(*m_mapLFOMixerModel);
     while (i.hasNext()) {
         i.next();
 
@@ -89,6 +92,15 @@ void Mixer::sendRequestSyncAllVCO() {
         byBuffer.append(i.value()->getHarmonicsSwitchesLFO()->getToggleSwitchLFOSquareSelected());
         // VCO Harmonic Triangle output
         byBuffer.append(i.value()->getHarmonicsSwitchesLFO()->getToggleSwitchLFOTriangleSelected());
+
+        qDebug("Mixer::sendRequestSyncAllVCO Adds TabButton value %d", i.value()->getTabButtonLFOSelected());
+        qDebug("Mixer::sendRequestSyncAllVCO Adds FreqSelector value %d", i.value()->getFreqSelectorLFOValue());
+        qDebug("Mixer::sendRequestSyncAllVCO Adds PotFrequency value %d", i.value()->getPotFrequencyLFOValue());
+        qDebug("Mixer::sendRequestSyncAllVCO Adds PotFreqFine value %d", i.value()->getPotFreqFineLFOValue());
+        qDebug("Mixer::sendRequestSyncAllVCO Adds PotDutyCycle value %d", i.value()->getPotDutyCycleLFOValue());
+        qDebug("Mixer::sendRequestSyncAllVCO Adds ToggleSwitchLFOSine value %d", i.value()->getHarmonicsSwitchesLFO()->getToggleSwitchLFOSineSelected());
+        qDebug("Mixer::sendRequestSyncAllVCO Adds ToggleSwitchLFOSquare value %d", i.value()->getHarmonicsSwitchesLFO()->getToggleSwitchLFOSquareSelected());
+        qDebug("Mixer::sendRequestSyncAllVCO Adds ToggleSwitchLFOTriangle value %d", i.value()->getHarmonicsSwitchesLFO()->getToggleSwitchLFOTriangleSelected());
     }
 
     // Send to Serial Port
@@ -105,13 +117,13 @@ void Mixer::setMixerValue(int iID, int iType, int iValue) {
    qDebug("Mixer ID -> %d Type -> %d Value() -> %d", iID, iType, iValue);
 
    // Control if single VCO model is already present
-   if (!m_hsLFOMixerModel->contains(iID)) {
+   if (!m_mapLFOMixerModel->contains(iID)) {
        // Not present
 
        // Create single VCO model
        SingleUnitLFOModel* p_oNewVCOModel = new SingleUnitLFOModel();
-       // Adds to Hash
-       m_hsLFOMixerModel->insert(iID, p_oNewVCOModel);
+       // Adds to Map
+       m_mapLFOMixerModel->insert(iID, p_oNewVCOModel);
    }
 
    // Save data into the model
@@ -125,7 +137,7 @@ void Mixer::setMixerValue(int iID, int iType, int iValue) {
 // Save data into the model
 void Mixer::updateMixerModel(quint8 byID, quint8 byType, quint8 byValue) {
 
-    SingleUnitLFOModel* pVCOModel = m_hsLFOMixerModel->value(byID);
+    SingleUnitLFOModel* pVCOModel = m_mapLFOMixerModel->value(byID);
 
     switch (byType) {
         case Protocol::tabButtonTypeValue:
@@ -184,6 +196,203 @@ void Mixer::updateMixerModel(quint8 byID, quint8 byType, quint8 byValue) {
 
             break;
     }
+}
+
+// Load last configuration from JSON
+void Mixer::loadJSONConfig(QString sConfigJSONFile) {
+
+    QFile fConfigJSON;                  // JSON Configuration File
+    QJsonParseError ojsParserError;     // JSON Engine parser error object
+
+    QJsonDocument ojsConfDoc;       // JSON Document
+
+    // Set configuration file name
+    fConfigJSON.setFileName(sConfigJSONFile);
+
+    // Test if exists
+    if (!fConfigJSON.open(QIODevice::ReadOnly)) {
+        // Doesn't exist
+
+        // Warnings
+        qWarning() << "Mixer::loadJSONConfig() Couldn't open last save configuration file " << sConfigJSONFile;
+
+        // Create default JSON config file from model
+        writeJSONConfig(sConfigJSONFile);
+
+    } else {
+        // Configuration file exist
+
+        // Reads all bytes from JSON file
+        QByteArray byarLastSaveConfig = fConfigJSON.readAll();
+        ojsConfDoc = QJsonDocument::fromJson(byarLastSaveConfig, &ojsParserError);
+
+        // Fail if JSON is invalid
+        if (ojsParserError.error != QJsonParseError::NoError) {
+            qCritical() << "Failed to parse assets index file : " << ojsParserError.errorString()
+                        << "at offest " << QString::number(ojsParserError.offset);
+        } else {
+
+            // Make sure the root is object
+            if (!ojsConfDoc.isObject()) {
+                qCritical() << "Invalid assets index JSON : Root should be an array.";
+            } else {
+
+                // Reads Configuration JSON file and loads model
+                readJSONConfig(ojsConfDoc.object());
+            }
+        }
+
+    }
+
+}
+
+// Make config JSON File from model
+void Mixer::writeJSONConfig(QString sConfigJSONFile) {
+
+    QFile fConfigJSON;              // JSON Configuration File
+
+    QJsonDocument ojsConfDoc;       // JSON Document
+    QJsonObject ojsRootObject;      // JSON Root object
+    QJsonArray ojsVCOsObject;       // All VCO JSON object
+
+    // Set configuration file name
+    fConfigJSON.setFileName(sConfigJSONFile);
+    // Open JSON Config file
+    if (!fConfigJSON.open(QIODevice::WriteOnly)) {
+        // Doesn't exist
+
+        // Warnings
+        qWarning() << "Mixer::writeJSONConfig() Couldn't write last save configuration file " << sConfigJSONFile;
+
+    } else {
+
+        // VCOs model iterator
+        QMapIterator<int, SingleUnitLFOModel*> i(*m_mapLFOMixerModel);
+        while (i.hasNext()) {
+            i.next();
+
+            // Info debug
+            qDebug("Mixer::writeJSONConfig Adds Mixer ID -> %d", i.key());
+
+            // Single VCO JSON object properties
+            QJsonObject ojsVCOProps;
+
+            // VCO Enable
+            ojsVCOProps.insert("Enabled", i.value()->getTabButtonLFOSelected());
+            // VCO Selector
+            ojsVCOProps.insert("FreqSelector", i.value()->getFreqSelectorLFOValue());
+            // VCO Frequency Coarse
+            ojsVCOProps.insert("Frequency", i.value()->getPotFrequencyLFOValue());
+            // VCO Frequency Fine
+            ojsVCOProps.insert("FreqFine", i.value()->getPotFreqFineLFOValue());
+            // VCO Duty Cycle
+            ojsVCOProps.insert("DutyCycle", i.value()->getPotDutyCycleLFOValue());
+
+            // Sub Harmonics JSON object properties
+            QJsonObject ojsVCOHarmonicsProps;
+
+            // VCO Harmonic Sine output
+            ojsVCOHarmonicsProps.insert("SwitchLFOSine", i.value()->getHarmonicsSwitchesLFO()->getToggleSwitchLFOSineSelected());
+            // VCO Harmonic Square output
+            ojsVCOHarmonicsProps.insert("SwitchLFOSquare", i.value()->getHarmonicsSwitchesLFO()->getToggleSwitchLFOSquareSelected());
+            // VCO Harmonic Triangle output
+            ojsVCOHarmonicsProps.insert("SwitchLFOTriangle", i.value()->getHarmonicsSwitchesLFO()->getToggleSwitchLFOTriangleSelected());
+
+            // VCO Harmonics
+            ojsVCOProps.insert("HarmonicsSwitches", ojsVCOHarmonicsProps);
+
+            // Single VCO JSON object
+            QJsonObject ojsVCOObject;
+
+            // VCO ID
+            ojsVCOObject.insert("ID", (quint8)i.key());
+            ojsVCOObject.insert("Values", ojsVCOProps);
+
+            // Add to VCOs
+            ojsVCOsObject.append(ojsVCOObject);
+        }
+
+        // Add to Root object
+        ojsRootObject.insert("VCOs", ojsVCOsObject);
+        // Add root object to JSON document
+        ojsConfDoc.setObject(ojsRootObject);
+        // Write to file with indentation
+        fConfigJSON.write(ojsConfDoc.toJson(QJsonDocument::Indented));
+        // Close file
+        fConfigJSON.close();
+    }
+}
+
+// Read config JSON File to model
+void Mixer::readJSONConfig(const QJsonObject ojsConfRoot) {
+
+    QJsonArray ojsVCOsObject;       // All VCO JSON object
+
+    // If there's VCOs array
+    if (ojsConfRoot.contains("VCOs") && ojsConfRoot["VCOs"].isArray()) {
+        // Gets VCOs array
+        ojsVCOsObject =  ojsConfRoot["VCOs"].toArray();
+
+        for (const QJsonValue &ojsVCOValue : qAsConst(ojsVCOsObject)) {
+
+            // Single VCO JSON object
+            QJsonObject ojsVCOObject = ojsVCOValue.toObject();
+
+
+            int iVCOID = ojsVCOObject["ID"].toInt();
+
+            qDebug("Mixer::readJSONConfig read Mixer ID -> %d", iVCOID);
+        }
+    }
+}
+
+// Calcs and update VCOs frequencies
+void Mixer::handleVCOFrequency(quint8 byID, quint16 uiValue) {
+
+    double dTosc = (double)1 / 12000000;
+
+    double dTcap = 0;
+    double dTVCO = 0;
+    double dFVCO = 0;
+
+    SingleUnitLFOModel* pVCOModel = m_mapLFOMixerModel->value(byID);
+
+    switch (pVCOModel->getFreqSelectorLFOValue()) {
+        case Protocol::HVCO_REQ_FREQ_SELECTOR:
+
+            dTcap = (double)uiValue / 16;
+
+            break;
+
+        case Protocol::VCO_REQ_FREQ_SELECTOR:
+
+            dTcap = (double)uiValue / 4;
+
+            break;
+
+        case Protocol::LFO_REQ_FREQ_SELECTOR:
+
+            dTcap = (double)uiValue * 4;
+
+            break;
+
+        case Protocol::VLFO_REQ_FREQ_SELECTOR:
+
+            dTcap = (double)uiValue * 8;
+
+            break;
+
+    }
+
+    dTVCO = dTcap * dTosc;
+    dFVCO = (double)1 / dTVCO;
+
+    QString sFVCO = QString::number(dFVCO, 'f', 2);
+
+    qDebug() << "Mixer::handleVCOFrequency() VCO Freq : " << sFVCO;
+
+    // Post signal for update VCOs frequencies to external
+    emit updateFrequencyText(byID, sFVCO);
 }
 
 // QML singleton type provider function (callback).

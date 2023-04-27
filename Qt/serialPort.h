@@ -23,6 +23,7 @@
 #include <QObject>
 #include <QSerialPort>
 #include <QSerialPortInfo>
+#include <QTimer>
 
 class SerialPort : public QObject
 {
@@ -45,6 +46,8 @@ private:
     bool m_bSerialPortOpen;
     // ALFONSo Serial Port
     QSerialPort* m_oSerial = nullptr;
+    // Timer for check if Serial Port present
+    QTimer* m_oCheckSerialTimer = nullptr;
 
     // Return to the USB Serial ALFONSo if is present
     QString getALFONSoUSB();
@@ -53,7 +56,7 @@ signals:
 
     // Signal containing available serial ports
     void availablePortsWorker(QList<QSerialPortInfo> lPorts);
-    // Signal if ALFONSo device is present
+    // Signal if ALFONSo device is present or not
     void isALFONSoUSBPresentWorker(bool bResult);
     // Signal for receive data from serial port
     void receivedBytesWorker(const QByteArray &data);
@@ -62,6 +65,8 @@ private slots:
 
     // Receive data from serial port
     void handleReceiveBytesWorker();
+    // Check if the USB Serial ALFONSo if is available
+    void handleIsAvailableALFONSoUSB();
 
 public slots:
 

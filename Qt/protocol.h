@@ -212,20 +212,15 @@ public:
 
     /*****************************
      *
-     * Structure for Synchronize an Single VCO
+     * Relative Payload for command.
      *
      ******************************/
 
-    struct SyncVCOStruct
-    {
-        bool bTabButtonLFOSelected;
-        quint8 uiFreqSelectorIndexValue;
-        quint8 uiPotFrequencyLFOValue;
-        quint8 uiPotDutyCycleLFOValue;
-        bool bToggleSwitchLFOSineSelected;
-        bool bToggleSwitchLFOSquareSelected;
-        bool bToggleSwitchLFOTriangleSelected;
-    };
+    // Payload HVCO for set VCOs frequency Range
+    static const quint8 HVCO_REQ_FREQ_SELECTOR = 0x1;
+    static const quint8 VCO_REQ_FREQ_SELECTOR  = 0x2;
+    static const quint8 LFO_REQ_FREQ_SELECTOR  = 0x3;
+    static const quint8 VLFO_REQ_FREQ_SELECTOR  = 0x4;
 
     /*****************************
      *
