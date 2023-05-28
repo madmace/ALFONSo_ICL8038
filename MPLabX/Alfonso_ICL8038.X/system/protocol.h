@@ -156,7 +156,7 @@ This Header contains definitions for serial protocol
  * 
  ******************************/
 
-// Payload HVCO for set VCO 1 frequency Range
+// Payload HVCO for set VCOs frequency Range
 #define HVCO_REQ_FREQ_SELECTOR 0x1
 #define VCO_REQ_FREQ_SELECTOR 0x2
 #define LFO_REQ_FREQ_SELECTOR 0x3

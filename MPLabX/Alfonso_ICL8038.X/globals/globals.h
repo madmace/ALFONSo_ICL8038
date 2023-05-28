@@ -135,6 +135,14 @@ This Header contains all global definition for all modules linked.
     #define PULL_UP_ENABLE_BIT INTCON2bits.RBPU
 
     // **************************************
+    // Timers definitions
+    //
+
+    // Timer1, Timer3 module definitions
+    #define TMR1_INTERRUPT
+    #define TMR3_INTERRUPT
+
+    // **************************************
     // USB Library definitions
     //
 

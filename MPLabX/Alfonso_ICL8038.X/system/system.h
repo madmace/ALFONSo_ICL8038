@@ -161,7 +161,7 @@ typedef struct {
         bool    bTriangleWaveEnable;        // VCO Triangle wave Enable
         bool    bInvalideAnalogFreq;        // If true signals the requet to take new measure
                                             // of frequency from CCP
-        uint16_t uiAnalogFreqCCP;           // VCO Real frequency from CCP
+        uint32_t uiAnalogFreqCCP;           // VCO Real frequency from CCP
 } VCOState_t;
 
 // Frequency Ranges Value
@@ -436,6 +436,7 @@ void SimpleMessageSPI16x2LCD(const char *message);
  *        by SPI MCP23S08
  *
  * @param cmd       Command name to put on display
+ * @param bIsLenght If true the next lenght will be displayed
  * @param bIsValue  If true the next value will be displayed
  * @param byLenght  Lenght in bytes of value
  * @param byValue   Relative value if present
@@ -445,7 +446,7 @@ void SimpleMessageSPI16x2LCD(const char *message);
  * This function is only for debugging of recevied commads.
  */
 #if defined(CMD_DEBUG_MODE)
-    void DebugCommandSPI16x2LCD(const char *cmd, bool bIsValue, uint8_t byLenght, uint8_t byValue);
+    void DebugCommandSPI16x2LCD(const char *cmd, bool bIsLenght, bool bIsValue, uint8_t byLenght, uint8_t byValue);
 #endif
 
 /**
@@ -458,15 +459,15 @@ void SimpleMessageSPI16x2LCD(const char *message);
  *                        to input variable
  * 
  */
-bool updateCCPCapture(volatile uint16_t *uiCapture);
+bool updateCCPCapture(volatile uint32_t *ulCapture);
 
 /**
- * @brief Prepare the 16bit Frequency value to be send to client
+ * @brief Prepare the 32bit Frequency value to be send to client
  *        by the response protocol
  *
  * @param buffer          Pointer by Reference buffer to write
  * 
- * @param uiValue         Frequency value to pack
+ * @param ulValue         Frequency value to pack
  * 
  * @param byVCOID         VCO ID of Frequency value
  *
@@ -474,7 +475,7 @@ bool updateCCPCapture(volatile uint16_t *uiCapture);
  *                        to input variable
  * 
  */
-uint8_t packResponseFrequency(uint8_t *buffer, uint16_t uiValue, uint8_t byVCOID);
+uint8_t packResponseFrequency(uint8_t *buffer, uint32_t ulValue, uint8_t byVCOID);
 
 /**
  * @brief Runs system level tasks that keep the system running

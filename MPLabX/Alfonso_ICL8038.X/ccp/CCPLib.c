@@ -43,10 +43,14 @@ void CCP1_init_capture (uint8_t sampling_type, uint8_t timer_prescale) {
     // Configure Timer1
     Timer1_config(timer_prescale);
     
-    // Clear interrupts
+    // Clear Timer1 interrupt
+    Timer1ClearInterrupt();
+    // Clear CCP1 interrupt
     CCP1ClearInterrupt();
-    // Enable interrupts
-    CCP1EnableInterrupts();
+    // Enable Timer1 interrupt
+    Timer1EnableInterruptsLowPriority();
+    // Enable CCP1 interrupts
+    CCP1EnableInterruptsLowPriority();
 }
 
 // CCP2_init_capture Implementation
@@ -66,10 +70,14 @@ void CCP1_init_capture (uint8_t sampling_type, uint8_t timer_prescale) {
         // Configure Timer3
         Timer3_config(timer_prescale);
         
-        // Clear interrupts
+        // Clear Timer3 interrupt
+        Timer3ClearInterrupt();
+        // Clear CCP2 interrupt
         CCP2ClearInterrupt();
-        // Enable interrupts
-        CCP2EnableInterrupts();        
+        // Enable Timer3 interrupt
+        Timer3EnableInterruptsLowPriority();
+        // Enable CCP2 interrupt
+        CCP2EnableInterruptsLowPriority();        
     }
 #endif
 
@@ -81,7 +89,7 @@ void Timer1_config (uint8_t prescaler_value) {
     // Enables register read/write of Timer1 in 16-bit operations
     T1CONbits.RD16 = 0x1;
     
-    // Enable CCPX in Timer3
+    // Enable CCPX in Timer1/Timer3
     Timer3_CCPX_enable();
     
     // Set prescaler ratio
@@ -131,7 +139,7 @@ void Timer3_config (uint8_t prescaler_value) {
     // Enables register read/write of Timer3 in 16-bit operations
     T3CONbits.RD16 = 0x1;
     
-    // Enable CCPX in Timer3
+    // Enable CCPX in Timer1/Timer3
     Timer3_CCPX_enable();
     
     // Set prescaler ratio

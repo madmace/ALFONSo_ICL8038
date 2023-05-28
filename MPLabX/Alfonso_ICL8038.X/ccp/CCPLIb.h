@@ -46,24 +46,26 @@ Timer1 is the capture/compare clock source for CCP1
 
 // CCPxCON Standard CCPx Interrupt functions
 #if defined(CCP1_INTERRUPT) && defined(CCP1_AVAILABLE)
-    #define CCP1EnableInterrupts() {RCONbits.IPEN = 1; IPR1bits.CCP1IP = 0; PIE1bits.CCP1IE = 1;INTCONbits.GIEL = 1; INTCONbits.GIEH = 1;}
+    #define CCP1EnableInterruptsLowPriority() {RCONbits.IPEN = 1; IPR1bits.CCP1IP = 0; PIE1bits.CCP1IE = 1;INTCONbits.GIEL = 1; INTCONbits.GIEH = 1;}
     #define CCP1ClearInterrupt() {PIR1bits.CCP1IF = 0;}
     #define CCP1MaskInterrupts() {PIE1bits.CCP1IE = 0;}
     #define CCP1UnmaskInterrupts() {PIE1bits.CCP1IE = 1;}
     #define CCP1InterruptFlag PIR1bits.CCP1IF;
     #define CCP1DisableInterrupts() {PIE1bits.CCP1IE = 0;}
-    #define Timer1EnableInterrupts() {RCONbits.IPEN = 1; IPR1bits.TMR1IP = 0; PIE1bits.TMR1IE =  1; INTCONbits.GIEL = 1; INTCONbits.GIEH = 1;}
+    #define Timer1EnableInterruptsLowPriority() {RCONbits.IPEN = 1; IPR1bits.TMR1IP = 0; PIE1bits.TMR1IE =  1; INTCONbits.GIEL = 1; INTCONbits.GIEH = 1;}
     #define Timer1DisableInterrupts() {PIE1bits.TMR1IE =  0;}
+    #define Timer1ClearInterrupt() {PIR1bits.TMR1IF = 0;}
 #endif
 #if defined(CCP2_INTERRUPT) && defined(CCP2_AVAILABLE)
-    #define CCP2EnableInterrupts() {RCONbits.IPEN = 1; IPR2bits.CCP2IP = 0; PIE2bits.CCP2IE = 1; INTCONbits.GIEL = 1; INTCONbits.GIEH = 1;}
+    #define CCP2EnableInterruptsLowPriority() {RCONbits.IPEN = 1; IPR2bits.CCP2IP = 0; PIE2bits.CCP2IE = 1; INTCONbits.GIEL = 1; INTCONbits.GIEH = 1;}
     #define CCP2ClearInterrupt() {PIR2bits.CCP2IF = 0;}
     #define CCP2MaskInterrupts() {PIE2bits.CCP2IE = 0;}
     #define CCP2UnmaskInterrupts() {PIE2bits.CCP2IE = 1;}
     #define CCP2InterruptFlag PIR2bits.CCP2IF
     #define CCP2DisableInterrupts() {PIE2bits.CCP2IE = 0;}
-    #define Timer3EnableInterrupts() {RCONbits.IPEN = 1; IPR2bits.TMR3IP = 0; PIE2bits.TMR3IE = 1; INTCONbits.GIEL = 1; INTCONbits.GIEH = 1;}
+    #define Timer3EnableInterruptsLowPriority() {RCONbits.IPEN = 1; IPR2bits.TMR3IP = 0; PIE2bits.TMR3IE = 1; INTCONbits.GIEL = 1; INTCONbits.GIEH = 1;}
     #define Timer3DisableInterrupts() {PIE2bits.TMR3IE = 0;}
+    #define Timer3ClearInterrupt() {PIR2bits.TMR3IF = 0;}
 #endif
 
 /**

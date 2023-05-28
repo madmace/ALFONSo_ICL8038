@@ -56,7 +56,8 @@ static uint8_t writeBuffer[CDC_DATA_IN_EP_SIZE];
 
 // Current capture value from CCP2.
 // Needs for calculate frequency
-static volatile uint16_t uiLastCaptureCCP2 = 0x0000;
+static volatile uint32_t ulLastCaptureCCP2 = 0x0;
+static volatile uint16_t uiTMR3OverflowCount = 0x0;
 
 // States Table about VCO present
 static volatile VCOState_t aVCOInfo[NUM_VCO_PRESENT];
@@ -76,9 +77,21 @@ void INTERRUPT_HI SYS_InterruptHigh(void)
 
 void INTERRUPT_LOW SYS_InterruptLow(void)
 {
+    #if defined(TMR3_INTERRUPT)
+        // If the Timer3 interrupt flag is set
+        if(PIR2bits.TMR3IF && PIE2bits.TMR3IE) {
+            // Count overflow
+            uiTMR3OverflowCount++;
+            // Clear interrupt
+            Timer3ClearInterrupt();
+        }
+    #endif
+
     #if defined(CCP2_INTERRUPT)
         // CCP2 interrupt routine
-        uiLastCaptureCCP2 = CCP2CaptureTask();
+        ulLastCaptureCCP2 = CCP2CaptureTask(uiTMR3OverflowCount);
+        // Reset Timer3 counter overflow
+        uiTMR3OverflowCount = 0x0000;
     #endif
 }
 
@@ -250,6 +263,38 @@ void selectVCORange(uint8_t uiVCO, uint8_t uiRange, bool bValue) {
     
     // Sets the single bit determined by the input mask
     setSingleBitToMCP23S17Expander(uiVCO, uiMask, bValue);
+    
+    // Select VCO range for CCP2
+    switch(uiRange) {
+        
+        case HVCO_REQ_FREQ_SELECTOR:
+            // HVCO
+            // Configure CCP2 module in capture mode for HVCO range
+            CCP2_HVCO_init();
+                            
+            break;
+                    
+        case VCO_REQ_FREQ_SELECTOR:
+            // VCO
+            // Configure CCP2 module in capture mode for VCO range
+            CCP2_VCO_init();
+
+            break;
+                    
+        case LFO_REQ_FREQ_SELECTOR:
+            // LFO
+            // Configure CCP2 module in capture mode for LFO range
+            CCP2_LFO_init();
+
+            break;
+
+        case VLFO_REQ_FREQ_SELECTOR:
+            // VLFO
+            // Configure CCP2 module in capture mode for VLFO range
+            CCP2_VLFO_init();
+
+            break;
+    }
 }
 
 // Enable or Disable a VCO Sine Harmonics
@@ -354,15 +399,20 @@ void setVCOFrequencyCoarse(uint8_t uiVCO, uint8_t uiValue) {
             break;
             
         case VCO2:
-        case VCO3:
-        case VCO4:
             
+            /*
             // Select Pot VCO 2
             MCP42XXX_VCO2_CS_LINE_PORT = 0x0;
             // Set Byte to Pot for coarse tune
             MCP42XXX_Pot0_Write_Data_SPI1(uiValue);        
             // Deselect Pot VCO 2
             MCP42XXX_VCO2_CS_LINE_PORT = 0x1;
+            */
+            
+            break;
+            
+        case VCO3:
+        case VCO4:
             
             break;
     }
@@ -387,12 +437,14 @@ void setVCOFrequencyFine(uint8_t uiVCO, uint8_t uiValue) {
             
         case VCO2:
             
+            /*
             // Select Pot VCO 2
             MCP42XXX_VCO2_CS_LINE_PORT = 0x0;
             // Set Byte to Pot for fine tune
             MCP42XXX_Pot1_Write_Data_SPI1(uiValue);        
             // Deselect Pot VCO 1
             MCP42XXX_VCO2_CS_LINE_PORT = 0x1;
+            */
             
             break;
             
@@ -415,7 +467,8 @@ void setVCODutyCycle(uint8_t uiVCO, uint8_t uiValue) {
             // Select Duty Pot VCO 1
             MCP425X_VCO12_CS_LINE_PORT = 0x0;
             // Set Byte to Pot for duty cycle
-            MCP425X_Pot0_Write_Data_SPI1(uiValue);        
+            //MCP425X_Pot0_Write_Data_SPI1(uiValue);
+            MCP42XXX_Pot0_Write_Data_SPI1(uiValue);
             // Deselect Pot VCO 1
             MCP425X_VCO12_CS_LINE_PORT = 0x1;
             
@@ -423,12 +476,14 @@ void setVCODutyCycle(uint8_t uiVCO, uint8_t uiValue) {
             
         case VCO2:
             
+            /*
             // Select Duty Pot VCO 1
             MCP425X_VCO12_CS_LINE_PORT = 0x0;
             // Set Byte to Pot for duty cycle
             MCP425X_Pot1_Write_Data_SPI1(uiValue);        
             // Deselect Pot VCO 1
             MCP425X_VCO12_CS_LINE_PORT = 0x1;
+            */
             
             break;
             
@@ -613,11 +668,11 @@ void StartUpSPIConfig(void) {
     SPI1_open(SPI_MASTER_DEVICE);
 }
 
-// Setup of CCP configuration of CCP2
+// Initial Setup of CCP configuration of CCP2
 void StartUpCCP2Config(void) {
     
-    // Configure CCP2 module in capture mode
-    CCP2_init();
+    // Configure CCP2 module in capture mode for VCO range
+    CCP2_VCO_init();
 }
 
 // Setup of the SPI MCP23S08 that driver an
@@ -756,7 +811,7 @@ void SimpleMessageSPI16x2LCD(const char *message) {
 // Put a command and relative value on first line of LCD 44780 Hitachi
 // by SPI MCP23S08
 #if defined(CMD_DEBUG_MODE)
-    void DebugCommandSPI16x2LCD(const char *cmd, bool bIsValue, uint8_t byLenght, uint8_t byValue) {
+    void DebugCommandSPI16x2LCD(const char *cmd, bool bIsLenght, bool bIsValue, uint8_t byLenght, uint8_t byValue) {
         // Clear LCD
         LCD44780_MCP23S08_lcd_clear_SPI1();
         // Set cursor at first line
@@ -767,8 +822,12 @@ void SimpleMessageSPI16x2LCD(const char *message) {
         
         // Set cursor at second line
         LCD44780_MCP23S08_goto_line_SPI1(LCD44780_MCP23S08_SECOND_LINE);
-        LCD44780_MCP23S08_send_message_SPI1("L:");
-        LCD44780_MCP23S08_write_integer_SPI1((int16_t)byLenght, 1, LCD44780_MCP23S08_ZERO_CLEANING_OFF);
+        
+        // Controls if lenght present
+        if (bIsLenght) {
+            LCD44780_MCP23S08_send_message_SPI1("L:");
+            LCD44780_MCP23S08_write_integer_SPI1((int16_t)byLenght, 1, LCD44780_MCP23S08_ZERO_CLEANING_OFF);
+        }
         
         // Controls if value present
         if (bIsValue) {
@@ -780,20 +839,20 @@ void SimpleMessageSPI16x2LCD(const char *message) {
 
 // Takes a current value of capture of CCP2 updated by the ISR
 // and controls if variance are in tollerance gap.
-bool updateCCPCapture(volatile uint16_t *uiCapture) {
+bool updateCCPCapture(volatile uint32_t *ulCapture) {
     
     int16_t iCaptureDelta = 0;
     bool bIsChanged = false;
     
     // Controls if last CCP capture has changed from previous
-    if ((*uiCapture) != uiLastCaptureCCP2) {
+    if ((*ulCapture) != ulLastCaptureCCP2) {
         // Calcs difference
         //iCaptureDelta = (int16_t)(*uiCapture) - (int16_t)uiLastCaptureCCP2;
         // Controls if is threshold gap
         //if (abs(iCaptureDelta) > CCP2_CAPTURE_THRESHOLD_GAP) {
 
             // Save new value
-            (*uiCapture) = uiLastCaptureCCP2;
+            (*ulCapture) = ulLastCaptureCCP2;
             // Mark changed
             bIsChanged = true;
         //}
@@ -804,23 +863,29 @@ bool updateCCPCapture(volatile uint16_t *uiCapture) {
 
 // Prepare the 16bit Frequency value to be send to client
 // by the response protocol
-uint8_t packResponseFrequency(uint8_t *buffer, uint16_t uiValue, uint8_t byVCOID) {
+uint8_t packResponseFrequency(uint8_t *buffer, uint32_t ulValue, uint8_t byVCOID) {
     
     // Clear write buffer
     ClearCDCUSBDataWriteBuffer();
     
     uint16_t uiIDCommand = 0x00;
+    uint16_t uiLowValue = (uint16_t)(ulValue & 0x0000FFFF);
+    uint16_t uiHighValue = (uint16_t)(ulValue >> 16);
     
     // Set Response Frequency
     uiIDCommand = VCO_1_RSP_FREQUENCY;
-    // First Low byte
+    // Command Low byte
     buffer[0] = (uint8_t)(uiIDCommand & 0x00FF);
-    // High Low byte
+    // Command High byte
     buffer[1] = (uint8_t)(uiIDCommand >> 8);
-    // First Low byte value
-    buffer[2] = (uint8_t)(uiValue & 0x00FF);
-    // High Low byte value
-    buffer[3] = (uint8_t)(uiValue >> 8);
+    // Low word Low byte value
+    buffer[2] = (uint8_t)(uiLowValue & 0x00FF);
+    // Low word High byte value
+    buffer[3] = (uint8_t)(uiLowValue >> 8);
+    // High word Low byte value
+    buffer[4] = (uint8_t)(uiHighValue & 0x00FF);
+    // High word High byte value
+    buffer[5] = (uint8_t)(uiHighValue >> 8);
         
     // Debug block
     /*
@@ -832,8 +897,8 @@ uint8_t packResponseFrequency(uint8_t *buffer, uint16_t uiValue, uint8_t byVCOID
     #endif
      */
     
-    // Four bytes copied.
-    return 4;
+    // Six bytes copied.
+    return 6;
 }
 
 // Runs system level tasks that keep the system running
@@ -865,11 +930,12 @@ void MainSystemTasks(void) {
     if(USBUSARTIsTxTrfReady() == true)
     {
         uint16_t uiIDCommand = 0x00;                // Request Command received
-        uint8_t byIndex = 0;                        // Pointer Index to received buffer
+        uint8_t byBufferIndex = 0;                  // Pointer Index to received buffer
         uint8_t byValue = 0;                        // First byte Value received
         uint8_t iNumBytesRead = 0;                  // Number of bytes read
         uint8_t iNumBytesToWrite = 0;               // Number of bytes written
         uint8_t byVCOID = 0;                        // Working VCO ID
+        uint8_t byVCOIndex = 0;                     // VCO Index
         uint8_t byCounter = 0;                      // Simple counter
         uint8_t byAux = 0;                          // Temporary byte variable
         
@@ -898,65 +964,64 @@ void MainSystemTasks(void) {
                     // Control if right size
                     if (iNumBytesRead == SYNC_REQ_ALL_LEN) {
                         #if defined(CMD_DEBUG_MODE)
-                            DebugCommandSPI16x2LCD("SYNC_REQ_ALL", false, iNumBytesRead, 0);
+                            DebugCommandSPI16x2LCD("SYNC_REQ_ALL", true, false, iNumBytesRead, 0);
                         #endif
                         
                         // Set index at start of payload buffer
-                        byIndex = START_REQ_PAYLOAD;
+                        byBufferIndex = START_REQ_PAYLOAD;
                         // Should be equal to all VCOs available
-                        for(byVCOID = 0; byVCOID < NUM_VCO_PRESENT; byVCOID++) {
+                        //for(byVCOIndex = 0; byVCOIndex < NUM_VCO_PRESENT; byVCOIndex++) {
+                        for(byVCOIndex = 0; byVCOIndex < 1; byVCOIndex++) {
                             
                             // Get VCO ID
-                            aVCOInfo[byVCOID].byVCOID = readBuffer[byIndex];
-                            byIndex++;
+                            aVCOInfo[byVCOIndex].byVCOID = readBuffer[byBufferIndex];
+                            byBufferIndex++;
                             // VCO Enable 
-                            aVCOInfo[byVCOID].bVCOEnable = (bool)readBuffer[byIndex];
-                            byIndex++;
+                            aVCOInfo[byVCOIndex].bVCOEnable = (bool)readBuffer[byBufferIndex];
+                            byBufferIndex++;
                             // VCO Range frequency selector
-                            aVCOInfo[byVCOID].byFreqSelector = readBuffer[byIndex];
-                            byIndex++;
+                            aVCOInfo[byVCOIndex].byFreqSelector = readBuffer[byBufferIndex];
+                            byBufferIndex++;
                             // VCO Frequency Coarse
-                            aVCOInfo[byVCOID].byFrequency = readBuffer[byIndex];
-                            byIndex++;
+                            aVCOInfo[byVCOIndex].byFrequency = readBuffer[byBufferIndex];
+                            byBufferIndex++;
                             // VCO Frequency Fine
-                            aVCOInfo[byVCOID].byFreqFine = readBuffer[byIndex];
-                            byIndex++;
+                            aVCOInfo[byVCOIndex].byFreqFine = readBuffer[byBufferIndex];
+                            byBufferIndex++;
                             // VCO Duty Cycle
-                            aVCOInfo[byVCOID].byDutyCycle = readBuffer[byIndex];
-                            byIndex++;
+                            aVCOInfo[byVCOIndex].byDutyCycle = readBuffer[byBufferIndex];
+                            byBufferIndex++;
                             // VCO Harmonic Sine
-                            aVCOInfo[byVCOID].bSineWaveEnable = (bool)readBuffer[byIndex];
-                            byIndex++;
+                            aVCOInfo[byVCOIndex].bSineWaveEnable = (bool)readBuffer[byBufferIndex];
+                            byBufferIndex++;
                             // VCO Harmonic Square
-                            aVCOInfo[byVCOID].bSquareWaveEnable = (bool)readBuffer[byIndex];
-                            byIndex++;
+                            aVCOInfo[byVCOIndex].bSquareWaveEnable = (bool)readBuffer[byBufferIndex];
+                            byBufferIndex++;
                             // VCO Harmonic Triangle
-                            aVCOInfo[byVCOID].bTriangleWaveEnable = (bool)readBuffer[byIndex];
-                            byIndex++;
-                            
-                            // Force to take new measure of frequency from CCP
-                            aVCOInfo[byVCOID].bInvalideAnalogFreq = true;
-                            
+                            aVCOInfo[byVCOIndex].bTriangleWaveEnable = (bool)readBuffer[byBufferIndex];
+                            byBufferIndex++;
                             
                             // Synchronizing VCO
                             
                             // Set VCO Harmonics
-                            selectVCOSineHarmonic(byVCOID, aVCOInfo[byVCOID].bSineWaveEnable);
-                            selectVCOSquareHarmonic(byVCOID, aVCOInfo[byVCOID].bSquareWaveEnable);
-                            selectVCOTriangleHarmonic(byVCOID, aVCOInfo[byVCOID].bTriangleWaveEnable);
+                            selectVCOSineHarmonic(byVCOIndex, aVCOInfo[byVCOIndex].bSineWaveEnable);
+                            selectVCOSquareHarmonic(byVCOIndex, aVCOInfo[byVCOIndex].bSquareWaveEnable);
+                            selectVCOTriangleHarmonic(byVCOIndex, aVCOInfo[byVCOIndex].bTriangleWaveEnable);
                             // Set Frequency coarse for VCO
-                            setVCOFrequencyCoarse(byVCOID, aVCOInfo[byVCOID].byFrequency);
+                            setVCOFrequencyCoarse(byVCOIndex, aVCOInfo[byVCOIndex].byFrequency);
                             // Set Frequency fine for VCO
-                            setVCOFrequencyFine(byVCOID, aVCOInfo[byVCOID].byFreqFine);
+                            setVCOFrequencyFine(byVCOIndex, aVCOInfo[byVCOIndex].byFreqFine);
+                            // Set Duty Cycle for VCO
+                            setVCODutyCycle(byVCOIndex, aVCOInfo[byVCOIndex].byDutyCycle);
                             // Disable all Frequency Selector for VCO                      
-                            deselectAllVCORanges(byVCOID);
+                            deselectAllVCORanges(byVCOIndex);
                             // Select Range for VCO
-                            selectVCORange(byVCOID, aVCOInfo[byVCOID].byFreqSelector, true);
+                            selectVCORange(byVCOIndex, aVCOInfo[byVCOIndex].byFreqSelector, true);                    
                             // Enable or Disable the VCO
-                            enableVCO(byVCOID, aVCOInfo[byVCOID].bVCOEnable);
+                            enableVCO(byVCOIndex, aVCOInfo[byVCOIndex].bVCOEnable);
+                            // Take new measure of frequency from CCP if VCO is enable
+                            aVCOInfo[byVCOIndex].bInvalideAnalogFreq = aVCOInfo[byVCOIndex].bVCOEnable;
                             
-                            
-                        
                         }                   
                     }
                     
@@ -966,7 +1031,7 @@ void MainSystemTasks(void) {
                     // Control if right size
                     if (iNumBytesRead == SYNC_REQ_VCO_LEN) {
                         #if defined(CMD_DEBUG_MODE)
-                            DebugCommandSPI16x2LCD("SYNCREQ_VCO1", false, iNumBytesRead, 0);
+                            DebugCommandSPI16x2LCD("SYNCREQ_VCO1", true, false, iNumBytesRead, 0);
                         #endif
 
                         // To do ....
@@ -979,7 +1044,7 @@ void MainSystemTasks(void) {
                     // Control if right size
                     if (iNumBytesRead == SYNC_REQ_VCO_LEN) {
                         #if defined(CMD_DEBUG_MODE)
-                            DebugCommandSPI16x2LCD("SYNCREQ_VCO2", false, iNumBytesRead, 0);
+                            DebugCommandSPI16x2LCD("SYNCREQ_VCO2", true, false, iNumBytesRead, 0);
                         #endif
 
                         // To do ....
@@ -991,7 +1056,7 @@ void MainSystemTasks(void) {
                     // Control if right size
                     if (iNumBytesRead == SYNC_REQ_VCO_LEN) {
                         #if defined(CMD_DEBUG_MODE)
-                            DebugCommandSPI16x2LCD("SYNCREQ_VCO3", false, iNumBytesRead, 0);
+                            DebugCommandSPI16x2LCD("SYNCREQ_VCO3", true, false, iNumBytesRead, 0);
                         #endif
 
                         // To do ....
@@ -1003,7 +1068,7 @@ void MainSystemTasks(void) {
                     // Control if right size
                     if (iNumBytesRead == SYNC_REQ_VCO_LEN) {
                         #if defined(CMD_DEBUG_MODE)
-                            DebugCommandSPI16x2LCD("SYNCREQ_VCO4", false, iNumBytesRead, 0);
+                            DebugCommandSPI16x2LCD("SYNCREQ_VCO4", true, false, iNumBytesRead, 0);
                         #endif
 
                         // To do ....
@@ -1018,7 +1083,7 @@ void MainSystemTasks(void) {
                     // Control if right size
                     if (iNumBytesRead == VCO_REQ_ENABLE_LEN) {
                         #if defined(CMD_DEBUG_MODE)
-                            DebugCommandSPI16x2LCD("VCO1REQ_ENA", true, iNumBytesRead, byValue);
+                            DebugCommandSPI16x2LCD("VCO1REQ_ENA", true, true, iNumBytesRead, byValue);
                         #endif
 
                         // Update VCO Enable 
@@ -1041,7 +1106,7 @@ void MainSystemTasks(void) {
                     // Control if right size
                     if (iNumBytesRead == VCO_REQ_FREQ_SELECTOR_LEN) {
                         #if defined(CMD_DEBUG_MODE)
-                            DebugCommandSPI16x2LCD("VCO1REQ_FQSEL", true, iNumBytesRead, byValue);
+                            DebugCommandSPI16x2LCD("VCO1REQ_FQSEL", true, true, iNumBytesRead, byValue);
                         #endif
 
                         // Update VCO Frequency Range selector
@@ -1052,6 +1117,9 @@ void MainSystemTasks(void) {
                         // Select Range  for VCO 1 
                         selectVCORange(VCO1, byValue, true);
                         
+                        // Force to take new measure of frequency from CCP
+                        aVCOInfo[VCO1].bInvalideAnalogFreq = true;
+                        
                     }
                     
                     break;
@@ -1060,7 +1128,7 @@ void MainSystemTasks(void) {
                     // Control if right size
                     if (iNumBytesRead == VCO_REQ_FREQ_SELECTOR_LEN) {
                         #if defined(CMD_DEBUG_MODE)
-                            DebugCommandSPI16x2LCD("VCO2REQ_FQSEL", true, iNumBytesRead, byValue);
+                            DebugCommandSPI16x2LCD("VCO2REQ_FQSEL", true, true, iNumBytesRead, byValue);
                         #endif
 
                         // Update VCO Frequency Range selector
@@ -1070,6 +1138,9 @@ void MainSystemTasks(void) {
                         deselectAllVCORanges(VCO2);
                         // Select Range  for VCO 1 
                         selectVCORange(VCO2, byValue, true);
+                        
+                        // Force to take new measure of frequency from CCP
+                        aVCOInfo[VCO2].bInvalideAnalogFreq = true;
                         
                     }
                     
@@ -1082,7 +1153,7 @@ void MainSystemTasks(void) {
                     // Control if right size
                     if (iNumBytesRead == VCO_REQ_FREQUENCY_LEN) {
                         #if defined(CMD_DEBUG_MODE)
-                            DebugCommandSPI16x2LCD("VCO1REQ_FREQ", true, iNumBytesRead, byValue);
+                            DebugCommandSPI16x2LCD("VCO1REQ_FREQ", true, true, iNumBytesRead, byValue);
                         #endif
 
                         // Update VCO Frequency Coarse
@@ -1090,6 +1161,9 @@ void MainSystemTasks(void) {
 
                         // Set coarse frequency for VCO 1
                         setVCOFrequencyCoarse(VCO1, byValue);
+                        
+                        // Force to take new measure of frequency from CCP
+                        aVCOInfo[VCO1].bInvalideAnalogFreq = true;
                     }
                     
                     break;
@@ -1101,7 +1175,7 @@ void MainSystemTasks(void) {
                     // Control if right size
                     if (iNumBytesRead == VCO_REQ_FREQFINE_LEN) {
                         #if defined(CMD_DEBUG_MODE)
-                            DebugCommandSPI16x2LCD("VCO1REQ_FRQFN", true, iNumBytesRead, byValue);
+                            DebugCommandSPI16x2LCD("VCO1REQ_FRQFN", true, true, iNumBytesRead, byValue);
                         #endif
 
                         // Update VCO Frequency Fine
@@ -1109,6 +1183,9 @@ void MainSystemTasks(void) {
 
                         // Set fine frequency for VCO 1
                         setVCOFrequencyFine(VCO1, byValue);
+                        
+                        // Force to take new measure of frequency from CCP
+                        aVCOInfo[VCO1].bInvalideAnalogFreq = true;
                     }
                     
                     break;
@@ -1120,14 +1197,17 @@ void MainSystemTasks(void) {
                     // Control if right size
                     if (iNumBytesRead == VCO_REQ_DUTY_CYCLE_LEN) {
                         #if defined(CMD_DEBUG_MODE)
-                            DebugCommandSPI16x2LCD("VCO1REQ_DTY_C", true, iNumBytesRead, byValue);
+                            DebugCommandSPI16x2LCD("VCO1REQ_DTY_C", true, true, iNumBytesRead, byValue);
                         #endif
 
                         // Update VCO Duty Cycle 
                         aVCOInfo[VCO1].byDutyCycle = byValue;
 
-                        // Set duty cycle frequency for VCO 1
+                        // Set Duty Cycle for VCO 1
                         setVCODutyCycle(VCO1, byValue);
+                        
+                        // Force to take new measure of frequency from CCP
+                        aVCOInfo[VCO1].bInvalideAnalogFreq = true;
                         
                     }
                     
@@ -1140,7 +1220,7 @@ void MainSystemTasks(void) {
                     // Control if right size
                     if (iNumBytesRead == VCO_REQ_ENABLE_SINE_LEN) {
                         #if defined(CMD_DEBUG_MODE)
-                            DebugCommandSPI16x2LCD("VCO1ENA_SINE", true, iNumBytesRead, byValue);
+                            DebugCommandSPI16x2LCD("VCO1ENA_SINE", true, true, iNumBytesRead, byValue);
                         #endif
 
                         // Update VCO Sine Harmonic
@@ -1159,7 +1239,7 @@ void MainSystemTasks(void) {
                     // Control if right size
                     if (iNumBytesRead == VCO_REQ_ENABLE_SQUARE_LEN) {
                         #if defined(CMD_DEBUG_MODE)
-                            DebugCommandSPI16x2LCD("VCO1ENA_SQUAR", true, iNumBytesRead, byValue);
+                            DebugCommandSPI16x2LCD("VCO1ENA_SQUAR", true, true, iNumBytesRead, byValue);
                         #endif
 
                         // Update VCO Square Harmonic
@@ -1178,7 +1258,7 @@ void MainSystemTasks(void) {
                     // Control if right size
                     if (iNumBytesRead == VCO_REQ_ENABLE_TRIANGLE_LEN) {
                         #if defined(CMD_DEBUG_MODE)
-                            DebugCommandSPI16x2LCD("VCO1ENA_TRIAN", true, iNumBytesRead, byValue);
+                            DebugCommandSPI16x2LCD("VCO1ENA_TRIAN", true, true, iNumBytesRead, byValue);
                         #endif
 
                         // Update VCO Triangle Harmonic
@@ -1193,21 +1273,24 @@ void MainSystemTasks(void) {
             }
             
             // Should be equal to all VCOs available
-            for(byCounter = 0; byCounter <= NUM_VCO_PRESENT; byCounter++) {
-                // Controls if force new measure of frequency from CCP
-                if (aVCOInfo[byCounter].bInvalideAnalogFreq) {
-                    // Takes the current Frequency captured for VCO
-                    if (updateCCPCapture(&aVCOInfo[byCounter].uiAnalogFreqCCP)) {
+            for(byVCOIndex = 0; byVCOIndex < NUM_VCO_PRESENT; byVCOIndex++) {
+                // Controls if VCO is enabled
+                if (aVCOInfo[byVCOIndex].bVCOEnable) {
+                    // Controls if force new measure of frequency from CCP
+                    if (aVCOInfo[byVCOIndex].bInvalideAnalogFreq) {
+                        // Takes the current Frequency captured for VCO
+                        if (updateCCPCapture(&aVCOInfo[byVCOIndex].uiAnalogFreqCCP)) {
 
-                        // Blink LED
-                        BlinkLEDGP2();
-                        // Packs the value
-                        iNumBytesToWrite = packResponseFrequency(writeBuffer, aVCOInfo[byCounter].uiAnalogFreqCCP, byCounter);
-                        // Send bytes to USB
-                        putUSBUSART(writeBuffer, iNumBytesToWrite);
+                            // Blink LED
+                            BlinkLEDGP2();
+                            // Packs the value
+                            iNumBytesToWrite = packResponseFrequency(writeBuffer, aVCOInfo[byVCOIndex].uiAnalogFreqCCP, byVCOIndex);
+                            // Send bytes to USB
+                            putUSBUSART(writeBuffer, iNumBytesToWrite);
+                        }
+                        // Reset force flag
+                        aVCOInfo[byVCOIndex].bInvalideAnalogFreq = false;
                     }
-                    // Reset force flag
-                    aVCOInfo[byCounter].bInvalideAnalogFreq = false;
                 }
             }
         }
