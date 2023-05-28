@@ -1,6 +1,6 @@
 /*******************************************************************************
 
- A.L.F.O.N.S
+ A.L.F.O.N.S.o
  Author : Emiliano Mazza
  Version : 1.0
  Created on Date : 15/18/2020
@@ -159,6 +159,51 @@ void Potentiometer::init()
     setPotValue(potValue() - potMinRange());
 }
 
+void Potentiometer::fromValue(int newValue)
+{
+    /// Calcs degrees for single step
+    m_degreesSingleStep = qreal(potSpreadAngle()) / potRange();
+
+    // Direction Vector
+    // < 0 Clockwise
+    // > 0 CounterClockWise
+    // 0 None
+    int v = 0;
+
+    // Controls if there's in range
+    if (newValue <= potMaxRange() && newValue >= potMinRange() && newValue != potValue())
+    {
+        // Calcs delta
+        int deltaValue = newValue - potValue();
+
+        // CouterClockWise
+        if (deltaValue < 0)
+            v = -1;
+        // ClockWise
+        if (deltaValue > 0)
+             v = +1;
+
+        // Valid and add step
+        setPotValue(newValue);
+        // Emit change value signal
+        emit potValueChanged(newValue);
+
+        // Calcs degrees for step
+        qreal degreesStep = abs(deltaValue) * m_degreesSingleStep;
+
+        // CouterClockWise
+        if (v == -1)
+             emit potCouterClockWise(degreesStep);
+        // ClockWise
+        if (v == 1)
+            emit potClockWise(degreesStep);
+    }
+
+    // Reset angles
+    m_potAngle90 = 0;
+    m_potAngle315 = 0;
+}
+
 void Potentiometer::toAngle(qreal x, qreal y)
 {
     // Create a line from center to 90° degrees
@@ -197,7 +242,7 @@ void Potentiometer::toAngle(qreal x, qreal y)
                 v = 1;
 
             // If counterclockwise
-            if (m_potAngle90 > newAngle90 )
+            if (m_potAngle90 > newAngle90)
                 v = -1;
         }
         else

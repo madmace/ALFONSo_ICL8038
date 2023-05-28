@@ -1,6 +1,6 @@
 /*******************************************************************************
 
- A.L.F.O.N.S
+ A.L.F.O.N.S.o
  Author : Emiliano Mazza
  Version : 1.0
  Created on Date : 15/18/2020
@@ -36,16 +36,28 @@ Item {
         Mixer.setMixerValue(toggleSwitchObj.toggleSwitchID, toggleSwitchObj.toggleSwitchType, toggleSwitchObj.toggleSwitchSelected);
     }
 
+    function normal() {
+        toggleSwitchLFO.state = "state_normal";
+        toggleSwitchObj.setToggleSwitchSelected(false);
+    }
+
+    function checked() {
+        toggleSwitchLFO.state = "state_checked";
+        toggleSwitchObj.setToggleSwitchSelected(true);
+    }
+
     function toggle() {
         if (toggleSwitchObj.toggleSwitchSelected) {
-            toggleSwitchLFO.state = "state_normal";
-            toggleSwitchObj.setToggleSwitchSelected(false);
+            normal();
         } else {
-            toggleSwitchLFO.state = "state_checked";
-            toggleSwitchObj.setToggleSwitchSelected(true);
+            checked();
         }
 
         //console.log("isSelected -> ", toggleSwitchObj.toggleSwitchSelected)
+    }
+
+    Connections {
+        target: toggleSwitchObj
     }
 
     ToggleSwitch {
@@ -58,7 +70,20 @@ Item {
     }
 
     Connections {
-        target: toggleSwitchObj
+        target: Mixer
+
+        function onUpdateHarmonicsSwitches(byID, byType, isEnabled)
+        {
+            // If update is for this VCO and this switch
+            if (byID === toggleSwitchLFOID && byType === toggleSwitchLFOType) {
+                // If enabled
+                if (isEnabled) {
+                    checked();
+                } else {
+                    normal();
+                }
+            }
+        }
     }
 
     Image {

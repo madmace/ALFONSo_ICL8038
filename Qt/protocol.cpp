@@ -1,6 +1,6 @@
 /*******************************************************************************
 
- A.L.F.O.N.S
+ A.L.F.O.N.S.o
  Author : Emiliano Mazza
  Version : 1.0
  Created on Date : 15/18/2020
@@ -19,9 +19,23 @@
 
 #include "protocol.h"
 
+// JSON last configuration path file
+const QString Protocol::lastConfigJSONFileValue = "./ALFONSo.json";
+
 Protocol::Protocol(QObject *parent): QObject{parent}
 {
 }
+
+QString Protocol::lastConfigJSONFile()
+{
+    return Protocol::lastConfigJSONFileValue;
+}
+
+/*****************************
+ *
+ * Microcode Components Types
+ *
+ *****************************/
 
 int Protocol::tabButtonType()
 {

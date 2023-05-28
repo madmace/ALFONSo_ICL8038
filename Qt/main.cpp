@@ -1,6 +1,6 @@
 /*******************************************************************************
 
- A.L.F.O.N.S
+ A.L.F.O.N.S.o
  Author : Emiliano Mazza
  Version : 1.0
  Created on Date : 15/18/2020
@@ -30,6 +30,7 @@
 #include "potentiometer.h"
 #include "toggleSwitch.h"
 #include "tabButton.h"
+#include "freqLabel.h"
 #include "freqSelector.h"
 
 int main(int argc, char *argv[])
@@ -53,6 +54,7 @@ int main(int argc, char *argv[])
 
     // Register QML Controls
     qmlRegisterType<TabButton> ("com.alfonso.qml.controls", 1, 0, "TabButton");
+    qmlRegisterType<FreqLabel> ("com.alfonso.qml.controls", 1, 0, "FreqLabel");
     qmlRegisterType<FreqSelector> ("com.alfonso.qml.controls", 1, 0, "FreqSelector");
     qmlRegisterType<Potentiometer> ("com.alfonso.qml.controls", 1, 0, "Potentiometer");
     qmlRegisterType<ToggleSwitch> ("com.alfonso.qml.controls", 1, 0, "ToggleSwitch");
@@ -78,7 +80,9 @@ int main(int argc, char *argv[])
     }
 
     // Get instance in C++ of SerialPortController
-    SerialPortController *oSerialPortController = SerialPortController::getInstance();
+    SerialPortController* oSerialPortController = SerialPortController::getInstance();
+    // Get instance in C++ of Mixer
+    Mixer* oMixer = Mixer::getInstance();
 
     // Find MainWindow
     QObject* oMainWindowObj = engine.rootObjects().first();
@@ -86,8 +90,11 @@ int main(int argc, char *argv[])
     // Find SplashWindow
     QObject* oSplashWinObj = engine.rootObjects().first()->findChild<QObject*>("SplashWindowObject");
 
-    QMetaObject::Connection oConnMainWindowOb = QObject::connect(oMainWindowObj, SIGNAL(underClosingALFONSo()), oSerialPortController, SLOT(requestALFONSoUnderClosing()));
-    // Connect ALFONSo USB Serial control
+    // Connect main window catch the quit for USB Serial control
+    QMetaObject::Connection oConnMainWindowSerCtrl = QObject::connect(oMainWindowObj, SIGNAL(underClosingALFONSo()), oSerialPortController, SLOT(requestALFONSoUnderClosing()));
+    // Connect main window catch the quit for Mixer
+    QMetaObject::Connection oConnMainWindowMixer = QObject::connect(oMainWindowObj, SIGNAL(underClosingALFONSo()), oMixer, SLOT(requestALFONSoUnderClosing()));
+    // Connect ALFONSo USB Serial control for search ALFONSo HW
     QMetaObject::Connection oConnSplashWinObj = QObject::connect(oSplashWinObj, SIGNAL(isALFONSoUSBPresent()), oSerialPortController, SLOT(requestIsALFONSoUSBPresent()));
 
     // Signal emitted at startup implementation

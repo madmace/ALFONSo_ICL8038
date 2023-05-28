@@ -1,6 +1,6 @@
 /*******************************************************************************
 
- A.L.F.O.N.S
+ A.L.F.O.N.S.o
  Author : Emiliano Mazza
  Version : 1.0
  Created on Date : 15/18/2020
@@ -22,6 +22,9 @@
 
 // Initialize Singleton
 SerialPortController *SerialPortController::oSerialPortController = 0;
+
+// Default constants Values
+const int SerialPortController::defaultEnabled = true;
 
 // Fake serial dongle
 #ifndef __FAKE_DONGLE_USB_SERIAL__
@@ -45,6 +48,9 @@ const QSerialPort::FlowControl SerialPortController::usbALFONSoFlowControl = QSe
 // Controller Constructor
 SerialPortController::SerialPortController(QObject *parent): QObject{parent}
 {
+    // Set dafault value
+    m_enabled = defaultEnabled;
+
     // Create worker Serial Port
     oSerialPort = new SerialPort();
     // Create Thread
@@ -55,14 +61,14 @@ SerialPortController::SerialPortController(QObject *parent): QObject{parent}
     // Delete connection
     connect(oWorkerThread, &QThread::finished, oSerialPort, &QObject::deleteLater);
     // Outbound connections
-    connect(this, SIGNAL(availablePortsController()), oSerialPort, SLOT(handleAvailablePortsWorker()));
-    connect(this, SIGNAL(isALFONSoUSBPresentController()), oSerialPort, SLOT(handleIsALFONSoUSBPresentWorker()));
-    connect(this, SIGNAL(ALFONSoUnderClosing()), oSerialPort, SLOT(handleALFONSoUnderClosingWorker()));
-    connect(this, SIGNAL(sendBytes(QByteArray)), oSerialPort, SLOT(handleSendBytesWorker(QByteArray)));
+    connect(this, SIGNAL(availablePortsController()), oSerialPort, SLOT(handleAvailablePortsWorker()), Qt::QueuedConnection);
+    connect(this, SIGNAL(isALFONSoUSBPresentController()), oSerialPort, SLOT(handleIsALFONSoUSBPresentWorker()), Qt::QueuedConnection);
+    connect(this, SIGNAL(ALFONSoUnderClosing()), oSerialPort, SLOT(handleALFONSoUnderClosingWorker()), Qt::QueuedConnection);
+    connect(this, SIGNAL(sendBytes(QByteArray)), oSerialPort, SLOT(handleSendBytesWorker(QByteArray)), Qt::BlockingQueuedConnection);
     // Inbound connections
-    connect(oSerialPort, SIGNAL(availablePortsWorker(QList<QSerialPortInfo>)), this, SLOT(handleAvailablePorts(QList<QSerialPortInfo>)));
-    connect(oSerialPort, SIGNAL(isALFONSoUSBPresentWorker(bool)), this, SLOT(handleALFONSoUSBPresent(bool)));
-    connect(oSerialPort, SIGNAL(receivedBytesWorker(QByteArray)), this, SLOT(receivedBytes(QByteArray)));
+    connect(oSerialPort, SIGNAL(availablePortsWorker(QList<QSerialPortInfo>)), this, SLOT(handleAvailablePorts(QList<QSerialPortInfo>)), Qt::QueuedConnection);
+    connect(oSerialPort, SIGNAL(isALFONSoUSBPresentWorker(bool)), this, SLOT(handleALFONSoUSBPresent(bool)), Qt::QueuedConnection);
+    connect(oSerialPort, SIGNAL(receivedBytesWorker(QByteArray)), this, SLOT(receivedBytes(QByteArray)), Qt::QueuedConnection);
 
     // Start Worker
     oWorkerThread->start();
@@ -84,6 +90,17 @@ SerialPortController* SerialPortController::getInstance() {
         oSerialPortController = new SerialPortController();
     }
     return oSerialPortController;
+}
+
+// Sets/Gets Properties
+bool SerialPortController::enabled()
+{
+    return m_enabled;
+}
+
+void SerialPortController::setEnabled(bool newValue)
+{
+    m_enabled = newValue;
 }
 
 // Get available serial ports
@@ -110,8 +127,14 @@ void SerialPortController::requestSendRawData(const QByteArray &data) {
 
     qDebug() << "SerialPortController::requestSendRawData() fired.";
 
-    // Send bytes to worker
-    emit sendBytes(data);
+    // If serial port controller is enable
+    if (this->enabled()) {
+        // If serial port is open
+        if (oSerialPort->isSerialPortOpen()) {
+            // Send bytes to worker
+            emit sendBytes(data);
+        }
+    }
 
 }
 
@@ -300,12 +323,15 @@ void SerialPortController::requestSendWidgetCommand(quint8 byID, quint8 byType, 
 
     // Controls correct bytes size
     if (byBuffer.length() == Protocol::REQUEST_SIZE) {
-        // If serial port is open
-        if (oSerialPort->isSerialPortOpen()) {
-            // Send bytes to worker
-            emit sendBytes(byBuffer);
+        // If serial port controller is enable
+        if (this->enabled()) {
+            // If serial port is open
+            if (oSerialPort->isSerialPortOpen()) {
+                // Send bytes to worker
+                emit sendBytes(byBuffer);
 
-            qDebug("SerialPortController::requestSendWidgetCommand ID -> %d Type -> %d potValue() -> %d", byID, byType, byValue);
+                qDebug("SerialPortController::requestSendWidgetCommand ID -> %d Type -> %d Value() -> %d", byID, byType, byValue);
+            }
         }
     }
 }
@@ -338,7 +364,9 @@ void SerialPortController::handleALFONSoUSBPresent(bool bResult) {
 void SerialPortController::receivedBytes(const QByteArray &data) {
 
     quint16 uiIDCommand = 0;            // Response command
-    quint16 uiValue = 0;                // Response value
+    quint16 uiLowValue = 0;             // Response value low 16bit part
+    quint16 uiHighValue = 0;            // Response value high 16bit part
+    quint32 ulValue = 0;                // Response value 32bit
 
     // Convert to bytes array
     //const char *byBuffer = qbaData.data();
@@ -348,9 +376,15 @@ void SerialPortController::receivedBytes(const QByteArray &data) {
     // Reading 2 byte command
     uiIDCommand = (quint8)data[1] << 8;
     uiIDCommand += (quint8)data[0];
-    // Reading 2 byte value
-    uiValue = (quint8)data[3] << 8;
-    uiValue += (quint8)data[2];
+    // Reading 2 byte value low part
+    uiLowValue = (quint8)data[3] << 8;
+    uiLowValue += (quint8)data[2];
+    // Reading 2 byte value High part
+    uiHighValue = (quint8)data[5] << 8;
+    uiHighValue += (quint8)data[4];
+
+    ulValue = (quint16)uiHighValue << 16;
+    ulValue += (quint16)uiLowValue;
 
     switch (uiIDCommand) {
         case  Protocol::VCO_1_RSP_FREQUENCY:
@@ -370,37 +404,37 @@ void SerialPortController::receivedBytes(const QByteArray &data) {
             qDebug() << "SerialPortController::receivedBytes() VCO Freq : " << dFVCO;
             */
 
-            qDebug() << "SerialPortController::receivedBytes() fired. VCO_1_RSP_FREQUENCY : " << uiValue;
+            qDebug() << "SerialPortController::receivedBytes() fired. VCO_1_RSP_FREQUENCY : " << ulValue;
 
             // Post signal for update VCOs frequencies to external
-            emit receivedVCOFrequency(1, uiValue);
+            emit receivedVCOFrequency(1, ulValue);
 
             break;
         }
         case Protocol::VCO_2_RSP_FREQUENCY:
 
-            qDebug() << "SerialPortController::receivedBytes() fired. VCO_2_RSP_FREQUENCY : " << uiValue;
+            qDebug() << "SerialPortController::receivedBytes() fired. VCO_2_RSP_FREQUENCY : " << ulValue;
 
             // Post signal for update VCOs frequencies to external
-            emit receivedVCOFrequency(2, uiValue);
+            emit receivedVCOFrequency(2, ulValue);
 
             break;
 
         case Protocol::VCO_3_RSP_FREQUENCY:
 
-            qDebug() << "SerialPortController::receivedBytes() fired. VCO_3_RSP_FREQUENCY : " << uiValue;
+            qDebug() << "SerialPortController::receivedBytes() fired. VCO_3_RSP_FREQUENCY : " << ulValue;
 
             // Post signal for update VCOs frequencies to external
-            emit receivedVCOFrequency(3, uiValue);
+            emit receivedVCOFrequency(3, ulValue);
 
             break;
 
         case Protocol::VCO_4_RSP_FREQUENCY:
 
-            qDebug() << "SerialPortController::receivedBytes() fired. VCO_4_RSP_FREQUENCY : " << uiValue;
+            qDebug() << "SerialPortController::receivedBytes() fired. VCO_4_RSP_FREQUENCY : " << ulValue;
 
             // Post signal for update VCOs frequencies to external
-            emit receivedVCOFrequency(4, uiValue);
+            emit receivedVCOFrequency(4, ulValue);
 
             break;
     }

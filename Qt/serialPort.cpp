@@ -1,6 +1,6 @@
 /*******************************************************************************
 
- A.L.F.O.N.S
+ A.L.F.O.N.S.o
  Author : Emiliano Mazza
  Version : 1.0
  Created on Date : 15/18/2020
@@ -160,6 +160,7 @@ void SerialPort::handleSendBytesWorker(const QByteArray &data) {
     if (m_bSerialPortOpen && m_oSerial->isOpen()) {
         // Send to serial port
         m_oSerial->write(data);
+        m_oSerial->flush();
     }
 }
 

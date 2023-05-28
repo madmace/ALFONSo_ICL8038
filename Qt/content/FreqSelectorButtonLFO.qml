@@ -14,13 +14,8 @@ Item {
     property alias freqSelectorButtonText: freqSelectorButtonLabel.text
 
     function toggle() {
-        //if (tabButtonObj.tabButtonSelected) {
-        //    tabButtonLFO.state = "state_normal";
-        //    tabButtonObj.setTabButtonSelected(false);
-        //} else {
-            freqSelectorButtonLFO.state = "state_checked";
-        //    tabButtonObj.setTabButtonSelected(true);
-        //}
+
+        freqSelectorButtonLFO.state = "state_checked";
 
         //console.log("isSelected -> ", tabButtonObj.tabButtonSelected)
         console.log("isSelected")

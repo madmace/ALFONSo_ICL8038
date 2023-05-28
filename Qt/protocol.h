@@ -1,6 +1,6 @@
 /*******************************************************************************
 
- A.L.F.O.N.S
+ A.L.F.O.N.S.o
  Author : Emiliano Mazza
  Version : 1.0
  Created on Date : 15/18/2020
@@ -27,15 +27,23 @@ class Protocol : public QObject
 {
     Q_OBJECT
 
+    /*****************************
+     *
+     * Constants JSON last configuration path file
+     *
+     ******************************/
+
+    Q_PROPERTY(QString lastConfigJSONFile READ lastConfigJSONFile CONSTANT)
+
     /*************************************************
-    *
-    * A.L.F.O.N.So
-    *
-    * Microcode constants type protocol
-    * ID    -> VCO/LFO Channel
-    * Type  -> Component type
-    *
-    *************************************************/
+     *
+     * A.L.F.O.N.S.oo
+     *
+     * Microcode constants type protocol
+     * ID    -> VCO/LFO Channel
+     * Type  -> Component type
+     *
+     *************************************************/
 
     /*****************************
      *
@@ -70,6 +78,8 @@ public:
     static QObject *qmlInstance(QQmlEngine *engine, QJSEngine *scriptEngine);
 
     // Gets Properties
+    QString lastConfigJSONFile();
+
     int tabButtonType();
     int freqSelectorType();
     int frequencyPotType();
@@ -80,6 +90,14 @@ public:
     int toggleSwitchTriangleType();
 
     int syncAllVCO();
+
+    /*****************************
+     *
+     * JSON last configuration path file
+     *
+     ******************************/
+
+    static const QString lastConfigJSONFileValue;
 
     /*****************************
      *
@@ -209,18 +227,6 @@ public:
     static const quint16 VCO_3_RSP_FREQUENCY = 0x1003;
     // Response for VCO 4 frequency
     static const quint16 VCO_4_RSP_FREQUENCY = 0x1004;
-
-    /*****************************
-     *
-     * Relative Payload for command.
-     *
-     ******************************/
-
-    // Payload HVCO for set VCOs frequency Range
-    static const quint8 HVCO_REQ_FREQ_SELECTOR = 0x1;
-    static const quint8 VCO_REQ_FREQ_SELECTOR  = 0x2;
-    static const quint8 LFO_REQ_FREQ_SELECTOR  = 0x3;
-    static const quint8 VLFO_REQ_FREQ_SELECTOR  = 0x4;
 
     /*****************************
      *

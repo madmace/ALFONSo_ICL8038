@@ -1,6 +1,6 @@
 /*******************************************************************************
 
- A.L.F.O.N.S
+ A.L.F.O.N.S.o
  Author : Emiliano Mazza
  Version : 1.0
  Created on Date : 15/18/2020
@@ -53,11 +53,5 @@ QtObject {
     readonly property string splashUSBDeviceNotFound: "ALFONSo USB device not found."
     readonly property string splashUSBDeviceFound: "ALFONSo USB device found."
     readonly property string splashUSBPowerButton: "CONNECT"
-
-    /*
-    * Constants JSON last configuration
-    */
-
-    readonly property string lastConfigJSONFile: "./ALFONSo.json"
 
 }

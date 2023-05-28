@@ -1,6 +1,6 @@
 /*******************************************************************************
 
- A.L.F.O.N.S
+ A.L.F.O.N.S.o
  Author : Emiliano Mazza
  Version : 1.0
  Created on Date : 15/18/2020
@@ -30,8 +30,12 @@
 class SerialPortController : public QObject
 {
     Q_OBJECT
+    Q_PROPERTY(bool enabled READ enabled WRITE setEnabled NOTIFY enabledChanged)
 
 private:
+
+    // Exposed properties
+    bool m_enabled;
 
     // Singleton static instance
     static SerialPortController *oSerialPortController;
@@ -48,6 +52,12 @@ private:
     ~SerialPortController();
 
 public:
+
+    // Default constants
+    static const int defaultEnabled;
+
+    // Gets Properties
+    bool enabled();
 
     // ALFONSo USB Serial type
     static const QString usbALFONSoDesc;
@@ -70,6 +80,9 @@ public:
 
 signals:
 
+    // Properties signals
+    void enabledChanged();
+
     /*******************************
      *
      * Signal for external handler
@@ -84,7 +97,7 @@ signals:
     // Signal for update botton panel info text
     void updateBottomInfoText(QString sInfoText);
     // Signal for update VCOs frequencies
-    void receivedVCOFrequency(quint8 byID, quint16 uiValue);
+    void receivedVCOFrequency(quint8 byID, quint32 ulValue);
 
     /*******************************
      *
@@ -103,6 +116,9 @@ signals:
     void sendBytes(const QByteArray &data);
 
 public slots:
+
+    // Sets Properties
+    void setEnabled(bool newValue);
 
     /*******************************
      *

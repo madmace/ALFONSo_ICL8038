@@ -1,6 +1,6 @@
 /*******************************************************************************
 
- A.L.F.O.N.S
+ A.L.F.O.N.S.o
  Author : Emiliano Mazza
  Version : 1.0
  Created on Date : 15/18/2020
@@ -19,6 +19,7 @@
 
 #include "mixer.h"
 #include "protocol.h"
+#include "freqSelector.h"
 #include "serialPortController.h"
 
 #include <QDebug>
@@ -33,7 +34,7 @@ Mixer::Mixer(QObject *parent) : QObject{parent}
     m_mapLFOMixerModel = new QMap<int, SingleUnitLFOModel*>;
 
     // Inbound connections
-    connect(SerialPortController::getInstance(), SIGNAL(receivedVCOFrequency(quint8,quint16)), this, SLOT(handleVCOFrequency(quint8,quint16)));
+    connect(SerialPortController::getInstance(), SIGNAL(receivedVCOFrequency(quint8,quint32)), this, SLOT(handleVCOFrequency(quint8,quint32)));
 }
 
 // Mixer Destructor
@@ -114,7 +115,7 @@ void Mixer::sendRequestSyncAllVCO() {
 // Store the status of the single control
 void Mixer::setMixerValue(int iID, int iType, int iValue) {
 
-   qDebug("Mixer ID -> %d Type -> %d Value() -> %d", iID, iType, iValue);
+   qDebug("Mixer::setMixerValue() Mixer ID -> %d Type -> %d Value() -> %d", iID, iType, iValue);
 
    // Control if single VCO model is already present
    if (!m_mapLFOMixerModel->contains(iID)) {
@@ -333,21 +334,74 @@ void Mixer::readJSONConfig(const QJsonObject ojsConfRoot) {
         // Gets VCOs array
         ojsVCOsObject =  ojsConfRoot["VCOs"].toArray();
 
+        // Disabled Serial Port Controller
+        SerialPortController::getInstance()->setEnabled(false);
+
+        // Cycles for VCOs array
         for (const QJsonValue &ojsVCOValue : qAsConst(ojsVCOsObject)) {
 
             // Single VCO JSON object
             QJsonObject ojsVCOObject = ojsVCOValue.toObject();
 
-
+            // Get VCO ID
             int iVCOID = ojsVCOObject["ID"].toInt();
+            // Get VCO model
+            SingleUnitLFOModel* pVCOModel = m_mapLFOMixerModel->value(iVCOID);
+
+            // Single VCO JSON object properties
+            QJsonObject ojsVCOProps = ojsVCOObject["Values"].toObject();
+
+            // VCO Enable
+            pVCOModel->setTabButtonLFOSelected(ojsVCOProps["Enabled"].toBool());
+            // Send signal
+            emit updateVCOEnable(iVCOID, pVCOModel->getTabButtonLFOSelected());
+
+            // VCO Selector
+            pVCOModel->setFreqSelectorLFOValue(ojsVCOProps["FreqSelector"].toInt());
+            // Send signal
+            emit updateFreqSelector(iVCOID, pVCOModel->getFreqSelectorLFOValue());
+
+            // VCO Frequency Coarse
+            pVCOModel->setPotFrequencyLFOValue(ojsVCOProps["Frequency"].toInt());
+            // Send signal
+            emit updateFrequency(iVCOID, pVCOModel->getPotFrequencyLFOValue());
+
+            // VCO Frequency Fine
+            pVCOModel->setPotFreqFineLFOValue(ojsVCOProps["FreqFine"].toInt());
+            // Send signal
+            emit updateFreqFine(iVCOID, pVCOModel->getPotFreqFineLFOValue());
+
+            // VCO Duty Cycle
+            pVCOModel->setPotDutyCycleLFOValue(ojsVCOProps["DutyCycle"].toInt());
+            // Send signal
+            emit updateDutyCycle(iVCOID, pVCOModel->getPotDutyCycleLFOValue());
+
+            // Sub Harmonics JSON object properties
+            QJsonObject ojsVCOHarmonicsProps = ojsVCOProps["HarmonicsSwitches"].toObject();
+
+            // VCO Harmonic Sine output
+            pVCOModel->getHarmonicsSwitchesLFO()->setToggleSwitchLFOSineSelected(ojsVCOHarmonicsProps["SwitchLFOSine"].toBool());
+            // Send signal
+            emit updateHarmonicsSwitches(iVCOID, Protocol::toggleSwitchSineTypeValue, pVCOModel->getHarmonicsSwitchesLFO()->getToggleSwitchLFOSineSelected());
+            // VCO Harmonic Square output
+            pVCOModel->getHarmonicsSwitchesLFO()->setToggleSwitchLFOSquareSelected(ojsVCOHarmonicsProps["SwitchLFOSquare"].toBool());
+            // Send signal
+            emit updateHarmonicsSwitches(iVCOID, Protocol::toggleSwitchSquareTypeValue, pVCOModel->getHarmonicsSwitchesLFO()->getToggleSwitchLFOSquareSelected());
+            // VCO Harmonic Triangle output
+            pVCOModel->getHarmonicsSwitchesLFO()->setToggleSwitchLFOTriangleSelected(ojsVCOHarmonicsProps["SwitchLFOTriangle"].toBool());
+            // Send signal
+            emit updateHarmonicsSwitches(iVCOID, Protocol::toggleSwitchTriangleTypeValue, pVCOModel->getHarmonicsSwitchesLFO()->getToggleSwitchLFOTriangleSelected());
 
             qDebug("Mixer::readJSONConfig read Mixer ID -> %d", iVCOID);
         }
+
+        // Enable Serial Port Controller
+        SerialPortController::getInstance()->setEnabled(true);
     }
 }
 
 // Calcs and update VCOs frequencies
-void Mixer::handleVCOFrequency(quint8 byID, quint16 uiValue) {
+void Mixer::handleVCOFrequency(quint8 byID, quint32 ulValue) {
 
     double dTosc = (double)1 / 12000000;
 
@@ -358,27 +412,27 @@ void Mixer::handleVCOFrequency(quint8 byID, quint16 uiValue) {
     SingleUnitLFOModel* pVCOModel = m_mapLFOMixerModel->value(byID);
 
     switch (pVCOModel->getFreqSelectorLFOValue()) {
-        case Protocol::HVCO_REQ_FREQ_SELECTOR:
+        case FreqSelector::HVCO:
 
-            dTcap = (double)uiValue / 16;
-
-            break;
-
-        case Protocol::VCO_REQ_FREQ_SELECTOR:
-
-            dTcap = (double)uiValue / 4;
+            dTcap = (double)ulValue / 16;
 
             break;
 
-        case Protocol::LFO_REQ_FREQ_SELECTOR:
+        case FreqSelector::VCO:
 
-            dTcap = (double)uiValue * 4;
+            dTcap = (double)ulValue / 4;
 
             break;
 
-        case Protocol::VLFO_REQ_FREQ_SELECTOR:
+        case FreqSelector::LFO:
 
-            dTcap = (double)uiValue * 8;
+            dTcap = (double)ulValue;
+
+            break;
+
+        case FreqSelector::VLFO:
+
+            dTcap = (double)ulValue;
 
             break;
 
@@ -389,10 +443,19 @@ void Mixer::handleVCOFrequency(quint8 byID, quint16 uiValue) {
 
     QString sFVCO = QString::number(dFVCO, 'f', 2);
 
-    qDebug() << "Mixer::handleVCOFrequency() VCO Freq : " << sFVCO;
+    qDebug() << "Mixer::handleVCOFrequency() VCO Freq : " << sFVCO << " Hz";
 
     // Post signal for update VCOs frequencies to external
     emit updateFrequencyText(byID, sFVCO);
+}
+
+// When requestd all ALFONSo application is under shutdown
+void Mixer::requestALFONSoUnderClosing() {
+
+    qDebug() << "Mixer::requestALFONSoUnderClosing fired.";
+
+    // Save model to config JSON
+    writeJSONConfig(Protocol::lastConfigJSONFileValue);
 }
 
 // QML singleton type provider function (callback).

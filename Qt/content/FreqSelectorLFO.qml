@@ -19,6 +19,21 @@ Item {
         Mixer.setMixerValue(freqSelectorObj.freqSelectorID, freqSelectorObj.freqSelectorType, freqSelectorObj.freqSelectorSelectedIndex);
     }
 
+    Connections {
+        target: Mixer
+
+        function onUpdateFreqSelector(byID, newValue)
+        {
+            // If update is for this VCO
+            if (byID === freqSelectorLFOID) {
+                // Set range
+                freqSelectorObj.freqSelectorSelectedIndex = newValue;
+                // Display current state
+                toggle();
+            }
+        }
+    }
+
     // Renders current selected selector
     function toggle() {
 

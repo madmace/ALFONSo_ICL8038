@@ -1,6 +1,6 @@
 /*******************************************************************************
 
- A.L.F.O.N.S
+ A.L.F.O.N.S.o
  Author : Emiliano Mazza
  Version : 1.0
  Created on Date : 15/18/2020
@@ -125,7 +125,7 @@ Rectangle {
             // Control if ALFONSo USB Serial found
             if (bResult) {
                 // Load last configuration from JSON
-                Mixer.loadJSONConfig(Constants.lastConfigJSONFile)
+                Mixer.loadJSONConfig(Protocol.lastConfigJSONFile);
                 // Send request about state of all VCO
                 Mixer.sendRequestSyncAllVCO();
             }

@@ -1,6 +1,6 @@
 /*******************************************************************************
 
- A.L.F.O.N.S
+ A.L.F.O.N.S.o
  Author : Emiliano Mazza
  Version : 1.0
  Created on Date : 15/18/2020
@@ -81,6 +81,8 @@ signals:
 
 
 public slots:
+
+    // Sets Properties
     void setPotID(int newValue);
     void setPotType(int newValue);
     void setPotWidth(int newValue);
@@ -91,6 +93,7 @@ public slots:
     void setPotValue(int newValue);
 
     void toAngle(qreal x, qreal y);
+    void fromValue(int newValue);
 
 private:
     // Exposed properties

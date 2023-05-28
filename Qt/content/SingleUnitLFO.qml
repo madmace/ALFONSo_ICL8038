@@ -1,6 +1,6 @@
 /*******************************************************************************
 
- A.L.F.O.N.S
+ A.L.F.O.N.S.o
  Author : Emiliano Mazza
  Version : 1.0
  Created on Date : 15/18/2020
@@ -21,8 +21,6 @@ import QtQuick 2.12
 import QtQuick.Window 2.12
 import QtQuick.Controls 2.12
 
-import com.alfonso.mixer 1.0
-
 Rectangle {
     id: singleUnitLFO
     color: "transparent"
@@ -36,18 +34,6 @@ Rectangle {
     property int singleUnitLFOID
     property alias singleUnitLFOText : tabButtonLFO.tabButtonLFOLabelText
     property alias singleUnitLFOLabelText: singleUnitLFOLabel.text
-
-    Connections {
-        target: Mixer
-
-        function onUpdateFrequencyText(byID, sFVCO) {
-            // If update is for this VCO
-            if (byID === singleUnitLFOID) {
-                freqLabelLFO.freqLabelLFOText = sFVCO;
-            }
-        }
-
-    }
 
     TabButtonLFO {
         id: tabButtonLFO
@@ -71,8 +57,9 @@ Rectangle {
     FreqLabelLFO {
         id: freqLabelLFO
         anchors.right: parent.right
-        anchors.rightMargin: 10
+        anchors.rightMargin: 20
         y: 7
+        freqLabelLFOID: singleUnitLFO.singleUnitLFOID
     }
 
     FreqSelectorLFO {

@@ -1,6 +1,6 @@
 /*******************************************************************************
 
- A.L.F.O.N.S
+ A.L.F.O.N.S.o
  Author : Emiliano Mazza
  Version : 1.0
  Created on Date : 15/18/2020
@@ -62,6 +62,19 @@ public:
 
 signals:
 
+    // Signal for update VCO enable state
+    void updateVCOEnable(quint8 byID, bool isEnabled);
+    // Signal for update VCO enable state
+    void updateFreqSelector(quint8 byID, quint8 newValue);
+    // Signal for update VCO coarse frequency
+    void updateFrequency(quint8 byID, quint8 newValue);
+    // Signal for update VCO fine frequency
+    void updateFreqFine(quint8 byID, quint8 newValue);
+    // Signal for update VCO duty cycle
+    void updateDutyCycle(quint8 byID, quint8 newValue);
+    // Signal for update VCO harmonics switches
+    void updateHarmonicsSwitches(quint8 byID, quint8 byType, bool newValue);
+
     // Signal for update frequency info text
     void updateFrequencyText(quint8 byID, QString sFreqText);
     // Signal for update botton panel info text
@@ -78,8 +91,10 @@ public slots:
     // Send Request for Sync All command to serial port
     void sendRequestSyncAllVCO();
     // Calcs and update VCOs frequencies
-    void handleVCOFrequency(quint8 byID, quint16 uiValue);
+    void handleVCOFrequency(quint8 byID, quint32 uiValue);
 
+    // When requestd all ALFONSo application is under shutdown
+    void requestALFONSoUnderClosing();
 
 };
 

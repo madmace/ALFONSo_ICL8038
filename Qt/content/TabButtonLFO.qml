@@ -1,6 +1,6 @@
 /*******************************************************************************
 
- A.L.F.O.N.S
+ A.L.F.O.N.S.o
  Author : Emiliano Mazza
  Version : 1.0
  Created on Date : 15/18/2020
@@ -40,13 +40,40 @@ Item {
         Mixer.setMixerValue(tabButtonObj.tabButtonID, tabButtonObj.tabButtonType, tabButtonObj.tabButtonSelected);
     }
 
+    Connections {
+        target: Mixer
+
+        function onUpdateVCOEnable(byID, isEnabled) {
+
+            // If update is for this VCO
+            if (byID === tabButtonLFOID) {
+                // If enabled
+                if (isEnabled) {
+                    checked();
+                } else {
+                    normal();
+                }
+
+            }
+
+        }
+    }
+
+    function normal() {
+        tabButtonLFO.state = "state_normal";
+        tabButtonObj.setTabButtonSelected(false);
+    }
+
+    function checked() {
+        tabButtonLFO.state = "state_checked";
+        tabButtonObj.setTabButtonSelected(true);
+    }
+
     function toggle() {
         if (tabButtonObj.tabButtonSelected) {
-            tabButtonLFO.state = "state_normal";
-            tabButtonObj.setTabButtonSelected(false);
+            normal();
         } else {
-            tabButtonLFO.state = "state_checked";
-            tabButtonObj.setTabButtonSelected(true);
+            checked();
         }
 
         //console.log("isSelected -> ", tabButtonObj.tabButtonSelected)
