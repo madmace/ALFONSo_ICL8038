@@ -7,15 +7,15 @@ The purpose of this module is to communicate the current frequencies of the VCOs
 My intention was to use the Capture mode of the two available CCPs,
 in particular the CCP2 combined with the Timer3 to calculate the frequency of the 5V/0 square conditioned signal made compatible with the digital input.
 
-I didn't want to use other external components, thus subtracting other GPIOs from the uC.
+I didn't want to use other external components, thus subtracting other GPIOs from the uC.<BR>
 My choice was to directly use the FOsc of 48Mhz / TOsc of 12Mhz on the Timer3.
 
 The four operating ranges of the VCOs would have been managed with different samplings of the CCP.
 
-- **HVCO** Capture mode: every 16th rising edge<BR>
-- **VCO** Capture mode: every 4th rising edge<BR>
-- **LFO** Capture mode: every rising edge<BR>
-- **VLFO** Capture mode: every rising edge<BR>
+- **HVCO** Capture mode: every 16th rising edge
+- **VCO** Capture mode: every 4th rising edge
+- **LFO** Capture mode: every rising edge
+- **VLFO** Capture mode: every rising edge
 
 With the 16-bit Timer3 and associated to the uC clock oscillator :
 
