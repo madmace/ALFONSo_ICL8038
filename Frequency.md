@@ -12,10 +12,10 @@ My choice was to directly use the FOsc of 48Mhz / TOsc of 12Mhz on the Timer3.
 
 The four operating ranges of the VCOs would have been managed with different samplings of the CCP.
 
-HVCO Capture mode: every 16th rising edge
-VCO Capture mode: every 4th rising edge
-LFO Capture mode: every rising edge
-VLFO Capture mode: every rising edge
+- **HVCO** Capture mode: every 16th rising edge<BR>
+- **VCO** Capture mode: every 4th rising edge<BR>
+- **LFO** Capture mode: every rising edge<BR>
+- **VLFO** Capture mode: every rising edge<BR>
 
 With the 16-bit Timer3 and associated to the uC clock oscillator :
 
@@ -25,9 +25,9 @@ With : 1/183 = 5.4644~ ms for eac Overflow.
 In the case of management with a single Overflow, this is the maximum time available to the CCP2.
 So the minimum frequencies with respect to the three sampling ratios :
 
-1:1 every rising edge 183 Hz
-1:4 every 4th rising edge 732 Hz
-1:16 every 16th rising edge 2.928 KHz
+- 1:1 every rising edge 183 Hz
+- 1:4 every 4th rising edge 732 Hz
+- 1:16 every 16th rising edge 2.928 KHz
 
 In VLFO mode the minimum frequency is ~3Hz, so we're not there.
 
