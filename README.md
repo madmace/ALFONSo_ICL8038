@@ -19,6 +19,7 @@ In this implementation MK-ICL8038.
 - [Basics](Basics.md)
 - [Power Supply](Power.md)
 - [ICs used in VCO & Mixer](ICs.md)
+- [Frequency Counter](Frequency.md)
 - [Early implementation](#early-implementation)
 - [Development pictures](Images.md)
 - [Current wiring diagram](https://github.com/madmace/ALFONSo_ICL8038/blob/main/Proteus/Alfonso_ICL8038.PDF)
