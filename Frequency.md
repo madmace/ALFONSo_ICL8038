@@ -31,9 +31,9 @@ So the minimum frequencies with respect to the three sampling ratios :
 
 In VLFO mode the minimum frequency is ~3Hz, so we're not there.
 
-The problem is Timer 3 is the reference frequency which is very high.
+The problem is Timer3 is the reference frequency which is very high.
 
-***Reference Timer with managed Overflows***
+***Reference 16bit Timer with managed Overflows***
 
 To solve the problem I thought if it was possible to use a management with the managed Overflow of the same Timer3.
 
@@ -41,7 +41,7 @@ To solve the problem I thought if it was possible to use a management with the m
 - With triple Overflow management, the maximum period would be : 16.3932 ms for a minimum frequency of 61 Hz
 - With a management of ten Overflows the maximum period would be : 54.644 ms for a minimum frequency of 18.3 Hz
 
-This added to the fact that the Timer3 has the possibility to be managed via Prescaler 1:2/4/8 I could have achieved the goal,
+This added to the fact that the Timer3 has the possibility to be managed via Prescaler 1:2, 1:4, 1:8 I could have achieved the goal,
 but at the cost of a high computational complexity in the uC and a high imprecision given by the decimals.
 
 So I decided to abandon the solution via CCP.
