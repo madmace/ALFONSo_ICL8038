@@ -22,7 +22,7 @@ With the 16-bit Timer3 and associated to the uC clock oscillator :
 12Mhz/64K = 183 Timer3 Overflows per second.
 With : 1/183 = 5.4644~ ms for eac Overflow.
 
-In the case of management with a single Overflow, this is the maximum time available to the CCP2.
+In the case of management with a single Overflow, this is the maximum time available to the CCP2.<BR>
 So the minimum frequencies with respect to the three sampling ratios :
 
 - 1:1 every rising edge 183 Hz
@@ -33,25 +33,20 @@ In VLFO mode the minimum frequency is ~3Hz, so we're not there.
 
 The problem is Timer 3 is the reference frequency which is very high.
 
-*** Reference Timer with managed Overflows ***
+***Reference Timer with managed Overflows***
 
 To solve the problem I thought if it was possible to use a management with the managed Overflow of the same Timer3.
 
-With double Overflow management, the maximum period would be :
-10.9289 ms for a minimum frequency of 91.5 Hz
-
-With triple Overflow management, the maximum period would be :
-16.3932 ms for a minimum frequency of 61 Hz
-
-With a management of ten Overflows the maximum period would be :
-54.644 ms for a minimum frequency of 18.3 Hz
+- With double Overflow management, the maximum period would be : 10.9289 ms for a minimum frequency of 91.5 Hz
+- With triple Overflow management, the maximum period would be : 16.3932 ms for a minimum frequency of 61 Hz
+- With a management of ten Overflows the maximum period would be : 54.644 ms for a minimum frequency of 18.3 Hz
 
 This added to the fact that the Timer3 has the possibility to be managed via Prescaler 1:2/4/8 I could have achieved the goal,
 but at the cost of a high computational complexity in the uC and a high imprecision given by the decimals.
 
 So I decided to abandon the solution via CCP.
 
-*** Timer1 with external quartz 32.765Hz as RTC ***
+***Timer1 with external quartz 32.765Hz as RTC***
 
 
 [Return to index.](README.md)
