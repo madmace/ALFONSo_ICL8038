@@ -20,7 +20,7 @@ The four operating ranges of the VCOs would have been managed with different sam
 With the 16-bit Timer3 and associated to the uC clock oscillator :
 
 12Mhz/64K = 183 Timer3 Overflows per second.
-With : 1/183 = 5.4644~ ms for eac Overflow.
+With : 1/183 = 5.4644~ ms for each Overflow.
 
 In the case of management with a single Overflow, this is the maximum time available to the CCP2.<BR>
 So the minimum frequencies with respect to the three sampling ratios :

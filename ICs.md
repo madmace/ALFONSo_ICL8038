@@ -4,7 +4,7 @@
 An problem with this generators is strong distortion on sine wave output pin 2, so most of the solutions based on this chip has a limited frequency.
 Another is that the square wave output from pin 9 is an open collector that needs to be pulled up to the power supply. In some way the quality of other waveforms is dependent on the load on this pin. I excluded the 15M potentiometer indicated in the datasheet on page 7, squeezes the top of the upper half of the signal.
 As mentioned, square output pin 9 with open collector, normally would never be able to give a good square wave at these frequencies. Rising edge depends only on the pull-up resistor and its growing very slowly. If we give too strong pull-up resistor, in turn, the trailing edge will be weak because the internal transistor is too heavily loaded. 
-Here, i fixed the square wave with a comparator so that the slope is pretty steep, steep as applied comparator can give. Shown in the schematic LM339 has 1.3μs response time but it would be good to use even faster model of comparator.
+Here, I fixed the square wave with a comparator so that the slope is pretty steep, steep as applied comparator can give. Shown in the schematic LM339 has 1.3μs response time but it would be good to use even faster model of comparator.
 The amplitude of the signal, unfortunately, is not the same for each function, tests have shown that trying to match it with the usual R/R signal dividers will give very distorted waveforms as rounded square and triangle, so i resigned from such divisors.
 
 Sine output on pin 2 as ratio 0.22~ * Vcc<BR>
@@ -24,7 +24,7 @@ The frequency of the waveform generator is a direct function of the DC voltage a
 An external resistor between pins 7 and 8 is not necessary, but it can be used to increase input impedance from about 8kΩ (pins 7 and 8 connected together), to about (R + 8kΩ).
 For larger FM deviations or for frequency sweeping, the modulating signal is applied between the positive supply voltage and pin 8.
 
-The potential on Pin 8 may be swept down from V+ by (1/3 VSUPPLY - 2V). Then for ALFONSo from +8V (Low Freq) to +3.33V (High Freq).
+The potential on Pin 8 may be swept down from V+ by (1/3 VSUPPLY - 2V). Then for ALFONSo from +5V (Low Freq) to +3.33V (High Freq).
 
 **TL084** High-speed JFET input, quad operational amplifiers<BR>
 The TL084 is high speed J–FET input quad operational amplifiers. The devices feature high slew rates, low input bias and offset currents, and low offset voltage temperature coefficient.
@@ -32,13 +32,13 @@ The TL084 is used to make the harmonics mixer. For each harmonic there is the re
 
 **LM339** Quad Comparators<BR>
 This quad comparator is used extensively to make CD4066B control lines compatible. The CD4066Bs are used to switch the frequency range, to enable individual harmonics and enable the singles VCO.
-The CD4066 must have a dual power supply to fully support the signals produced, and in this mode enabling and disabling of the bilateral switches is done with the +8V/-8V control signals.
+The CD4066 must have a dual power supply to fully support the signals produced, and in this mode enabling and disabling of the bilateral switches is done with the +5V/-5V control signals.
 Then the +5V/0V MCP23S17 I/O Expander outputs are converted to dual levels using the Quad comparators provided by the LM339.
 Currently each VCO needs 8 control GPIOs. For a total of two LM339 per VCO dedicated to this purpose.
 The LM339 is also used to purify the square wave output which is suboptimal due to the value of the pull-up resistor. In this case one is used for VCO.
 
 **LM393** Dual Comparators<BR>
-The LM393 is a dual comparator used primarily to produce a +5V/0 signal, derived from the square wave, compatible with the CCP input of the controller.
+The LM393 is a dual comparator used primarily to produce a +5V/0 signal, derived from the square wave, compatible with the a generic input of the controller.
 This allows the controller to calculate the current frequency of the selected VCO.
 
 **CD4066B** CMOS Quad Bilateral Switch<BR>
