@@ -52,9 +52,11 @@ Timer1 is the capture/compare clock source for CCP1
     #define CCP1UnmaskInterrupts() {PIE1bits.CCP1IE = 1;}
     #define CCP1InterruptFlag PIR1bits.CCP1IF;
     #define CCP1DisableInterrupts() {PIE1bits.CCP1IE = 0;}
+    #define CCP1ResetRegisters() {CCPR1H = 0; CCPR1L = 0;}
     #define Timer1EnableInterruptsLowPriority() {RCONbits.IPEN = 1; IPR1bits.TMR1IP = 0; PIE1bits.TMR1IE =  1; INTCONbits.GIEL = 1; INTCONbits.GIEH = 1;}
     #define Timer1DisableInterrupts() {PIE1bits.TMR1IE =  0;}
     #define Timer1ClearInterrupt() {PIR1bits.TMR1IF = 0;}
+    #define Timer1ResetRegisters() {TMR1H = 0x00; TMR1L = 0x00;}
 #endif
 #if defined(CCP2_INTERRUPT) && defined(CCP2_AVAILABLE)
     #define CCP2EnableInterruptsLowPriority() {RCONbits.IPEN = 1; IPR2bits.CCP2IP = 0; PIE2bits.CCP2IE = 1; INTCONbits.GIEL = 1; INTCONbits.GIEH = 1;}
@@ -63,22 +65,15 @@ Timer1 is the capture/compare clock source for CCP1
     #define CCP2UnmaskInterrupts() {PIE2bits.CCP2IE = 1;}
     #define CCP2InterruptFlag PIR2bits.CCP2IF
     #define CCP2DisableInterrupts() {PIE2bits.CCP2IE = 0;}
+    #define CCP2ResetRegisters() {CCPR2H = 0; CCPR2L = 0; }
     #define Timer3EnableInterruptsLowPriority() {RCONbits.IPEN = 1; IPR2bits.TMR3IP = 0; PIE2bits.TMR3IE = 1; INTCONbits.GIEL = 1; INTCONbits.GIEH = 1;}
     #define Timer3DisableInterrupts() {PIE2bits.TMR3IE = 0;}
     #define Timer3ClearInterrupt() {PIR2bits.TMR3IF = 0;}
+    #define Timer3ResetRegisters() {TMR3H = 0x00; TMR3L = 0x00;}
 #endif
 
 /**
  * @brief Configure the CCPx in standard mode for capture
- *
- * @param sampling_type  Is the four bits in CCPxCON register CCPxCON<3:0>
- *        These are the value :
- * 
- * @note
- * CCPx_CAPTURE_1_FALL   Capture every falling edge
- * CCPx_CAPTURE_1_RISE   Capture every rising edge
- * CCPx_CAPTURE_4_RISE   Capture every 4th rising edge
- * CCPx_CAPTURE_16_RISE  Capture every 16th rising edge
  * 
  * @param timer_prescale Is ratio to set to Timer's prescaler.
  * 
@@ -92,16 +87,59 @@ Timer1 is the capture/compare clock source for CCP1
  * 
  */
 #ifdef CCP1_AVAILABLE
-    void CCP1_init_capture (uint8_t sampling_type, uint8_t timer_prescale);
+    void CCP1_init_capture (uint8_t timer_prescale);
 #endif
 #ifdef CCP2_AVAILABLE
-    void CCP2_init_capture (uint8_t sampling_type, uint8_t timer_prescale);
+    void CCP2_init_capture (uint8_t timer_prescale);
 #endif
 
+/**
+ * @brief Start capture on the CCPx
+ *
+ * @param sampling_type  Is the four bits in CCPxCON register CCPxCON<3:0>
+ *        These are the value :
+ * 
+ * @note
+ * CCPx_CAPTURE_1_FALL   Capture every falling edge
+ * CCPx_CAPTURE_1_RISE   Capture every rising edge
+ * CCPx_CAPTURE_4_RISE   Capture every 4th rising edge
+ * CCPx_CAPTURE_16_RISE  Capture every 16th rising edge
+ *
+ * @return void
+ * 
+ */
+#ifdef CCP1_AVAILABLE
+    void CCP1_start_capture (uint8_t sampling_type);
+#endif
+    #ifdef CCP2_AVAILABLE
+    void CCP2_start_capture (uint8_t sampling_type);
+#endif
+
+/**
+ * @brief Stop capture on the CCPx
+ *
+ * @param void
+ *
+ * @return void
+ * 
+ */
+#ifdef CCP1_AVAILABLE
+    void CCP1_stop_capture (void);
+#endif
+    #ifdef CCP2_AVAILABLE
+    void CCP2_stop_capture (void);
+#endif
+    
  /**
  * @brief Configuration of T1CON for use with CCP1
  *
- * @param void
+ * @param timer_prescale Is ratio to set to Timer's prescaler.
+ * 
+ * @note
+ * CCPx_TIMER_PRESCALE_1 1:1 Prescale
+ * CCPx_TIMER_PRESCALE_2 1:2 Prescale
+ * CCPx_TIMER_PRESCALE_4 1:4 Prescale
+ * CCPx_TIMER_PRESCALE_8 1:8 Prescale
  *
  * @return void
  * 
@@ -133,12 +171,6 @@ Timer1 is the capture/compare clock source for CCP1
  * Timer1 is the capture/compare clock source for CCP1
  *
  * @param timer_prescale Is ratio to set to Timer's prescaler.
- * 
- * @note
- * CCPx_TIMER_PRESCALE_1 1:1 Prescale
- * CCPx_TIMER_PRESCALE_2 1:2 Prescale
- * CCPx_TIMER_PRESCALE_4 1:4 Prescale
- * CCPx_TIMER_PRESCALE_8 1:8 Prescale
  *
  * @return void
  * 

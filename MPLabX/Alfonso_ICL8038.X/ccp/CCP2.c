@@ -16,19 +16,17 @@ CONSEQUENTIAL DAMAGES, FOR ANY REASON WHATSOEVER.
 
 This module contains the implementation all functions for used with CCP2 module
  
-- Frequency counter. 
+- Frequency counter via CCP2 
 
 *******************************************************************************/
 
 #include <CCP2.h>
 
 // CCP2CaptureTask Implementation
-uint32_t CCP2CaptureTask(uint16_t uiTimer16OverflowCounter) {
+uint16_t CCP2CaptureTask (void) {
     
     // Time Capture from CPP2
     uint16_t uiCaptureTime = 0;
-    // Time Capture from CPP2
-    uint32_t ulTotalCaptureTime = 0;
     
     // If the CCP2 interrupt flag is set
     if(PIR2bits.CCP2IF && PIE2bits.CCP2IE) {
@@ -37,53 +35,23 @@ uint32_t CCP2CaptureTask(uint16_t uiTimer16OverflowCounter) {
         uiCaptureTime = ((uint16_t)CCPR2H << 8) | CCPR2L; 
         
         // Reset CCP2 Registers
-        CCPR2H = 0;
-        CCPR2L = 0;
+        CCP2ResetRegisters();
         
         // Clear the timer registers
-        TMR3H = 0x00;
-        TMR3L = 0x00;
-        
-        // Calculate total capture time
-        ulTotalCaptureTime = (uint32_t)(uiTimer16OverflowCounter * 65536) + (uint32_t)uiCaptureTime;
+        Timer3ResetRegisters();
         
         //Clear interrupt flag
         CCP2ClearInterrupt();
     }
     
-    return ulTotalCaptureTime;
+    return uiCaptureTime;
 }
 
-// CCP2_HVCO_init Implementation
-void CCP2_HVCO_init (void) {
+// CCP2_init Implementation
+void CCP2_init (void) {
     
-    // Configure CCP2 in capture mode for every 16th rising edge and 1:1 prescaler for timer
-    CCP2_init_capture(CCPx_CAPTURE_16_RISE, CCPx_TIMER_PRESCALE_1);
-    
-}
-
-// CCP2_VCO_init Implementation
-void CCP2_VCO_init (void) {
-    
-    // Configure CCP2 in capture mode for every 4th rising edge and 1:1 prescaler for timer
-    CCP2_init_capture(CCPx_CAPTURE_4_RISE, CCPx_TIMER_PRESCALE_1);
-    
-}
-
-// CCP2_LFO_init Implementation
-void CCP2_LFO_init (void) {
-    
-    // Configure CCP2 in capture mode for every rising edge edge and 1:1 prescaler for timer
-    CCP2_init_capture(CCPx_CAPTURE_1_RISE, CCPx_TIMER_PRESCALE_1);
-    
-}
-
-// CCP2_VLFO_init Implementation
-void CCP2_VLFO_init (void) {
-    
-    // Configure CCP2 in capture mode for every rising edge and 1:1 prescaler for timer
-    CCP2_init_capture(CCPx_CAPTURE_1_RISE, CCPx_TIMER_PRESCALE_1);
-    
+    // Configure CCP2 in capture mode and 1:1 prescaler for timer
+    CCP2_init_capture(CCPx_TIMER_PRESCALE_1);
 }
 
 // getFrequencyFromTimer Implementation

@@ -29,10 +29,13 @@ Timer1 is the capture/compare clock source for CCP1
 #include "CCPLIb.h"
 
 // CCP1_init_capture Implementation
-void CCP1_init_capture (uint8_t sampling_type, uint8_t timer_prescale) {
+void CCP1_init_capture (uint8_t timer_prescale) {
     
-    // Set up the CCP1 module for capture mode
-	CCP1CON = 0x00 | sampling_type;
+    // Disable Timer1 overflow
+    Timer1DisableInterrupts();
+    // Disable CCP1 interrupt
+    CCP1DisableInterrupts();
+    
     // Clear the capture registers
 	CCPR1H = 0; 
 	CCPR1L = 0;
@@ -53,13 +56,29 @@ void CCP1_init_capture (uint8_t sampling_type, uint8_t timer_prescale) {
     CCP1EnableInterruptsLowPriority();
 }
 
+// CCP1_start_capture Implementation
+void CCP1_start_capture (uint8_t sampling_type) {
+    
+    // Set up the CCP1 module for capture mode
+	CCP1CON = 0x00 | sampling_type;
+}
+
+// CCP1_stop_capture Implementation
+void CCP1_stop_capture (void) {
+    
+    // Stop capture mode on the CCP1 module
+	CCP1CON = 0x0000;
+}
+
 // CCP2_init_capture Implementation
 #ifdef CCP2_AVAILABLE
-    void CCP2_init_capture (uint8_t sampling_type, uint8_t timer_prescale) {
+    void CCP2_init_capture (uint8_t timer_prescale) {
         
-        // Set up the CCP2 module for capture mode
-        CCP2CON = 0x00 | sampling_type;
-        
+        // Disable Timer3 overflow
+        Timer3DisableInterrupts();
+        // Disable CCP2 interrupt
+        CCP2DisableInterrupts();
+    
         // Clear the capture registers
         CCPR2H = 0; 
         CCPR2L = 0;
@@ -77,15 +96,31 @@ void CCP1_init_capture (uint8_t sampling_type, uint8_t timer_prescale) {
         // Enable Timer3 interrupt
         Timer3EnableInterruptsLowPriority();
         // Enable CCP2 interrupt
-        CCP2EnableInterruptsLowPriority();        
+        CCP2EnableInterruptsLowPriority();
     }
+#endif
+
+// CCP2_start_capture Implementation
+#ifdef CCP2_AVAILABLE
+    void CCP2_start_capture (uint8_t sampling_type) {
+    
+        // Set up the CCP2 module for capture mode
+        CCP2CON = 0x00 | sampling_type;
+    }   
+#endif
+
+// CCP2_stop_capture Implementation
+#ifdef CCP2_AVAILABLE
+    void CCP2_stop_capture (void) {
+    
+        // Stop capture mode on the CCP2 module
+        CCP2CON = 0x0000;
+}
 #endif
 
 // Timer1_config Implementation
 void Timer1_config (uint8_t prescaler_value) {
     
-    // Disable Timer1 overflow
-    Timer1DisableInterrupts();
     // Enables register read/write of Timer1 in 16-bit operations
     T1CONbits.RD16 = 0x1;
     
@@ -127,8 +162,7 @@ void Timer1_config (uint8_t prescaler_value) {
     // Enables Timer1
     T1CONbits.TMR1ON = 0x1;
     // Clear the timer registers
-    TMR1H = 0x00;
-    TMR1L = 0x00;
+    Timer1ResetRegisters();
 }
 
 // Timer3_config Implementation
@@ -175,8 +209,7 @@ void Timer3_config (uint8_t prescaler_value) {
     // Enables Timer3
     T3CONbits.TMR3ON = 0x1;
     // Clear the timer registers
-    TMR3H = 0x00;
-    TMR3L = 0x00;
+    Timer3ResetRegisters();
 }
 
 // Timer3_CCPX_enable Implementation
