@@ -108,3 +108,41 @@ void set_int16_by_bit_weight (volatile uint16_t * word, uint16_t weightbit, bool
         *word |= weightbit;
     }
 }
+
+/***************************************************************
+ * 
+ * Support for printf() console function
+ * 
+ ***************************************************************/
+
+// serial_init_printf Implementation
+void serial_init_printf (void) {
+    
+    CSRC = 0x0;                     // In Asynchronous mode Don?t care.
+    TX9 = 0x0;                      // 8 bit transmission.
+    TXEN = 0x1;                     // Transmit enable
+    SYNC = 0x0;                     // Asynchronous mode
+    SENDB = 0x0;                    // In Asynchronous mode, Send Sync Break at transmission completed.
+    BRGH = 0x1;                     // High Speed
+    TRMT = 0x1;                     // Set Transmit Shift Register to Empty.
+    TX9D = 0x0;                     // 8 bit mode Don?t care.
+    
+    SPEN = 0x1;                     // Serial port enabled (configures RX/DT and TX/CK pins as serial port pins)
+    TRISCbits.RC6 = 0x1;            // TX/CK as input
+    TRISCbits.RC7 = 0x1;            // RX/DT as input
+    
+    BAUDCON = 0x0;                  // All option to 0
+    SPBRG = 25;                     // Baud rate at 115.384,6153846154 approx 115200 at 48Mhz Fosc
+}
+
+// putch Implementation
+void putch(unsigned char byte) {
+    
+    TXREG = byte;            /* transmit a character to Serial IO */
+    
+    // Wait until completed transmission interrupt 
+    while (!TXIF) continue;
+    
+    // Reset interrupt
+    TXIF = 0;
+}

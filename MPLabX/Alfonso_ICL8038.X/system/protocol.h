@@ -84,26 +84,26 @@ This Header contains definitions for serial protocol
 // Length for VCO_X_REQ_FREQ_SELECTOR request
 #define VCO_REQ_FREQ_SELECTOR_LEN 3
         
-// Request for set VCO 1 frequency
-#define VCO_1_REQ_FREQUENCY 0x0020
-// Request for set VCO 2 frequency
-#define VCO_2_REQ_FREQUENCY 0x0021
-// Request for set VCO 3 frequency
-#define VCO_3_REQ_FREQUENCY 0x0022
-// Request for set VCO 4 frequency
-#define VCO_4_REQ_FREQUENCY 0x0023
+// Request for set VCO 1 frequency coarse
+#define VCO_1_REQ_FREQCOARSE 0x0020
+// Request for set VCO 2 frequency coarse
+#define VCO_2_REQ_FREQCOARSE 0x0021
+// Request for set VCO 3 frequency coarse
+#define VCO_3_REQ_FREQCOARSE 0x0022
+// Request for set VCO 4 frequency coarse
+#define VCO_4_REQ_FREQCOARSE 0x0023
 // Length for VCO_X_REQ_FREQUENCY request
-#define VCO_REQ_FREQUENCY_LEN 3
+#define VCO_REQ_FREQCOARSE_LEN 3
 
-// Request for set VCO 1 frequency
+// Request for set VCO 1 frequency fine
 #define VCO_1_REQ_FREQFINE 0x0030
-// Request for set VCO 2 frequency
+// Request for set VCO 2 frequency fine
 #define VCO_2_REQ_FREQFINE 0x0031
-// Request for set VCO 3 frequency
+// Request for set VCO 3 frequency fine
 #define VCO_3_REQ_FREQFINE 0x0032
-// Request for set VCO 4 frequency
+// Request for set VCO 4 frequency fine
 #define VCO_4_REQ_FREQFINE 0x0033
-// Length for VCO_X_REQ_FREQUENCY request
+// Length for VCO_X_REQ_FREQFINE request
 #define VCO_REQ_FREQFINE_LEN 3
 
 // Request for set VCO 1 Duty cycle
@@ -149,6 +149,23 @@ This Header contains definitions for serial protocol
 #define VCO_4_REQ_ENABLE_TRIANGLE 0x0073
 // Length for VCO_X_REQ_ENABLE_TRIANGLE request
 #define VCO_REQ_ENABLE_TRIANGLE_LEN 3
+
+/*****************************
+ * 
+ * Commands for only get states of VCO/Mixers by client.
+ * 
+ ******************************/
+
+// Request for get current frequency on VCO 1
+#define VCO_1_REQ_FREQUENCY 0x0101
+// Request for get current frequency on VCO 2
+#define VCO_2_REQ_FREQUENCY 0x0102
+// Request for get current frequency on VCO 3
+#define VCO_3_REQ_FREQUENCY 0x0103
+// Request for get current frequency on VCO 4
+#define VCO_4_REQ_FREQUENCY 0x0104
+// Length for VCO_X_REQ_FREQUENCY request
+#define VCO_REQ_FREQUENCY_LEN 3
 
 /*****************************
  * 

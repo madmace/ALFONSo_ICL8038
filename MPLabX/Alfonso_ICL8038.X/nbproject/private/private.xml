@@ -3,15 +3,15 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Projects/Alfonso/MPLabX/Alfonso_ICL8038.X/ccp/CCPLib.c</file>
             <file>file:/C:/Projects/Alfonso/MPLabX/Alfonso_ICL8038.X/utilities/utilities.h</file>
+            <file>file:/C:/Projects/Alfonso/MPLabX/Alfonso_ICL8038.X/frequency/Frequency.c</file>
             <file>file:/C:/Projects/Alfonso/MPLabX/Alfonso_ICL8038.X/utilities/utilities.c</file>
             <file>file:/C:/Projects/Alfonso/MPLabX/Alfonso_ICL8038.X/system/system.h</file>
             <file>file:/C:/Projects/Alfonso/MPLabX/Alfonso_ICL8038.X/system/protocol.h</file>
             <file>file:/C:/Projects/Alfonso/MPLabX/Alfonso_ICL8038.X/globals/globals.h</file>
             <file>file:/C:/Projects/Alfonso/MPLabX/Alfonso_ICL8038.X/main.c</file>
+            <file>file:/C:/Projects/Alfonso/MPLabX/Alfonso_ICL8038.X/frequency/Frequency.h</file>
             <file>file:/C:/Projects/Alfonso/MPLabX/Alfonso_ICL8038.X/system/system.c</file>
-            <file>file:/C:/Projects/Alfonso/MPLabX/Alfonso_ICL8038.X/ccp/CCP2.c</file>
         </group>
     </open-files>
 </project-private>

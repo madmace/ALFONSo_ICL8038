@@ -8,6 +8,9 @@
         <itemPath>ccp/CCPLIb.h</itemPath>
         <itemPath>ccp/CCP2.h</itemPath>
       </logicalFolder>
+      <logicalFolder name="f8" displayName="Frequency" projectFiles="true">
+        <itemPath>frequency/Frequency.h</itemPath>
+      </logicalFolder>
       <logicalFolder name="f5" displayName="Globals" projectFiles="true">
         <itemPath>globals/globals.h</itemPath>
       </logicalFolder>
@@ -64,6 +67,9 @@
       <logicalFolder name="f6" displayName="CCP" projectFiles="true">
         <itemPath>ccp/CCPLib.c</itemPath>
         <itemPath>ccp/CCP2.c</itemPath>
+      </logicalFolder>
+      <logicalFolder name="f7" displayName="Frequency" projectFiles="true">
+        <itemPath>frequency/Frequency.c</itemPath>
       </logicalFolder>
       <logicalFolder name="f1" displayName="I2C" projectFiles="true">
         <logicalFolder name="f1" displayName="PCF8574" projectFiles="true">
@@ -164,7 +170,7 @@
         <property key="define-macros" value=""/>
         <property key="disable-optimizations" value="true"/>
         <property key="extra-include-directories"
-                  value="globals;system;usb;spi;ccp;spi\MCP42XXX;spi\MCP425X;spi\MCP23S08;spi\MCP23S08\LCD44780_MCP23S08;spi\MCP23S17;i2c;i2c\PCF8574;utilities"/>
+                  value="globals;system;usb;spi;spi\MCP42XXX;spi\MCP425X;spi\MCP23S08;spi\MCP23S08\LCD44780_MCP23S08;spi\MCP23S17;i2c;i2c\PCF8574;frequency;ccp;utilities"/>
         <property key="favor-optimization-for" value="-speed,+space"/>
         <property key="garbage-collect-data" value="true"/>
         <property key="garbage-collect-functions" value="true"/>

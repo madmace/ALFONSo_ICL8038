@@ -41,7 +41,7 @@ of main application.
 #endif
 
 // If uncomment define under the debug commands mode
-#define CMD_DEBUG_MODE
+#define CMD_LCD_DEBUG_MODE
 
 // LEDs definition for USB operations
 
@@ -50,8 +50,8 @@ of main application.
 #define LED_STATUS_USB_PORT LATDbits.LATD0
 
 // LEDs General Purpose activity
-#define LED_GP1_TRIS TRISDbits.RD1
-#define LED_GP1_PORT LATDbits.LATD1
+#define LED_GP1_TRIS TRISAbits.RA0
+#define LED_GP1_PORT LATAbits.LATA0
 #define LED_GP2_TRIS TRISDbits.RD2
 #define LED_GP2_PORT LATDbits.LATD2
 
@@ -77,8 +77,8 @@ of main application.
 #define MCP42XXX_VCO1_CS_LINE_PORT LATAbits.LATA3
 
 // CS for MCP42XXX Digital Potentiometer VCO 2
-#define MCP42XXX_VCO2_CS_LINE_TRIS TRISAbits.RA4
-#define MCP42XXX_VCO2_CS_LINE_PORT LATAbits.LATA4
+#define MCP42XXX_VCO2_CS_LINE_TRIS TRISAbits.RA5
+#define MCP42XXX_VCO2_CS_LINE_PORT LATAbits.LATA5
 
 // CS for MCP425X Digital Potentiometer VCO 1 & 2
 #define MCP425X_VCO12_CS_LINE_TRIS TRISEbits.RE0
@@ -161,7 +161,7 @@ typedef struct {
         bool    bTriangleWaveEnable;        // VCO Triangle wave Enable
         bool    bInvalideAnalogFreq;        // If true signals the requet to take new measure
                                             // of frequency from CCP
-        uint32_t uiAnalogFreqCCP;           // VCO Real frequency from CCP
+        uint16_t uiAnalogFreqCCP;           // VCO Real frequency from CCP
 } VCOState_t;
 
 // Frequency Ranges Value
@@ -372,8 +372,7 @@ void StartUpIOPortsConfig(void);
 void StartUpSPIConfig(void);
 
 /**
- * @brief Setup of CCP module for configure CCP2
- *        as capture.
+ * @brief Setup of all resources for configure Frequency Counter
  *        To do at startup.
  *
  * @param void
@@ -381,7 +380,7 @@ void StartUpSPIConfig(void);
  * @return void
  * 
  */
-void StartUpCCP2Config(void);
+void StartUpFreqCounterConfig(void);
 
 /**
  * @brief Setup of the SPI MCP23S08 that driver an
@@ -445,7 +444,7 @@ void SimpleMessageSPI16x2LCD(const char *message);
  * 
  * This function is only for debugging of recevied commads.
  */
-#if defined(CMD_DEBUG_MODE)
+#if defined(CMD_LCD_DEBUG_MODE)
     void DebugCommandSPI16x2LCD(const char *cmd, bool bIsLenght, bool bIsValue, uint8_t byLenght, uint8_t byValue);
 #endif
 
@@ -453,13 +452,29 @@ void SimpleMessageSPI16x2LCD(const char *message);
  * @brief Takes a current value of capture of CCP2 updated by the ISR
  *        and controls if variance are in tollerance gap.
  *
- * @param uiCapture       Pointer by Reference to 16bits output variable
+ * @param uiFreqCapture   Pointer by Reference to 16bits output variable
  *
  * @return bool           Return True if the capture is taken and wrote
  *                        to input variable
  * 
  */
-bool updateCCPCapture(volatile uint32_t *ulCapture);
+bool updateCCPCapture(volatile uint16_t *uiFreqCapture);
+
+/**
+ * @brief Prepare the 16bit Frequency value to be send to client
+ *        by the response protocol
+ *
+ * @param buffer          Pointer by Reference buffer to write
+ * 
+ * @param uiValue         Frequency value to pack
+ * 
+ * @param byVCOID         VCO ID of Frequency value
+ *
+ * @return bool           Return True if the capture is taken and wrote
+ *                        to input variable
+ * 
+ */
+uint8_t packResponseFrequency16(uint8_t *buffer, uint16_t uiValue, uint8_t byVCOID);
 
 /**
  * @brief Prepare the 32bit Frequency value to be send to client
@@ -475,7 +490,7 @@ bool updateCCPCapture(volatile uint32_t *ulCapture);
  *                        to input variable
  * 
  */
-uint8_t packResponseFrequency(uint8_t *buffer, uint32_t ulValue, uint8_t byVCOID);
+uint8_t packResponseFrequency32(uint8_t *buffer, uint32_t ulValue, uint8_t byVCOID);
 
 /**
  * @brief Runs system level tasks that keep the system running
@@ -493,7 +508,7 @@ uint8_t packResponseFrequency(uint8_t *buffer, uint32_t ulValue, uint8_t byVCOID
 void MainSystemTasks(void);
 
 
-#if defined(CMD_DEBUG_MODE)
+#if defined(CMD_LCD_DEBUG_MODE)
     
 #endif
 
