@@ -89,7 +89,7 @@ This Header contains all global definition for all modules linked.
     #pragma config WDT = OFF            //OFF	WDT disabled (control is placed on the SWDTEN bit)
 
     // Register: CONFIG3H @ 0x300005
-    #pragma config CCP2MX =	1           //OFF	CCP2 input/output is multiplexed with RC1
+    #pragma config CCP2MX =	0           //OFF	CCP2 input/output is multiplexed with RB3
     #pragma config PBADEN =	OFF         //OFF	PORTB<4:0> pins are configured as digital I/O on Reset
     #pragma config LPT1OSC = OFF        //OFF	Timer1 configured for higher power operation
     #pragma config MCLRE = ON           //ON	MCLR pin enabled; RE3 input pin disabled
@@ -135,10 +135,25 @@ This Header contains all global definition for all modules linked.
     #define PULL_UP_ENABLE_BIT INTCON2bits.RBPU
 
     // **************************************
+    // USART Debug definition 
+    //
+    // Used for enable printf() to serial console
+    // 
+    // Warning ! If definited take USART and RC6/TX/CK
+    //
+    //#define ENABLE_USART_PRINTF
+
+    // **************************************
     // Timers definitions
     //
 
-    // Timer1, Timer3 module definitions
+    // Timers available
+    #define TMR0_AVAILABLE
+    #define TMR1_AVAILABLE
+    #define TMR3_AVAILABLE
+
+    // Timer1, Timer3 interrupts module definitions
+    #define TMR0_INTERRUPT
     #define TMR1_INTERRUPT
     #define TMR3_INTERRUPT
 
