@@ -46,7 +46,7 @@ but at the cost of a high computational complexity in the uC and a high imprecis
 
 So I decided to abandon the solution via CCP.
 
-***Timer1 with external quartz 32.765Hz as RTC***
+***Timer1 with external quartz 32.765KHz as RTC***
 
 The Timer1 of the micro has the possibility of advancing with the system clock but also with an external quartz.
 In this case I used the classic 32.768Khz RTC quartz. This technique is extensively described in the PIC18F4550 datasheet on page 131, paragraph 12.3.
