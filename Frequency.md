@@ -48,6 +48,22 @@ So I decided to abandon the solution via CCP.
 
 ***Timer1 with external quartz 32.765Hz as RTC***
 
+The Timer1 of the micro has the possibility of advancing with the system clock but also with an external quartz.
+In this case I used the classic 32.768Khz RTC quartz. This technique is extensively described in the PIC18F4550 datasheet on page 131, paragraph 12.3.
+
+By setting the Timer1 register with an initial prescaler of 0x8000 (32768) we obtain that each Timer1 overflow corresponds exactly to one second.
+This is why it is called RTC crystal.
+
+In addition to Timer1, Timer0 configured at 8 bit is used to take the clock from pin T0CKI as input.
+This input clock is actually the appropriate 0/5V square rectified output for the VCO's frequency counter.
+
+The overflows of Timer0 in the period of one second are counted, then in the overflow of Timer1.
+
+The final frequency will simply be:
+
+- FreqHz = <Number Overflows Timer0> * 256 + Timer0;
+
+This is because the calculation is done at the timer1 overflow which is one second.
 
 [Return to index.](README.md)
 
