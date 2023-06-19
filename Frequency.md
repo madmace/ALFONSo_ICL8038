@@ -61,7 +61,7 @@ The overflows of Timer0 in the period of one second are counted, then in the ove
 
 The final frequency will simply be:
 
-- FreqHz = <Number Overflows Timer0> * 256 + Timer0;
+- FreqHz = Number of Overflows Timer0 * 256 + Timer0;
 
 This is because the calculation is done at the timer1 overflow which is one second.
 
