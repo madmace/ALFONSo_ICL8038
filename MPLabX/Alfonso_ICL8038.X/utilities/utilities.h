@@ -26,6 +26,13 @@ Such as special conversion between differents types.
 
 #include <xc.h>
 #include <stdbool.h>
+#include "globals.h"
+
+// USART Debugging console printf() if enabled
+#ifdef ENABLE_USART_PRINTF
+#include <stdio.h>
+#include <stdlib.h>
+#endif
 
 /**
  * @brief
@@ -70,6 +77,40 @@ uint8_t get_string_length (uint8_t * buffer);
  *
  */
 void set_int16_by_bit_weight (volatile uint16_t * word, uint16_t weightbit, bool value);
+
+/***************************************************************
+ * 
+ * Support for printf() console function
+ * 
+ * Notes :
+ * The use of the printf() console function implies the use of the internal EUSART and the TX pin configured in the output.
+ * Check that the resources are available and do not conflict with those used.
+ * 
+ ***************************************************************/
+
+/**
+ * @brief
+ * This function is used by printf() for transmit a single byte
+ * out to console.
+ *
+ * @param byte the 8-bit byte to transmit out
+ * 
+ * @return void
+ *
+ */
+void putch(unsigned char byte);
+
+/**
+ * @brief
+ * This function is used by printf() for transmit a single byte
+ * out to console.
+ *
+ * @param byte the 8-bit byte to transmit out
+ * 
+ * @return void
+ *
+ */
+void serial_init_printf (void);
 
 #endif	/* UTILITIES_H */
 
