@@ -14,7 +14,7 @@ PARTICULAR PURPOSE APPLY TO THIS SOFTWARE. THE AUTHOR SHALL NOT,
 IN ANY CIRCUMSTANCES, BE LIABLE FOR SPECIAL, INCIDENTAL OR
 CONSEQUENTIAL DAMAGES, FOR ANY REASON WHATSOEVER.
 
-This source contains SPI Library functions implementations.
+This source contains I2C Library functions implementations.
 
 *******************************************************************************/
 

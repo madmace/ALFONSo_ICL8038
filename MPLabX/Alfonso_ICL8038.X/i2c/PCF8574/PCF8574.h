@@ -40,7 +40,7 @@ PCF8574/PCF8574A
 /**
  * @brief This function writes to the data Port of the I2C I/O expander.
  *
- * @param control Is the address of the PCF8574 (Internal Address + Pin address)
+ * @param device_address Is the address of the PCF8574 (Internal Address + Pin address)
  *
  * @param data Byte to write [min: 0, max: 255]
  *
@@ -62,7 +62,7 @@ int8_t PCF8574_I2C1_write_data (uint8_t device_address, uint8_t data);
 /**
  * @brief This function reads to the data Port of the I2C I/O expander.
  *
- * @param control Is the address of the PCF8574 (Internal Address + Pin address
+ * @param device_address Is the address of the PCF8574 (Internal Address + Pin address)
  *
  * @param data Address where the data is written into.
  *

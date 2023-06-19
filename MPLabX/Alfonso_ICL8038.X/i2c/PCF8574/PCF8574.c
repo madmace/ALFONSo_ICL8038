@@ -35,7 +35,10 @@ int8_t PCF8574_I2C1_write_data (uint8_t device_address, uint8_t data ) {
         return (-1);
     }
 
-	if (I2C1_write_byte(PCF8574_INTERNAL_ADDRESS | (uint8_t)(device_address << 1))) {
+	if (I2C1_write_byte(PCF8574_INTERNAL_ADDRESS | ((device_address << 1) & 0x07))) {
+        
+        I2C1_stop_bit();
+        
         return (-1);
     }
     
@@ -46,6 +49,9 @@ int8_t PCF8574_I2C1_write_data (uint8_t device_address, uint8_t data ) {
     if (!I2C1_check_ACK ()) {
 	    
         if (I2C1_write_byte(data)) {
+            
+            I2C1_stop_bit();
+            
             return (-1);
         }
     } else {
@@ -84,7 +90,10 @@ int8_t PCF8574_I2C2_write_data (uint8_t device_address, uint8_t data ) {
         return (-1);
     }
 
-	if (I2C2_write_byte(PCF8574_INTERNAL_ADDRESS | (device_address << 1))) {
+	if (I2C2_write_byte(PCF8574_INTERNAL_ADDRESS | ((device_address << 1) & 0x07))) {
+        
+        I2C2_stop_bit();
+        
         return (-1);
     }
     
@@ -95,6 +104,9 @@ int8_t PCF8574_I2C2_write_data (uint8_t device_address, uint8_t data ) {
     if (!I2C2_check_ACK ()) {
 	    
         if (I2C2_write_byte(data)) {
+            
+            I2C2_stop_bit();
+            
             return (-1);
         }
     } else {
@@ -123,10 +135,10 @@ int8_t PCF8574_I2C2_write_data (uint8_t device_address, uint8_t data ) {
 
 // PCF8574_I2C1_read_data Implementation
 int8_t PCF8574_I2C1_read_data (uint8_t device_address, uint8_t *data){
-	
+    
     uint8_t control_byte;
 
-    control_byte = PCF8574_INTERNAL_ADDRESS | (uint8_t)(device_address << 1);
+    control_byte = PCF8574_INTERNAL_ADDRESS | ((device_address << 1) & 0x07);
     
     // Start Condition and control if bytes are sent
     
@@ -139,6 +151,9 @@ int8_t PCF8574_I2C1_read_data (uint8_t device_address, uint8_t *data){
 	}
 	
 	if (I2C1_write_byte(control_byte + 1)) {
+        
+        I2C1_stop_bit();
+        
         return (-1);
 	}
 
@@ -169,12 +184,13 @@ int8_t PCF8574_I2C1_read_data (uint8_t device_address, uint8_t *data){
 	return (0);
 }
 
+// PCF8574_I2C2_read_data Implementation
 #ifdef I2C2_AVAILABLE
 int8_t PCF8574_I2C2_read_data (uint8_t device_address, uint8_t *data){
 	
     uint8_t control_byte;
 
-    control_byte = PCF8574_INTERNAL_ADDRESS | (device_address << 1);
+    control_byte = PCF8574_INTERNAL_ADDRESS | ((device_address << 1) & 0x07);
     
     // Start Condition and control if bytes are sent
     
@@ -187,6 +203,9 @@ int8_t PCF8574_I2C2_read_data (uint8_t device_address, uint8_t *data){
 	}
 	
 	if (I2C2_write_byte(control_byte + 1)) {
+        
+        I2C2_stop_bit();
+        
         return (-1);
 	} 
 
