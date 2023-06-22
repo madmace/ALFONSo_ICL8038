@@ -34,7 +34,7 @@ Mixer::Mixer(QObject *parent) : QObject{parent}
     m_mapLFOMixerModel = new QMap<int, SingleUnitLFOModel*>;
 
     // Inbound connections
-    connect(SerialPortController::getInstance(), SIGNAL(receivedVCOFrequency(quint8,quint32)), this, SLOT(handleVCOFrequency(quint8,quint32)));
+    connect(SerialPortController::getInstance(), SIGNAL(receivedVCOFrequency(quint8,quint16)), this, SLOT(handleVCOFrequency(quint8,quint16)));
 }
 
 // Mixer Destructor
@@ -364,7 +364,7 @@ void Mixer::readJSONConfig(const QJsonObject ojsConfRoot) {
             // VCO Frequency Coarse
             pVCOModel->setPotFrequencyLFOValue(ojsVCOProps["Frequency"].toInt());
             // Send signal
-            emit updateFrequency(iVCOID, pVCOModel->getPotFrequencyLFOValue());
+            emit updateFreqCoarse(iVCOID, pVCOModel->getPotFrequencyLFOValue());
 
             // VCO Frequency Fine
             pVCOModel->setPotFreqFineLFOValue(ojsVCOProps["FreqFine"].toInt());
@@ -401,8 +401,9 @@ void Mixer::readJSONConfig(const QJsonObject ojsConfRoot) {
 }
 
 // Calcs and update VCOs frequencies
-void Mixer::handleVCOFrequency(quint8 byID, quint32 ulValue) {
+void Mixer::handleVCOFrequency(quint8 byID, quint16 uiValue) {
 
+    /*
     double dTosc = (double)1 / 12000000;
 
     double dTcap = 0;
@@ -440,13 +441,24 @@ void Mixer::handleVCOFrequency(quint8 byID, quint32 ulValue) {
 
     dTVCO = dTcap * dTosc;
     dFVCO = (double)1 / dTVCO;
-
-    QString sFVCO = QString::number(dFVCO, 'f', 2);
+*/
+    // Convert to string
+    QString sFVCO = QString::number(uiValue, 10);
 
     qDebug() << "Mixer::handleVCOFrequency() VCO Freq : " << sFVCO << " Hz";
 
     // Post signal for update VCOs frequencies to external
     emit updateFrequencyText(byID, sFVCO);
+}
+
+// Request a current VCOs frequencies
+void Mixer::requestVCOFrequency(quint8 byID) {
+
+    qDebug("Mixer::requestVCOFrequency() VCO ID -> %d", byID);
+
+    // Send to Serial Port the request for frequency VCO value
+    SerialPortController::getInstance()->requestSendVCOFrequencyCommand(byID);
+
 }
 
 // When requestd all ALFONSo application is under shutdown

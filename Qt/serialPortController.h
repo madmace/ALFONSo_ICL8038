@@ -51,6 +51,9 @@ private:
     // Controller Destructor
     ~SerialPortController();
 
+    void UnpackFrequency16(const QByteArray &data, quint16 &uiIDCommand, quint16 &uiValue);
+    void UnpackFrequency32(const QByteArray &data, quint16 &uiIDCommand, quint32 &ulValue);
+
 public:
 
     // Default constants
@@ -97,7 +100,7 @@ signals:
     // Signal for update botton panel info text
     void updateBottomInfoText(QString sInfoText);
     // Signal for update VCOs frequencies
-    void receivedVCOFrequency(quint8 byID, quint32 ulValue);
+    void receivedVCOFrequency(quint8 byID, quint16 uiValue);
 
     /*******************************
      *
@@ -138,6 +141,9 @@ public slots:
 
     // Request for send widget command to serial port
     void requestSendWidgetCommand(quint8 byID, quint8 byType, quint8 byValue);
+
+    // Request for send command request VCOs frequencies to serial port
+    void requestSendVCOFrequencyCommand(quint8 byID);
 
 
     /*******************************

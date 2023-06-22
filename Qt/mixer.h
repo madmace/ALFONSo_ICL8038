@@ -67,7 +67,7 @@ signals:
     // Signal for update VCO enable state
     void updateFreqSelector(quint8 byID, quint8 newValue);
     // Signal for update VCO coarse frequency
-    void updateFrequency(quint8 byID, quint8 newValue);
+    void updateFreqCoarse(quint8 byID, quint8 newValue);
     // Signal for update VCO fine frequency
     void updateFreqFine(quint8 byID, quint8 newValue);
     // Signal for update VCO duty cycle
@@ -91,8 +91,10 @@ public slots:
     // Send Request for Sync All command to serial port
     void sendRequestSyncAllVCO();
     // Calcs and update VCOs frequencies
-    void handleVCOFrequency(quint8 byID, quint32 uiValue);
+    void handleVCOFrequency(quint8 byID, quint16 uiValue);
 
+    // Request a current VCOs frequencies
+    void requestVCOFrequency(quint8 byID);
     // When requestd all ALFONSo application is under shutdown
     void requestALFONSoUnderClosing();
 

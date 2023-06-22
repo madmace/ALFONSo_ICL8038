@@ -160,13 +160,13 @@ public:
     static const quint16 VCO_4_REQ_FREQ_SELECTOR = 0x0013;
 
     // Resquest for set VCO 1 coarse frequency
-    static const quint16 VCO_1_REQ_FREQUENCY = 0x0020;
-    // Resquest for set VCO 2 coarsefrequency
-    static const quint16 VCO_2_REQ_FREQUENCY = 0x0021;
+    static const quint16 VCO_1_REQ_FREQCOARSE = 0x0020;
+    // Resquest for set VCO 2 coarse frequency
+    static const quint16 VCO_2_REQ_FREQCOARSE = 0x0021;
     // Resquest for set VCO 3 coarse frequency
-    static const quint16 VCO_3_REQ_FREQUENCY = 0x0022;
+    static const quint16 VCO_3_REQ_FREQCOARSE = 0x0022;
     // Resquest for set VCO 4 coarse frequency
-    static const quint16 VCO_4_REQ_FREQUENCY = 0x0023;
+    static const quint16 VCO_4_REQ_FREQCOARSE = 0x0023;
 
     // Resquest for set VCO 1 fine frequency
     static const quint16 VCO_1_REQ_FREQFINE = 0x0030;
@@ -215,18 +215,33 @@ public:
 
     /*****************************
      *
+     * Commands for only get states of VCO/Mixers by client.
+     *
+     ******************************/
+
+    // Request for get current frequency on VCO 1
+    static const quint16 VCO_1_REQ_FREQUENCY = 0x0100;
+    // Request for get current frequency on VCO 2
+    static const quint16 VCO_2_REQ_FREQUENCY = 0x0101;
+    // Request for get current frequency on VCO 3
+    static const quint16 VCO_3_REQ_FREQUENCY = 0x0102;
+    // Request for get current frequency on VCO 4
+    static const quint16 VCO_4_REQ_FREQUENCY = 0x0103;
+
+    /*****************************
+     *
      * States Response to client.
      *
      ******************************/
 
     // Response for VCO 1 frequency
-    static const quint16 VCO_1_RSP_FREQUENCY = 0x1001;
+    static const quint16 VCO_1_RSP_FREQUENCY = 0x1000;
     // Response for VCO 2 frequency
-    static const quint16 VCO_2_RSP_FREQUENCY = 0x1002;
+    static const quint16 VCO_2_RSP_FREQUENCY = 0x1001;
     // Response for VCO 3 frequency
-    static const quint16 VCO_3_RSP_FREQUENCY = 0x1003;
+    static const quint16 VCO_3_RSP_FREQUENCY = 0x1002;
     // Response for VCO 4 frequency
-    static const quint16 VCO_4_RSP_FREQUENCY = 0x1004;
+    static const quint16 VCO_4_RSP_FREQUENCY = 0x1003;
 
     /*****************************
      *

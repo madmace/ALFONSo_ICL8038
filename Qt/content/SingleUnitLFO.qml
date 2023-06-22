@@ -21,6 +21,9 @@ import QtQuick 2.12
 import QtQuick.Window 2.12
 import QtQuick.Controls 2.12
 
+import com.alfonso.mixer 1.0
+import com.alfonso.qml.controls 1.0
+
 Rectangle {
     id: singleUnitLFO
     color: "transparent"
@@ -62,11 +65,40 @@ Rectangle {
         freqLabelLFOID: singleUnitLFO.singleUnitLFOID
     }
 
+    Button {
+        id: freqRefreshButtonLFO
+        width: 76
+        height: freqLabelLFO.height
+        text: qsTr(" PROBE ")
+        anchors.right: freqLabelLFO.left
+        anchors.rightMargin: 10
+        anchors.verticalCenter: freqLabelLFO.verticalCenter
+
+        onClicked: {
+            // Request a current VCOs frequencies
+            Mixer.requestVCOFrequency(singleUnitLFO.singleUnitLFOID);
+        }
+
+        contentItem: Text {
+            text: freqRefreshButtonLFO.text
+            font: freqRefreshButtonLFO.font
+            color: freqRefreshButtonLFO.down ? "darkgoldenrod" : "black"
+            horizontalAlignment: Text.AlignHCenter
+            verticalAlignment: Text.AlignVCenter
+        }
+
+        background: Rectangle {
+            color: "dimgray"
+            border.color: "#33c2ff"
+            border.width: 1
+        }
+    }
+
     FreqSelectorLFO {
         id: freqSelectorLFO
         anchors.left: parent.left
         anchors.leftMargin: 30
-        y: 60
+        y: 70
         freqSelectorLFOID: singleUnitLFO.singleUnitLFOID
     }
 
@@ -85,7 +117,7 @@ Rectangle {
     PotFrequencyLFO {
         id: potFrequencyLFO
         x: 200
-        y: 90
+        y: 100
         potFrequencyLFOID: singleUnitLFO.singleUnitLFOID
     }
 
@@ -104,7 +136,7 @@ Rectangle {
     PotFreqFineLFO {
         id: potFreqFineLFO
         x: 185
-        y: 280
+        y: 290
         potFreqFineLFOID: singleUnitLFO.singleUnitLFOID
     }
 
@@ -123,7 +155,7 @@ Rectangle {
     PotDutyCycleLFO {
         id: potDutyCycleLFO
         x: 320
-        y: 270
+        y: 280
         potDutyCycleLFOID: singleUnitLFO.singleUnitLFOID
     }
 
@@ -131,7 +163,7 @@ Rectangle {
         id: harmonicsSwitchesLFO
         anchors.left: parent.left
         anchors.leftMargin: 25
-        y: 260
+        y: 270
         harmonicsSwitchesLFOID: singleUnitLFO.singleUnitLFOID
     }
 }

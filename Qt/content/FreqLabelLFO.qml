@@ -92,7 +92,7 @@ Item {
             PropertyChanges {
                 target: freqLabelText
                 color: "#dcdada"
-                text: qsTr("-----.-- Hz")
+                text: qsTr("----- Hz")
             }
         }
     ]

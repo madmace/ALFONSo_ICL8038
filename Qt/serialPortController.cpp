@@ -135,7 +135,6 @@ void SerialPortController::requestSendRawData(const QByteArray &data) {
             emit sendBytes(data);
         }
     }
-
 }
 
 // Request for send Widget command to serial port
@@ -191,16 +190,16 @@ void SerialPortController::requestSendWidgetCommand(quint8 byID, quint8 byType, 
 
             switch (byID) {
                 case 1:
-                    Protocol::append2Bytes(byBuffer, Protocol::VCO_1_REQ_FREQUENCY);
+                    Protocol::append2Bytes(byBuffer, Protocol::VCO_1_REQ_FREQCOARSE);
                     break;
                 case 2:
-                    Protocol::append2Bytes(byBuffer, Protocol::VCO_2_REQ_FREQUENCY);
+                    Protocol::append2Bytes(byBuffer, Protocol::VCO_2_REQ_FREQCOARSE);
                     break;
                 case 3:
-                    Protocol::append2Bytes(byBuffer, Protocol::VCO_3_REQ_FREQUENCY);
+                    Protocol::append2Bytes(byBuffer, Protocol::VCO_3_REQ_FREQCOARSE);
                     break;
                 case 4:
-                    Protocol::append2Bytes(byBuffer, Protocol::VCO_4_REQ_FREQUENCY);
+                    Protocol::append2Bytes(byBuffer, Protocol::VCO_4_REQ_FREQCOARSE);
                     break;
             }
 
@@ -323,16 +322,44 @@ void SerialPortController::requestSendWidgetCommand(quint8 byID, quint8 byType, 
 
     // Controls correct bytes size
     if (byBuffer.length() == Protocol::REQUEST_SIZE) {
-        // If serial port controller is enable
-        if (this->enabled()) {
-            // If serial port is open
-            if (oSerialPort->isSerialPortOpen()) {
-                // Send bytes to worker
-                emit sendBytes(byBuffer);
 
-                qDebug("SerialPortController::requestSendWidgetCommand ID -> %d Type -> %d Value() -> %d", byID, byType, byValue);
-            }
-        }
+        qDebug("SerialPortController::requestSendWidgetCommand ID -> %d Type -> %d Value() -> %d", byID, byType, byValue);
+
+        // Send Raw Data to serial port
+        requestSendRawData(byBuffer);
+    }
+}
+
+// Request for send command request VCOs frequencies to serial port
+void SerialPortController::requestSendVCOFrequencyCommand(quint8 byID) {
+
+    QByteArray byBuffer;
+
+    switch (byID) {
+        case 1:
+            Protocol::append2Bytes(byBuffer, Protocol::VCO_1_REQ_FREQUENCY);
+            break;
+        case 2:
+            Protocol::append2Bytes(byBuffer, Protocol::VCO_2_REQ_FREQUENCY);
+            break;
+        case 3:
+            Protocol::append2Bytes(byBuffer, Protocol::VCO_3_REQ_FREQUENCY);
+            break;
+        case 4:
+            Protocol::append2Bytes(byBuffer, Protocol::VCO_4_REQ_FREQUENCY);
+            break;
+    }
+
+    // Adds byte value
+    byBuffer.append(byID);
+
+    // Controls correct bytes size
+    if (byBuffer.length() == Protocol::REQUEST_SIZE) {
+
+        qDebug("SerialPortController::requestSendVCOFrequencyCommand ID -> %d", byID);
+
+        // Send Raw Data to serial port
+        requestSendRawData(byBuffer);
     }
 }
 
@@ -360,18 +387,20 @@ void SerialPortController::handleALFONSoUSBPresent(bool bResult) {
     emit isALFONSoUSBPresent(bResult);
 }
 
-// Signal for receive data from serial port
-void SerialPortController::receivedBytes(const QByteArray &data) {
+void SerialPortController::UnpackFrequency16(const QByteArray &data, quint16 &uiIDCommand, quint16 &uiValue) {
 
-    quint16 uiIDCommand = 0;            // Response command
+    // Reading 2 byte command
+    uiIDCommand = (quint8)data[1] << 8;
+    uiIDCommand += (quint8)data[0];
+    // Reading 2 byte value
+    uiValue = (quint8)data[3] << 8;
+    uiValue += (quint8)data[2];
+}
+
+void SerialPortController::UnpackFrequency32(const QByteArray &data, quint16 &uiIDCommand, quint32 &ulValue) {
+
     quint16 uiLowValue = 0;             // Response value low 16bit part
     quint16 uiHighValue = 0;            // Response value high 16bit part
-    quint32 ulValue = 0;                // Response value 32bit
-
-    // Convert to bytes array
-    //const char *byBuffer = qbaData.data();
-
-    //qDebug() << data.toHex();
 
     // Reading 2 byte command
     uiIDCommand = (quint8)data[1] << 8;
@@ -382,59 +411,55 @@ void SerialPortController::receivedBytes(const QByteArray &data) {
     // Reading 2 byte value High part
     uiHighValue = (quint8)data[5] << 8;
     uiHighValue += (quint8)data[4];
-
+    // Adds to 4 bytes word
     ulValue = (quint16)uiHighValue << 16;
     ulValue += (quint16)uiLowValue;
+}
 
+// Signal for receive data from serial port
+void SerialPortController::receivedBytes(const QByteArray &data) {
+
+    quint16 uiIDCommand = 0;            // Response command
+    quint16 uiValue = 0;                // Response value 16bit
+
+    // Unpack command and data
+    UnpackFrequency16(data, uiIDCommand, uiValue);
+
+    // By command received
     switch (uiIDCommand) {
         case  Protocol::VCO_1_RSP_FREQUENCY:
         {
-
-            /*
-            double dTcap;
-            double dTosc;
-            double dTVCO;
-            double dFVCO;
-
-            dTcap = (double)uiValue * 8;
-            dTosc = (double)1 / 12000000;
-            dTVCO = dTcap * dTosc;
-            dFVCO = (double)1 / dTVCO;
-
-            qDebug() << "SerialPortController::receivedBytes() VCO Freq : " << dFVCO;
-            */
-
-            qDebug() << "SerialPortController::receivedBytes() fired. VCO_1_RSP_FREQUENCY : " << ulValue;
+            qDebug() << "SerialPortController::receivedBytes() fired. VCO_1_RSP_FREQUENCY : " << uiValue;
 
             // Post signal for update VCOs frequencies to external
-            emit receivedVCOFrequency(1, ulValue);
+            emit receivedVCOFrequency(1, uiValue);
 
             break;
         }
         case Protocol::VCO_2_RSP_FREQUENCY:
 
-            qDebug() << "SerialPortController::receivedBytes() fired. VCO_2_RSP_FREQUENCY : " << ulValue;
+            qDebug() << "SerialPortController::receivedBytes() fired. VCO_2_RSP_FREQUENCY : " << uiValue;
 
             // Post signal for update VCOs frequencies to external
-            emit receivedVCOFrequency(2, ulValue);
+            emit receivedVCOFrequency(2, uiValue);
 
             break;
 
         case Protocol::VCO_3_RSP_FREQUENCY:
 
-            qDebug() << "SerialPortController::receivedBytes() fired. VCO_3_RSP_FREQUENCY : " << ulValue;
+            qDebug() << "SerialPortController::receivedBytes() fired. VCO_3_RSP_FREQUENCY : " << uiValue;
 
             // Post signal for update VCOs frequencies to external
-            emit receivedVCOFrequency(3, ulValue);
+            emit receivedVCOFrequency(3, uiValue);
 
             break;
 
         case Protocol::VCO_4_RSP_FREQUENCY:
 
-            qDebug() << "SerialPortController::receivedBytes() fired. VCO_4_RSP_FREQUENCY : " << ulValue;
+            qDebug() << "SerialPortController::receivedBytes() fired. VCO_4_RSP_FREQUENCY : " << uiValue;
 
             // Post signal for update VCOs frequencies to external
-            emit receivedVCOFrequency(4, ulValue);
+            emit receivedVCOFrequency(4, uiValue);
 
             break;
     }
