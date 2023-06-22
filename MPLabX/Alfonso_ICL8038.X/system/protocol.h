@@ -157,13 +157,13 @@ This Header contains definitions for serial protocol
  ******************************/
 
 // Request for get current frequency on VCO 1
-#define VCO_1_REQ_FREQUENCY 0x0101
+#define VCO_1_REQ_FREQUENCY 0x0100
 // Request for get current frequency on VCO 2
-#define VCO_2_REQ_FREQUENCY 0x0102
+#define VCO_2_REQ_FREQUENCY 0x0101
 // Request for get current frequency on VCO 3
-#define VCO_3_REQ_FREQUENCY 0x0103
+#define VCO_3_REQ_FREQUENCY 0x0102
 // Request for get current frequency on VCO 4
-#define VCO_4_REQ_FREQUENCY 0x0104
+#define VCO_4_REQ_FREQUENCY 0x0103
 // Length for VCO_X_REQ_FREQUENCY request
 #define VCO_REQ_FREQUENCY_LEN 3
 
@@ -186,12 +186,12 @@ This Header contains definitions for serial protocol
  ******************************/
 
 // Response for VCO 1 frequency
-#define VCO_1_RSP_FREQUENCY 0x1001
+#define VCO_1_RSP_FREQUENCY 0x1000
 // Response for VCO 2 frequency
-#define VCO_2_RSP_FREQUENCY 0x1002
+#define VCO_2_RSP_FREQUENCY 0x1001
 // Response for VCO 3 frequency
-#define VCO_3_RSP_FREQUENCY 0x1003
+#define VCO_3_RSP_FREQUENCY 0x1002
 // Response for VCO 4 frequency
-#define VCO_4_RSP_FREQUENCY 0x1004
+#define VCO_4_RSP_FREQUENCY 0x1003
 
 #endif	/* PROTOCOL_H */

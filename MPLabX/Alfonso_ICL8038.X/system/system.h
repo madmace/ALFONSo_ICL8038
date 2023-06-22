@@ -159,9 +159,8 @@ typedef struct {
         bool    bSineWaveEnable;            // VCO Sine wave Enable
         bool    bSquareWaveEnable;          // VCO Square wave Enable
         bool    bTriangleWaveEnable;        // VCO Triangle wave Enable
-        bool    bInvalideAnalogFreq;        // If true signals the requet to take new measure
-                                            // of frequency from CCP
-        uint16_t uiAnalogFreqCCP;           // VCO Real frequency from CCP
+        
+        uint16_t uiAnalogVCOFreq;           // VCO Real frequency
 } VCOState_t;
 
 // Frequency Ranges Value
@@ -442,23 +441,38 @@ void SimpleMessageSPI16x2LCD(const char *message);
  *
  * @return void
  * 
- * This function is only for debugging of recevied commads.
+ * This function is only for debugging of received commads.
  */
 #if defined(CMD_LCD_DEBUG_MODE)
     void DebugCommandSPI16x2LCD(const char *cmd, bool bIsLenght, bool bIsValue, uint8_t byLenght, uint8_t byValue);
 #endif
+    
+    /**
+ * @brief Put a 16bit int values on first and second line of LCD 44780 Hitachi
+ *        by SPI MCP23S08
+ *
+ * @param iValue1   16bit int value to put on display at first row
+ * @param iValue2   16bit int value to put on display at second row
+ *
+ * @return void
+ * 
+ * This function is only for debugging of received commads.
+ */
+#if defined(CMD_LCD_DEBUG_MODE)
+    void DebugIntSPI16x2LCD(int16_t iValue1, int16_t iValue2);
+#endif
 
 /**
- * @brief Takes a current value of capture of CCP2 updated by the ISR
+ * @brief Takes a current value of VCO Frequency updated by the ISR
  *        and controls if variance are in tollerance gap.
  *
- * @param uiFreqCapture   Pointer by Reference to 16bits output variable
+ * @param byVCOID           VCO ID of Frequency value
  *
- * @return bool           Return True if the capture is taken and wrote
- *                        to input variable
+ * @return bool             Return True if the capture is taken and wrote
+ *                          to input variable
  * 
  */
-bool updateCCPCapture(volatile uint16_t *uiFreqCapture);
+bool updateVCOFrequency(uint8_t byVCOID);
 
 /**
  * @brief Prepare the 16bit Frequency value to be send to client

@@ -156,8 +156,7 @@ void ClearAllVCOStates(void) {
         aVCOInfo[idx].bSineWaveEnable = false;
         aVCOInfo[idx].bSquareWaveEnable = false;
         aVCOInfo[idx].bTriangleWaveEnable = false;
-        aVCOInfo[idx].bInvalideAnalogFreq = false;
-        aVCOInfo[idx].uiAnalogFreqCCP = 0x0000;
+        aVCOInfo[idx].uiAnalogVCOFreq = 0x0000;
     }
 }
 
@@ -887,22 +886,41 @@ void SimpleMessageSPI16x2LCD(const char *message) {
     }
 #endif
 
-// Takes a current value of capture of CCP2 updated by the ISR
+// Put a 16bit int values on first and second line of LCD 44780 Hitachi
+// by SPI MCP23S08
+#if defined(CMD_LCD_DEBUG_MODE)
+    void DebugIntSPI16x2LCD(int16_t iValue1, int16_t iValue2) {
+        // Clear LCD
+        LCD44780_MCP23S08_lcd_clear_SPI1();
+        // Set cursor at first line
+        LCD44780_MCP23S08_goto_line_SPI1(LCD44780_MCP23S08_FIRST_LINE);
+        // Disply first value
+        LCD44780_MCP23S08_send_message_SPI1("-> ");
+        LCD44780_MCP23S08_write_integer_SPI1(iValue1, 1, LCD44780_MCP23S08_ZERO_CLEANING_OFF);
+        // Set cursor at second line
+        LCD44780_MCP23S08_goto_line_SPI1(LCD44780_MCP23S08_SECOND_LINE);
+        // Disply second value
+        LCD44780_MCP23S08_send_message_SPI1("-> ");
+        LCD44780_MCP23S08_write_integer_SPI1(iValue2, 1, LCD44780_MCP23S08_ZERO_CLEANING_OFF);
+    }
+#endif
+
+// Takes a current value of VCO Frequency updated by the ISR
 // and controls if variance are in tollerance gap.
-bool updateCCPCapture(volatile uint16_t *uiFreqCapture) {
+bool updateVCOFrequency(uint8_t byVCOID) {
     
     //int16_t iCaptureDelta = 0;
     bool bIsChanged = false;
     
     // Controls if last CCP capture has changed from previous
-    if ((*uiFreqCapture) != uiLastFreqCapture) {
+    if (aVCOInfo[byVCOID].uiAnalogVCOFreq != uiLastFreqCapture) {
         // Calcs difference
         //iCaptureDelta = (int16_t)(*uiCapture) - (int16_t)uiLastCaptureCCP2;
         // Controls if is threshold gap
         //if (abs(iCaptureDelta) > CCP2_CAPTURE_THRESHOLD_GAP) {
 
             // Save new value
-            (*uiFreqCapture) = uiLastFreqCapture;
+            aVCOInfo[byVCOID].uiAnalogVCOFreq = uiLastFreqCapture;
             // Mark changed
             bIsChanged = true;
         //}
@@ -1030,9 +1048,9 @@ void MainSystemTasks(void) {
             
             // Blink LED
             BlinkLEDGP1();
-            
+                        
             // Reading 2 byte command               
-            uiIDCommand = (uint16_t)(readBuffer[CMD_PART_LOW_BYTE] + (readBuffer[CMD_PART_HIGH_BYTE] << 8));
+            uiIDCommand = (uint16_t)(readBuffer[CMD_PART_HIGH_BYTE] << 8) + (uint16_t)readBuffer[CMD_PART_LOW_BYTE];
             // Reading 1 byte value
             byValue = readBuffer[START_REQ_PAYLOAD];
             
@@ -1103,8 +1121,8 @@ void MainSystemTasks(void) {
                             selectVCORange(byVCOIndex, aVCOInfo[byVCOIndex].byFreqSelector, true);                    
                             // Enable or Disable the VCO
                             enableVCO(byVCOIndex, aVCOInfo[byVCOIndex].bVCOEnable);
-                            // Take new measure of frequency from CCP if VCO is enable
-                            aVCOInfo[byVCOIndex].bInvalideAnalogFreq = aVCOInfo[byVCOIndex].bVCOEnable;
+                            // Invalidate Last Frequency and force send to client
+                            aVCOInfo[byVCOIndex].uiAnalogVCOFreq = 0x0000;
                             
                         }                   
                     }
@@ -1176,8 +1194,8 @@ void MainSystemTasks(void) {
                         // Enable or Disable the VCO
                         enableVCO(VCO1, byValue);
                         
-                        // Force to send new measure of frequency
-                        aVCOInfo[VCO1].bInvalideAnalogFreq = true;
+                        // Invalidate Last Frequency and force send to client
+                        aVCOInfo[VCO1].uiAnalogVCOFreq = 0x0000;
                         
                     }
                     
@@ -1201,8 +1219,8 @@ void MainSystemTasks(void) {
                         // Select Range  for VCO 1 
                         selectVCORange(VCO1, byValue, true);
                         
-                        // Force to send new measure of frequency
-                        aVCOInfo[VCO1].bInvalideAnalogFreq = true;
+                        // Invalidate Last Frequency and force send to client
+                        aVCOInfo[VCO1].uiAnalogVCOFreq = 0x0000;
                         
                     }
                     
@@ -1223,8 +1241,8 @@ void MainSystemTasks(void) {
                         // Select Range  for VCO 1 
                         selectVCORange(VCO2, byValue, true);
                         
-                        // Force to send new measure of frequency
-                        aVCOInfo[VCO2].bInvalideAnalogFreq = true;
+                        // Invalidate Last Frequency and force send to client
+                        aVCOInfo[VCO2].uiAnalogVCOFreq = 0x0000;
                         
                     }
                     
@@ -1246,8 +1264,8 @@ void MainSystemTasks(void) {
                         // Set coarse frequency for VCO 1
                         setVCOFrequencyCoarse(VCO1, byValue);
                         
-                        // Force to send new measure of frequency
-                        aVCOInfo[VCO1].bInvalideAnalogFreq = true;
+                        // Invalidate Last Frequency and force send to client
+                        aVCOInfo[VCO1].uiAnalogVCOFreq = 0x0000;
                     }
                     
                     break;
@@ -1268,8 +1286,8 @@ void MainSystemTasks(void) {
                         // Set fine frequency for VCO 1
                         setVCOFrequencyFine(VCO1, byValue);
                         
-                        // Force to send new measure of frequency
-                        aVCOInfo[VCO1].bInvalideAnalogFreq = true;
+                        // Invalidate Last Frequency and force send to client
+                        aVCOInfo[VCO1].uiAnalogVCOFreq = 0x0000;
                     }
                     
                     break;
@@ -1290,8 +1308,8 @@ void MainSystemTasks(void) {
                         // Set Duty Cycle for VCO 1
                         setVCODutyCycle(VCO1, byValue);
                         
-                        // Force to send new measure of frequency
-                        aVCOInfo[VCO1].bInvalideAnalogFreq = true;
+                        // Invalidate Last Frequency and force send to client
+                        aVCOInfo[VCO1].uiAnalogVCOFreq = 0x0000;
                         
                     }
                     
@@ -1361,11 +1379,11 @@ void MainSystemTasks(void) {
                     // Control if right size
                     if (iNumBytesRead == VCO_REQ_FREQUENCY_LEN) {
                         #if defined(CMD_LCD_DEBUG_MODE)
-                            DebugCommandSPI16x2LCD("VCO1GET_FREQ", true, true, iNumBytesRead, byValue);
+                            DebugCommandSPI16x2LCD("VCO1GET_FREQ", true, false, iNumBytesRead, byValue);
                         #endif
 
-                        // Force to send new measure of frequency
-                        aVCOInfo[VCO1].bInvalideAnalogFreq = true;
+                        // Invalidate Last Frequency and force send to client
+                        aVCOInfo[VCO1].uiAnalogVCOFreq = 0x0000;
                     }
                     
                     break;
@@ -1376,20 +1394,15 @@ void MainSystemTasks(void) {
             for(byVCOIndex = 0; byVCOIndex < NUM_VCO_PRESENT; byVCOIndex++) {
                 // Controls if VCO is enabled
                 if (aVCOInfo[byVCOIndex].bVCOEnable) {
-                    // Controls if force new measure of frequency from CCP
-                    if (aVCOInfo[byVCOIndex].bInvalideAnalogFreq) {
-                        // Takes the current Frequency captured for VCO
-                        if (updateCCPCapture(&aVCOInfo[byVCOIndex].uiAnalogFreqCCP)) {
+                    // Takes the current Frequency captured from VCO
+                    if (updateVCOFrequency(byVCOIndex)) {
 
-                            // Blink LED
-                            BlinkLEDGP2();
-                            // Packs the value
-                            iNumBytesToWrite = packResponseFrequency16(writeBuffer, aVCOInfo[byVCOIndex].uiAnalogFreqCCP, byVCOIndex);
-                            // Send bytes to USB
-                            putUSBUSART(writeBuffer, iNumBytesToWrite);
-                        }
-                        // Reset force flag
-                        aVCOInfo[byVCOIndex].bInvalideAnalogFreq = false;
+                        // Blink LED
+                        BlinkLEDGP2();
+                        // Packs the value
+                        iNumBytesToWrite = packResponseFrequency16(writeBuffer, aVCOInfo[byVCOIndex].uiAnalogVCOFreq, byVCOIndex);
+                        // Send bytes to USB
+                        putUSBUSART(writeBuffer, iNumBytesToWrite);
                     }
                 }
             }
