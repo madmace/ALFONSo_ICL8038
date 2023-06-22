@@ -42,6 +42,7 @@ This first implementation is oriented to develop and test all the HW functionali
 For this, a first mixer with the basic functions was developed.
 
 ![Front Panel](https://github.com/madmace/ALFONSo_ICL8038/blob/main/Images/Early_Single_VCO/FrontPanel.png?raw=true)
+![Mixer Panel](https://github.com/madmace/ALFONSo_ICL8038/blob/main/Images/Early_Single_VCO/MixerPanel.png?raw=true)
 
 
 Both the control logic section and the analog section with the VCO and the mixers are still being prototyped via breadboard.
