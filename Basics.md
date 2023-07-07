@@ -1,3 +1,9 @@
+---
+title: Basics
+layout: template
+filename: Basics.md
+--- 
+
 ## Basics
 
 The **ICL8038** waveform generator is a monolithic integrated circuit capable of producing high accuracy sine, square, triangular, sawtooth and pulse waveforms.
